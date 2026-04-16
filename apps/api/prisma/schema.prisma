@@ -1,12 +1,55 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
+}
+
+model categoria_comunidad {
+  id_categoria_comunidad BigInt  @id @default(autoincrement())
+  descripcion            String
+  activa                 Boolean @default(true)
+}
+
+model ciclo_pago {
+  id_ciclo_pago   BigInt @id @default(autoincrement())
+  frecuencia      Int
+  tipo_frecuencia String
+}
+
+model estado_pago {
+  id_estado_pago BigInt @id @default(autoincrement())
+  estado         String
+}
+
+model estado_suscripcion {
+  id_estado_suscripcion BigInt @id @default(autoincrement())
+  estado                String
+}
+
+model moneda {
+  id_moneda BigInt @id @default(autoincrement())
+  moneda    String
+}
+
+model rol {
+  id_rol BigInt @id @default(autoincrement())
+  rol    String
+}
+
+model tipo_contenido {
+  id_tipo_contenido BigInt  @id @default(autoincrement())
+  descripcion       String
+  activa            Boolean @default(true)
+}
+
+model usuario {
+  id_usuario    BigInt   @id @default(autoincrement())
+  nombre        String
+  apellido      String
+  email         String   @unique
+  password_hash String
+  fecha_alta    DateTime @default(now()) @db.Timestamptz(6)
+  activa        Boolean  @default(true)
 }
