@@ -24,23 +24,23 @@ export function Button({
   fullWidth = false,
   children,
   disabled,
-  style,
+  className,
   ...props
 }: ButtonProps) {
+  const baseClasses = `
+    ${variantClass[variant]}
+    ${fullWidth ? 'w-full justify-center' : ''}
+    ${disabled || isLoading ? 'opacity-65 cursor-not-allowed' : 'cursor-pointer'}
+    ${className ?? ''}
+  `.trim();
+
   return (
     <button
-      className={variantClass[variant]}
+      className={baseClasses}
       disabled={disabled || isLoading}
-      style={{
-        width: fullWidth ? '100%' : undefined,
-        justifyContent: fullWidth ? 'center' : undefined,
-        opacity: disabled || isLoading ? 0.65 : 1,
-        cursor: disabled || isLoading ? 'not-allowed' : 'pointer',
-        ...style,
-      }}
       {...props}
     >
-      {isLoading ? <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> : icon}
+      {isLoading ? <Loader2 size={16} className="animate-spin" /> : icon}
       {isLoading ? 'Cargando...' : children}
     </button>
   );

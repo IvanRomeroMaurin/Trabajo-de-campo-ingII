@@ -30,72 +30,66 @@ export default async function PerfilPage() {
   }
 
   return (
-    <div style={{ maxWidth: '860px', margin: '0 auto', padding: '3rem 1.5rem' }}>
+    <div className="max-w-4xl mx-auto py-12 px-6">
 
       {/* Header del perfil con datos reales */}
-      <div className="glass-card" style={{ padding: '2.5rem', marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
-          <div style={{
-            width: '80px', height: '80px', borderRadius: '50%', flexShrink: 0,
-            background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 8px 24px rgba(139,92,246,0.35)',
-            fontSize: '2rem',
-          }}>
-            {usuario?.nombre?.[0]?.toUpperCase() ?? <User size={36} color="white" />}
+      <div className="glass-card p-10 mb-8 border border-slate-100">
+        <div className="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+          <div className="w-24 h-24 rounded-3xl flex-shrink-0 bg-gradient-to-br from-sky-500 to-cyan-500 flex items-center justify-center shadow-xl shadow-sky-500/20 text-3xl font-black text-white ring-4 ring-white">
+            {usuario?.nombre?.[0]?.toUpperCase() ?? <User size={42} />}
           </div>
-          <div style={{ flex: 1 }}>
-            <h1 style={{ fontSize: '1.7rem', fontWeight: 800, marginBottom: '0.25rem' }}>
+          <div className="flex-1">
+            <h1 className="text-3xl font-black mb-2 text-slate-900 tracking-tight">
               {usuario?.nombre} {usuario?.apellido}
             </h1>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-              <Mail size={14} />
+            <div className="flex items-center justify-center md:justify-start gap-2 text-slate-500 text-sm font-bold">
+              <Mail size={16} className="text-slate-400" />
               {usuario?.email}
             </div>
             {!usuario?.activa && (
-              <span style={{
-                marginTop: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
-                fontSize: '0.75rem', color: '#f87171',
-                background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
-                padding: '0.2rem 0.6rem', borderRadius: '50px',
-              }}>
-                <Shield size={11} /> Cuenta inactiva
+              <span className="mt-4 inline-flex items-center gap-1.5 text-xs text-red-600 bg-red-50 border border-red-100 py-1.5 px-4 rounded-full font-black uppercase tracking-wider">
+                <Shield size={12} /> Cuenta inactiva
               </span>
             )}
           </div>
 
-          {/* Botón cerrar sesión con la acción centralizada */}
           <form action={logoutAction}>
-            <button type="submit" className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', padding: '0.5rem 1rem' }}>
-              <LogOut size={14} /> Cerrar sesión
+            <button type="submit" className="flex items-center gap-2 px-6 py-3 rounded-2xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 hover:text-red-600 hover:border-red-100 transition-all text-sm">
+              <LogOut size={16} /> Cerrar sesión
             </button>
           </form>
         </div>
       </div>
 
       {/* Tarjetas de secciones */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-        <Link href="/perfil/suscripciones" className="glass-card" style={{ padding: '1.5rem', textDecoration: 'none', color: 'inherit', display: 'block' }}>
-          <BookOpen size={24} style={{ color: '#a78bfa', marginBottom: '0.75rem' }} />
-          <h3 style={{ fontWeight: 700, marginBottom: '0.3rem' }}>Mis Suscripciones</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Comunidades a las que pertenecés</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <Link href="/perfil/suscripciones" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-sky-500/10 transition-all duration-300">
+          <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <BookOpen size={24} />
+          </div>
+          <h3 className="font-black mb-1 text-slate-900 text-lg tracking-tight">Mis Suscripciones</h3>
+          <p className="text-slate-500 text-[0.85rem] font-medium leading-relaxed">Comunidades a las que pertenecés</p>
         </Link>
 
-        <Link href="/perfil/comunidades" className="glass-card" style={{ padding: '1.5rem', textDecoration: 'none', color: 'inherit', display: 'block' }}>
-          <Users size={24} style={{ color: '#22d3ee', marginBottom: '0.75rem' }} />
-          <h3 style={{ fontWeight: 700, marginBottom: '0.3rem' }}>Mis Comunidades</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Comunidades que administrás</p>
+        <Link href="/perfil/comunidades" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300">
+          <div className="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <Users size={24} />
+          </div>
+          <h3 className="font-black mb-1 text-slate-900 text-lg tracking-tight">Mis Comunidades</h3>
+          <p className="text-slate-500 text-[0.85rem] font-medium leading-relaxed">Comunidades que administrás</p>
         </Link>
 
-        <Link href="/perfil/ajustes" className="glass-card" style={{ padding: '1.5rem', textDecoration: 'none', color: 'inherit', display: 'block' }}>
-          <Settings size={24} style={{ color: '#f472b6', marginBottom: '0.75rem' }} />
-          <h3 style={{ fontWeight: 700, marginBottom: '0.3rem' }}>Ajustes</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Datos personales y contraseña</p>
+        <Link href="/perfil/ajustes" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300">
+          <div className="w-12 h-12 rounded-xl bg-violet-50 text-violet-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <Settings size={24} />
+          </div>
+          <h3 className="font-black mb-1 text-slate-900 text-lg tracking-tight">Ajustes</h3>
+          <p className="text-slate-500 text-[0.85rem] font-medium leading-relaxed">Datos personales y contraseña</p>
         </Link>
       </div>
 
-      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-        <Link href="/" style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textDecoration: 'none' }}>
+      <div className="mt-12 text-center">
+        <Link href="/" className="text-slate-400 text-sm font-bold hover:text-sky-500 transition-colors">
           ← Volver al inicio
         </Link>
       </div>

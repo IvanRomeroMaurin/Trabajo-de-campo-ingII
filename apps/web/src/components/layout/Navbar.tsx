@@ -26,76 +26,58 @@ export async function Navbar() {
   const isLoggedIn = !!usuario;
 
   return (
-    <nav className="navbar-glass">
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '68px' }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-md border-b border-slate-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex items-center justify-between h-[72px]">
 
           {/* === LOGO === */}
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
-            <div style={{
-              width: '38px', height: '38px', borderRadius: '12px',
-              background: 'var(--gradient-accent)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 15px rgba(14, 165, 233, 0.4)',
-            }}>
-              <Sparkles size={20} color="white" />
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+            <div className="w-9 h-9 rounded-xl bg-slate-950 flex items-center justify-center shadow-lg shadow-slate-900/10">
+              <Sparkles size={18} className="text-sky-400 fill-sky-400" />
             </div>
-            <span style={{ fontSize: '1.25rem', fontWeight: '900', letterSpacing: '-0.03em' }}>
-              <span className="text-gradient">Komu</span>
-              <span style={{ color: 'var(--text-primary)', fontWeight: '400' }}>Learn</span>
+            <span className="text-[1.15rem] font-black tracking-tight text-slate-950">
+              Komu<span className="text-slate-500 font-bold">Learn</span>
             </span>
           </Link>
 
           {/* === LINKS CENTRALES === */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Link href="/explorar" className="btn-ghost">
-              <BookOpen size={16} />
+          <div className="hidden md:flex items-center gap-1">
+            <Link href="/explorar" className="px-5 py-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all font-bold text-sm flex items-center gap-2">
               Explorar
             </Link>
-            <Link href="/comunidades" className="btn-ghost">
-              <Users size={16} />
+            <Link href="/comunidades" className="px-5 py-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all font-bold text-sm flex items-center gap-2">
               Comunidades
-              <ChevronDown size={14} style={{ opacity: 0.5 }} />
             </Link>
           </div>
 
           {/* === ACCIONES DE AUTH === */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+          <div className="flex items-center gap-3">
             {isLoggedIn ? (
               <>
-                {/* Saludo con el nombre real del usuario */}
-                <Link href="/perfil" className="btn-ghost" style={{ gap: '0.6rem' }}>
-                  <div style={{
-                    width: '30px', height: '30px', borderRadius: '50%', flexShrink: 0,
-                    background: 'var(--gradient-accent)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '0.8rem', fontWeight: 800, color: 'white',
-                    boxShadow: '0 2px 8px rgba(14, 165, 233, 0.3)'
-                  }}>
+                <Link href="/perfil" className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-50 transition-all group border border-transparent hover:border-slate-100">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center font-black text-sm border border-slate-200">
                     {usuario?.nombre?.[0]?.toUpperCase()}
                   </div>
-                  <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
+                  <span className="text-slate-900 font-bold text-sm hidden sm:inline mr-2">
                     {usuario?.nombre}
                   </span>
                 </Link>
 
-                {/* Cerrar sesión usando la acción centralizada */}
                 <form action={logoutAction}>
-                  <button type="submit" className="btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <button type="submit" className="flex items-center gap-2 px-6 py-2.5 rounded-xl border border-slate-200 text-slate-500 font-bold hover:bg-slate-50 hover:text-red-500 hover:border-red-100 transition-all text-sm">
                     <LogOut size={16} />
-                    Salir
+                    <span className="hidden sm:inline">Salir</span>
                   </button>
                 </form>
               </>
             ) : (
               <>
-                <Link href="/login" className="btn-ghost">
-                  <LogIn size={16} />
+                <Link href="/login" className="px-6 py-2.5 rounded-xl text-slate-500 font-bold hover:text-slate-900 hover:bg-slate-50 transition-all text-sm">
                   Sesión
                 </Link>
-                <Link href="/register" className="btn-primary">
+                <Link href="/register" className="px-6 py-2.5 bg-slate-950 text-white font-bold rounded-xl shadow-md shadow-slate-900/10 hover:-translate-y-0.5 transition-all text-sm flex items-center gap-2">
                   <UserPlus size={16} />
-                  Sumarme
+                  Empezar
                 </Link>
               </>
             )}

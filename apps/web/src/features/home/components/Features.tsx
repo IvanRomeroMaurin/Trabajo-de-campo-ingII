@@ -1,82 +1,103 @@
 'use client';
 
-import { Users, BookOpen, TrendingUp, Shield } from 'lucide-react';
+import { Users, BookOpen, TrendingUp, Shield, ArrowRight } from 'lucide-react';
 
 const featuresData = [
   {
-    icon: <Users size={28} />,
+    number: '01',
+    icon: <Users size={22} />,
     title: 'Nodos de Aprendizaje',
-    desc: 'Conexión directa con expertos y pares. Resolución de dudas en tiempo real y mentoría continua.',
-    color: 'rgba(14, 165, 233, 0.1)',
-    iconColor: 'var(--accent-primary)',
+    desc: 'Conexión directa con expertos y pares. Resolución de dudas en tiempo real y mentoría continua semana a semana.',
+    tag: 'Community',
+    color: 'sky',
   },
   {
-    icon: <BookOpen size={28} />,
+    number: '02',
+    icon: <BookOpen size={22} />,
     title: 'Recursos Curados',
-    desc: 'Acceso a documentación técnica, repositorios y clases maestras de alta fidelidad.',
-    color: 'rgba(6, 182, 212, 0.1)',
-    iconColor: 'var(--accent-secondary)',
+    desc: 'Acceso a documentación técnica, repositorios privados y clases maestras grabadas para repasar a tu ritmo.',
+    tag: 'Content',
+    color: 'cyan',
   },
   {
-    icon: <TrendingUp size={28} />,
-    title: 'Escalamiento Técnico',
-    desc: 'Rutas de aprendizaje diseñadas para llevar tus habilidades al siguiente nivel profesional.',
-    color: 'rgba(124, 58, 237, 0.08)',
-    iconColor: 'var(--accent-tertiary)',
+    number: '03',
+    icon: <TrendingUp size={22} />,
+    title: 'Rutas Técnicas',
+    desc: 'Paths de aprendizaje diseñados por ingenieros senior para llevar tus habilidades al nivel profesional más alto.',
+    tag: 'Growth',
+    color: 'violet',
   },
   {
-    icon: <Shield size={28} />,
-    title: 'Verificación de Expertos',
-    desc: 'Cada mentor pasa por una rigurosa auditoría técnica para garantizar la calidad del contenido.',
-    color: 'rgba(14, 165, 233, 0.1)',
-    iconColor: 'var(--accent-primary)',
+    number: '04',
+    icon: <Shield size={22} />,
+    title: 'Mentores Verificados',
+    desc: 'Cada mentor pasa por una auditoría técnica rigurosa. Solo expertos con experiencia real en producción.',
+    tag: 'Trust',
+    color: 'emerald',
   },
 ];
 
+const colorMap: Record<string, string> = {
+  sky:     'bg-sky-50 text-sky-600 border border-sky-100',
+  cyan:    'bg-cyan-50 text-cyan-600 border border-cyan-100',
+  violet:  'bg-violet-50 text-violet-600 border border-violet-100',
+  emerald: 'bg-emerald-50 text-emerald-600 border border-emerald-100',
+};
+
+const tagColorMap: Record<string, string> = {
+  sky:     'bg-sky-100 text-sky-700',
+  cyan:    'bg-cyan-100 text-cyan-700',
+  violet:  'bg-violet-100 text-violet-700',
+  emerald: 'bg-emerald-100 text-emerald-700',
+};
+
 export function Features() {
   return (
-    <section style={{ 
-      padding: '6rem 1.5rem', 
-      background: 'rgba(255,255,255,0.01)', 
-      borderTop: '1px solid var(--border-subtle)', 
-      borderBottom: '1px solid var(--border-subtle)' 
-    }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+    <section className="px-4 sm:px-6 lg:px-8 py-32 bg-white relative">
+      <div className="max-w-7xl mx-auto">
 
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-          <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontWeight: 900, letterSpacing: '-0.04em', marginBottom: '1rem', color: 'var(--text-primary)' }}>
-            Nuestra <span className="text-gradient-tech">Infraestructura Digital</span>
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.15rem', lineHeight: 1.6 }}>
-            Combinamos tecnología de punta con la calidez del aprendizaje colaborativo para ofrecer una experiencia educativa inigualable.
+        {/* Section Header — editorial left-aligned */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-24">
+          <div className="max-w-xl">
+            <span className="inline-block text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">
+              Capacidades del Ecosistema
+            </span>
+            <h2 className="font-display text-4xl md:text-6xl font-black text-slate-950 tracking-tight leading-[1.0]">
+              Todo lo que<br />
+              <span className="text-sky-600">necesitás</span> para crecer.
+            </h2>
+          </div>
+          <p className="text-slate-500 max-w-sm text-base leading-relaxed font-medium">
+            Herramientas profesionales, mentores reales y una comunidad que empuja hacia arriba.
           </p>
-          <div className="divider-glow"></div>
         </div>
 
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-          gap: '2rem' 
-        }}>
+        {/* Feature Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border border-slate-100 rounded-3xl overflow-hidden">
           {featuresData.map((feat, i) => (
-            <div key={i} className="glass-card" style={{ padding: '2.5rem 2rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <div className="feature-icon" style={{ 
-                background: feat.color, 
-                color: feat.iconColor,
-                width: '56px',
-                height: '56px',
-                borderRadius: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '1.5rem'
-              }}>
-                {feat.icon}
+            <div
+              key={i}
+              className={`p-10 flex flex-col gap-8 group hover:bg-slate-50 transition-colors duration-300 ${i < 3 ? 'border-r border-slate-100' : ''}`}
+            >
+              <div className="flex items-start justify-between">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${colorMap[feat.color]}`}>
+                  {feat.icon}
+                </div>
+                <span className={`text-[0.6rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${tagColorMap[feat.color]}`}>
+                  {feat.tag}
+                </span>
               </div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.8rem' }}>{feat.title}</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7 }}>
-                {feat.desc}
-              </p>
+
+              <div>
+                <div className="text-[0.65rem] font-black text-slate-300 tracking-[0.25em] mb-3">{feat.number}</div>
+                <h3 className="font-display text-xl font-black text-slate-950 mb-3 tracking-tight">{feat.title}</h3>
+                <p className="text-slate-500 text-[0.875rem] leading-relaxed font-medium">{feat.desc}</p>
+              </div>
+
+              <div className="mt-auto flex items-center gap-1.5 text-slate-300 group-hover:text-sky-500 transition-colors text-xs font-bold uppercase tracking-wider">
+                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                Saber más
+              </div>
             </div>
           ))}
         </div>

@@ -13,7 +13,7 @@ export function LoginForm() {
   const [state, action, isPending] = useActionState(loginAction, initialState);
 
   return (
-    <form action={action} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+    <form action={action} className="flex flex-col gap-6">
 
       <FormInput
         label="Correo electrónico"
@@ -46,8 +46,8 @@ export function LoginForm() {
         type="submit"
         isLoading={isPending}
         fullWidth
-        icon={<LogIn size={16} />}
-        style={{ marginTop: '0.5rem', padding: '0.85rem' }}
+        icon={<LogIn size={18} />}
+        className="mt-4 py-4 text-lg"
       >
         Iniciar Sesión
       </Button>

@@ -78,59 +78,38 @@ export default function ComunidadesPage() {
   });
 
   return (
-    <div className="hero-bg" style={{ minHeight: '100vh', padding: '4rem 1.5rem' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+    <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         
         {/* Cabecera de la página */}
-        <header style={{ marginBottom: '3rem', textAlign: 'left' }}>
-          <div style={{ marginBottom: '1rem' }}>
-            <span className="badge badge-purple">
-              <Sparkles size={12} />
+        <header className="mb-20 text-left">
+          <div className="mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-500 text-[0.65rem] font-bold uppercase tracking-wider shadow-sm">
+              <Sparkles size={12} className="text-sky-500" />
               Explorar el conocimiento
             </span>
           </div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-0.03em' }}>
-            Descubrí tu próxima <span className="text-gradient">comunidad</span>
+          <h1 className="font-display text-4xl md:text-6xl font-black mb-6 tracking-tight text-slate-950 leading-tight">
+            Descubrí tu próxima <br />
+            <span className="text-sky-600">comunidad de expertos</span>
           </h1>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', fontSize: '1.1rem' }}>
-            Unite a grupos liderados por expertos, compartí recursos y aprendé junto a miles de estudiantes.
+          <p className="text-slate-600 max-w-[600px] text-lg leading-relaxed font-medium">
+            Unite a grupos liderados por mentores activos, compartí recursos y aprendé junto a miles de profesionales.
           </p>
         </header>
 
         {/* Barra de búsqueda y Filtros */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <div style={{ position: 'relative', maxWidth: '500px' }}>
-            <div style={{
-              position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)',
-              color: 'var(--text-muted)', display: 'flex', alignItems: 'center'
-            }}>
-              <Search size={18} />
+        <div className="flex flex-col gap-8 mb-16">
+          <div className="relative max-w-xl group">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 flex items-center group-focus-within:text-sky-500 transition-colors">
+              <Search size={20} />
             </div>
             <input
               type="text"
               placeholder="Buscar por nombre o descripción..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '0.9rem 1rem 0.9rem 3rem',
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: '14px',
-                color: 'var(--text-primary)',
-                fontSize: '0.95rem',
-                outline: 'none',
-                boxSizing: 'border-box',
-                transition: 'all 0.2s ease'
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = 'var(--accent-purple)';
-                e.target.style.boxShadow = '0 0 0 4px rgba(139, 92, 246, 0.1)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = 'var(--border-subtle)';
-                e.target.style.boxShadow = 'none';
-              }}
+              className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-[1rem] outline-none transition-all focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 placeholder:text-slate-400 font-medium"
             />
           </div>
 
@@ -143,37 +122,19 @@ export default function ComunidadesPage() {
 
         {/* Grilla de comunidades */}
         {filteredCommunities.length > 0 ? (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
-            gap: '1.5rem' 
-          }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCommunities.map((community) => (
               <CommunityCard key={community.id} community={community} />
             ))}
           </div>
         ) : (
-          <div style={{ 
-            textAlign: 'center', 
-            padding: '5rem 0', 
-            background: 'var(--bg-card)', 
-            borderRadius: '20px',
-            border: '1px dashed var(--border-subtle)'
-          }}>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
+          <div className="text-center py-24 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+            <p className="text-slate-500 text-lg font-medium">
               No encontramos comunidades que coincidan con tu búsqueda.
             </p>
             <button 
               onClick={() => {setSelectedCategory('Todas'); setSearchQuery('');}}
-              style={{ 
-                marginTop: '1rem', 
-                background: 'none', 
-                border: 'none', 
-                color: 'var(--accent-purple)', 
-                fontWeight: 600, 
-                cursor: 'pointer',
-                textDecoration: 'underline'
-              }}
+              className="mt-6 text-sky-600 font-black hover:text-sky-700 transition-colors uppercase text-xs tracking-widest"
             >
               Ver todas las comunidades
             </button>

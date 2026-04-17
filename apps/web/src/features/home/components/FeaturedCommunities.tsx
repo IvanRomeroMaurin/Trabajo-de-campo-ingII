@@ -36,36 +36,32 @@ const communidades: Community[] = [
 
 export function FeaturedCommunities() {
   return (
-    <section style={{ padding: '6rem 1.5rem' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+    <section className="px-4 sm:px-6 lg:px-8 py-32 bg-slate-50 relative border-y border-slate-100">
+      <div className="max-w-7xl mx-auto">
 
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <span className="badge badge-tech" style={{ marginBottom: '1.2rem' }}>
-            <Star size={14} fill="currentColor" stroke="none" />
-            Nodos Destacados
-          </span>
-          <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.04em', marginBottom: '1rem', color: 'var(--text-primary)' }}>
-            Comunidades de <span className="text-gradient-tech">Alto Impacto</span>
+        <div className="text-center mb-24 relative">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-500 text-[0.65rem] font-bold mb-8 shadow-sm uppercase tracking-wider">
+            <Star size={12} className="text-amber-400 fill-amber-400" />
+            Nodos Seleccionados
+          </div>
+          <h2 className="font-display text-4xl md:text-6xl font-black text-slate-950 tracking-tight mb-6">
+            Comunidades de <span className="text-sky-600">Alto Impacto</span>
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto', fontSize: '1.1rem', lineHeight: 1.6 }}>
-            Seleccionamos comunidades con mentores activos y contenido curado para acelerar tu crecimiento técnico.
+          <p className="text-slate-600 max-w-[580px] mx-auto text-lg leading-relaxed font-medium">
+            Seleccionamos ecosistemas con mentores activos y contenido curado para acelerar tu crecimiento técnico.
           </p>
-          <div className="divider-glow"></div>
         </div>
 
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', 
-          gap: '2rem' 
-        }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {communidades.map((community) => (
             <CommunityCard key={community.id} community={community} />
           ))}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-          <Link href="/comunidades" className="btn-outline" style={{ padding: '1rem 2.5rem' }}>
-            Explorar todo el ecosistema <ArrowRight size={18} />
+        <div className="text-center mt-24">
+          <Link href="/comunidades" className="btn-outline px-10 py-4 group border-slate-300">
+            Explorar todo el ecosistema 
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>

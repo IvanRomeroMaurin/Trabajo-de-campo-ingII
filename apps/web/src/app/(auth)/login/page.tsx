@@ -10,34 +10,29 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem' }}>
-      <div className="glass-card" style={{ maxWidth: '420px', width: '100%', padding: '2.5rem' }}>
+    <div className="flex flex-col items-center justify-center py-20 px-6">
+      <div className="glass-card max-w-[420px] w-full p-10 py-12 border border-slate-200 shadow-xl shadow-slate-200/20">
 
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{
-            width: '56px', height: '56px', borderRadius: '16px',
-            background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 1.2rem', boxShadow: '0 8px 20px rgba(139,92,246,0.35)',
-          }}>
-            <LogIn size={24} color="white" />
+        <div className="text-center mb-10">
+          <div className="w-16 h-16 rounded-2xl bg-slate-950 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-slate-900/10">
+            <LogIn size={28} className="text-sky-400" />
           </div>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '0.4rem' }}>Bienvenido de vuelta</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Ingresá tus credenciales para continuar</p>
+          <h1 className="text-3xl font-black mb-2 text-slate-950 tracking-tight leading-tight">Bienvenido de vuelta</h1>
+          <p className="text-slate-500 text-sm font-medium">Ingresá tus credenciales para continuar</p>
         </div>
 
         <LoginForm />
 
-        <p style={{ textAlign: 'center', marginTop: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+        <p className="text-center mt-10 text-slate-500 text-sm font-medium">
           ¿No tenés cuenta?{' '}
-          <Link href="/register" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>
+          <Link href="/register" className="text-sky-600 font-bold hover:underline">
             Registrate gratis
           </Link>
         </p>
 
-        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: 'var(--text-muted)', fontSize: '0.82rem', textDecoration: 'none' }}>
-            <ArrowLeft size={13} /> Volver al inicio
+        <div className="text-center mt-8">
+          <Link href="/" className="inline-flex items-center gap-2 text-slate-400 text-[0.85rem] font-bold hover:text-slate-600 transition-colors">
+            <ArrowLeft size={14} /> Volver al sitio principal
           </Link>
         </div>
 

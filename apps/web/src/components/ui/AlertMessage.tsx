@@ -13,17 +13,14 @@ export function AlertMessage({ type, message }: AlertMessageProps) {
   const isSuccess = type === 'success';
 
   return (
-    <div style={{
-      display: 'flex', alignItems: 'flex-start', gap: '0.6rem',
-      padding: '0.9rem 1rem',
-      borderRadius: '10px',
-      background: isSuccess ? 'rgba(52,211,153,0.08)' : 'rgba(239,68,68,0.08)',
-      border: `1px solid ${isSuccess ? 'rgba(52,211,153,0.25)' : 'rgba(239,68,68,0.25)'}`,
-      color: isSuccess ? '#34d399' : '#f87171',
-      fontSize: '0.875rem',
-      lineHeight: 1.5,
-    }}>
-      {isSuccess ? <CheckCircle2 size={17} style={{ flexShrink: 0, marginTop: '0.1rem' }} /> : <XCircle size={17} style={{ flexShrink: 0, marginTop: '0.1rem' }} />}
+    <div className={`
+      flex items-start gap-2.5 px-4 py-3.5 rounded-[12px] border text-[0.875rem] leading-relaxed
+      ${isSuccess 
+        ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
+        : 'bg-red-500/10 border-red-500/20 text-red-400'
+      }
+    `}>
+      {isSuccess ? <CheckCircle2 size={17} className="shrink-0 mt-0.5" /> : <XCircle size={17} className="shrink-0 mt-0.5" />}
       <span>{message}</span>
     </div>
   );

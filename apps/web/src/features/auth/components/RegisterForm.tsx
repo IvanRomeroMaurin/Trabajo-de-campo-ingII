@@ -13,9 +13,9 @@ export function RegisterForm() {
   const [state, action, isPending] = useActionState(registerAction, initialState);
 
   return (
-    <form action={action} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+    <form action={action} className="flex flex-col gap-5">
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.9rem' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FormInput
           label="Nombre"
           name="nombre"
@@ -77,8 +77,8 @@ export function RegisterForm() {
         type="submit"
         isLoading={isPending}
         fullWidth
-        icon={<UserPlus size={16} />}
-        style={{ marginTop: '0.5rem', padding: '0.85rem' }}
+        icon={<UserPlus size={18} />}
+        className="mt-4 py-4 text-lg"
       >
         Crear mi cuenta
       </Button>

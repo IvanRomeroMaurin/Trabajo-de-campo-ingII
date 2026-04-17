@@ -13,50 +13,36 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
     const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+      <div className="flex flex-col gap-1.5 w-full">
         <label
           htmlFor={inputId}
-          style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.02em' }}
+          className="text-[0.82rem] font-bold text-slate-500 tracking-wide ml-1 uppercase"
         >
           {label}
         </label>
-        <div style={{ position: 'relative' }}>
+        <div className="relative group">
           {icon && (
-            <div style={{
-              position: 'absolute', left: '0.8rem', top: '50%', transform: 'translateY(-50%)',
-              color: 'var(--text-muted)', display: 'flex', alignItems: 'center',
-            }}>
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 flex items-center group-focus-within:text-sky-500 transition-colors">
               {icon}
             </div>
           )}
           <input
             ref={ref}
             id={inputId}
-            style={{
-              width: '100%',
-              padding: icon ? '0.7rem 0.9rem 0.7rem 2.5rem' : '0.7rem 0.9rem',
-              background: 'rgba(255,255,255,0.05)',
-              border: `1px solid ${error ? 'rgba(239,68,68,0.5)' : 'var(--border-subtle)'}`,
-              borderRadius: '10px',
-              color: 'var(--text-primary)',
-              fontSize: '0.9rem',
-              outline: 'none',
-              transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-              boxSizing: 'border-box',
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'var(--accent-purple)';
-              e.target.style.boxShadow = '0 0 0 3px rgba(139,92,246,0.15)';
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = error ? 'rgba(239,68,68,0.5)' : 'var(--border-subtle)';
-              e.target.style.boxShadow = 'none';
-            }}
+            className={`
+              w-full rounded-2xl bg-slate-50 text-slate-900 text-[0.95rem] outline-none transition-all duration-200
+              ${icon ? 'pl-12 pr-4' : 'px-4'}
+              py-3.5 border
+              ${error 
+                ? 'border-red-200 bg-red-50 text-red-900 focus:border-red-300 focus:ring-4 focus:ring-red-100' 
+                : 'border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100'
+              }
+            `}
             {...props}
           />
         </div>
         {error && (
-          <span style={{ fontSize: '0.78rem', color: '#f87171' }}>{error}</span>
+          <span className="text-xs text-red-500 font-bold ml-1 mt-0.5">{error}</span>
         )}
       </div>
     );

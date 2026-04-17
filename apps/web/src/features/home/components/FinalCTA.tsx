@@ -5,30 +5,24 @@ import { Sparkles, LogIn } from 'lucide-react';
 
 export function FinalCTA() {
   return (
-    <section style={{ padding: '10rem 1.5rem', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-      {/* Fondo dinámico Tech */}
-      <div style={{
-        position: 'absolute', 
-        inset: 0,
-        background: 'radial-gradient(circle at 70% 30%, rgba(14, 165, 233, 0.08) 0%, transparent 60%), radial-gradient(circle at 30% 70%, rgba(6, 182, 212, 0.05) 0%, transparent 60%)',
-        pointerEvents: 'none',
-        zIndex: 0
-      }} className="animate-pulse" />
-
-      <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 900, letterSpacing: '-0.04em', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
-          ¿Listo para <span className="text-gradient-tech">digitalizar</span> tu futuro?
+    <section className="px-4 sm:px-6 lg:px-8 py-48 text-center relative overflow-hidden bg-slate-50 border-t border-slate-200">
+      {/* Subtle background decoration */}
+      <div className="absolute inset-0 hero-aura opacity-[0.5]" />
+      
+      <div className="max-w-4xl mx-auto relative z-10">
+        <h2 className="font-display text-5xl md:text-7xl font-black text-slate-950 tracking-tight mb-10 leading-[1.05]">
+          ¿Listo para <span className="text-sky-600">escalar</span> tu futuro?
         </h2>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', marginBottom: '4rem', lineHeight: 1.7, maxWidth: '640px', margin: '0 auto 4rem' }}>
-          Unite a la red de conocimiento técnico más potente de la región. Sin barreras, solo progreso colecitvo.
+        <p className="text-slate-600 text-xl leading-relaxed mb-16 max-w-[640px] mx-auto font-medium">
+          Unite a la red de conocimiento técnico más potente de la región. Sin barreras, solo progreso colectivo.
         </p>
         
-        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/register" className="btn-primary" style={{ padding: '1.2rem 3rem', fontSize: '1.1rem' }}>
+        <div className="flex flex-col sm:flex-row gap-5 justify-center">
+          <Link href="/register" className="btn-primary py-4 px-12 text-lg bg-slate-950">
             Empezar Ahora
-            <Sparkles size={20} />
+            <Sparkles size={20} className="text-sky-400" />
           </Link>
-          <Link href="/login" className="btn-outline" style={{ padding: '1.2rem 3rem', fontSize: '1.1rem' }}>
+          <Link href="/login" className="btn-outline py-4 px-12 text-lg shadow-sm">
             Acceder al Dashboard
           </Link>
         </div>

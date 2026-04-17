@@ -8,34 +8,20 @@ interface CategoryFilterProps {
 
 export function CategoryFilter({ categories, selectedCategory, onSelectCategory }: CategoryFilterProps) {
   return (
-    <div style={{ 
-      display: 'flex', 
-      gap: '0.75rem', 
-      marginBottom: '2.5rem', 
-      overflowX: 'auto', 
-      paddingBottom: '0.5rem',
-      scrollbarWidth: 'none',
-      msOverflowStyle: 'none'
-    }}>
+    <div className="flex gap-3 mb-10 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none]">
       {categories.map((category) => {
         const isActive = selectedCategory === category;
         return (
           <button
             key={category}
             onClick={() => onSelectCategory(category)}
-            style={{
-              padding: '0.6rem 1.2rem',
-              borderRadius: '50px',
-              border: '1px solid',
-              borderColor: isActive ? 'var(--accent-purple)' : 'var(--border-subtle)',
-              background: isActive ? 'rgba(139, 92, 246, 0.1)' : 'rgba(0, 0, 0, 0.04)',
-              color: isActive ? 'var(--accent-purple)' : 'var(--text-secondary)',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.2s ease',
-            }}
+            className={`
+              px-5 py-2.5 rounded-full border text-[0.85rem] font-bold cursor-pointer whitespace-nowrap transition-all duration-200
+              ${isActive 
+                ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]' 
+                : 'border-[var(--border-subtle)] bg-black/5 text-[var(--text-secondary)] hover:border-[var(--text-muted)]'
+              }
+            `}
           >
             {category}
           </button>

@@ -5,104 +5,90 @@ import { Sparkles, ArrowRight, Zap } from 'lucide-react';
 
 export function Hero() {
   return (
-    <section className="dot-grid" style={{ 
-      padding: '6rem 1.5rem 8rem', 
-      textAlign: 'center', 
-      position: 'relative', 
-      zIndex: 1,
-      minHeight: '80vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      borderBottom: '1px solid var(--border-glass)',
-      overflow: 'hidden'
-    }}>
-      {/* Visual Aura - Tech Background Element */}
-      <div style={{
-        position: 'absolute',
-        top: '20%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '600px',
-        height: '600px',
-        background: 'radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%)',
-        filter: 'blur(80px)',
-        zIndex: -1,
-      }} className="animate-pulse" />
+    <section className="relative w-full overflow-hidden bg-white pt-20 pb-20 md:pt-32 md:pb-40">
+      {/* Dynamic Background Elements */}
+      <div className="absolute inset-0 dot-grid opacity-[0.25]" />
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-500/5 blur-[120px] rounded-full translate-y-1/3 -translate-x-1/4" />
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          {/* Main Content Area */}
+          <div className="lg:col-span-7 pr-0 lg:pr-10">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900 text-white text-[0.65rem] font-black tracking-[0.15em] mb-12 uppercase shadow-2xl shadow-slate-900/20">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+              </span>
+              Nodos en tiempo real
+            </div>
 
-      <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '4rem', alignItems: 'center', textAlign: 'left' }}>
-        
-        <div>
-          <div className="animate-fade-in-up" style={{ marginBottom: '1.5rem' }}>
-            <span className="badge badge-tech">
-              <Zap size={14} fill="currentColor" />
-              Suscripciones Educativas 2.0
-            </span>
+            <h1 className="font-display text-6xl md:text-8xl font-black text-slate-950 leading-[0.95] tracking-[-0.04em] mb-10 transition-all">
+              Domina la <br />
+              <span className="text-sky-600">tecnología</span> en <br />
+              <span className="text-slate-400">comunidad.</span>
+            </h1>
+
+            <p className="text-xl text-slate-600 max-w-[540px] mb-14 leading-relaxed font-medium">
+              KomuLearn es el ecosistema donde expertos y aprendices convergen. 
+              Suscripciones directas a nodos de conocimiento de alto impacto.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-6">
+              <Link href="/comunidades" className="btn-primary py-5 px-12 text-lg bg-slate-950 hover:bg-sky-600 transition-colors">
+                Unirme a un Nodo
+                <ArrowRight size={20} />
+              </Link>
+              <Link href="/register" className="btn-outline py-5 px-12 text-lg border-2 border-slate-200">
+                Ver Ecosistema
+              </Link>
+            </div>
           </div>
 
-          <h1
-            className="animate-fade-in-up animation-delay-100"
-            style={{ 
-              fontSize: 'clamp(3rem, 6vw, 4.5rem)', 
-              fontWeight: 900, 
-              lineHeight: 1.05, 
-              letterSpacing: '-0.04em', 
-              marginBottom: '1.5rem',
-              color: 'var(--text-primary)'
-            }}
-          >
-            Impulsá tu carrera con<br />
-            <span className="text-gradient-tech">comunidades reales</span>
-          </h1>
+          {/* Personality Elements / Composition Area */}
+          <div className="lg:col-span-5 relative mt-16 lg:mt-0">
+            {/* The Main "Tech Hub" Card */}
+            <div className="relative z-10 rounded-[2.5rem] border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-200/60 overflow-hidden transform rotate-2 hover:rotate-0 transition-transform duration-700">
+              <img 
+                src="/assets/hero_tech.png" 
+                alt="Product Preview"
+                className="w-full h-auto rounded-[2.2rem]"
+              />
+            </div>
 
-          <p
-            className="animate-fade-in-up animation-delay-200"
-            style={{ 
-              fontSize: '1.25rem', 
-              color: 'var(--text-secondary)', 
-              maxWidth: '540px', 
-              marginBottom: '3rem', 
-              lineHeight: 1.6,
-              fontWeight: 450
-            }}
-          >
-            Sumate a ecosistemas de aprendizaje liderados por expertos. 
-            Adquirí habilidades demandadas y conectá con profesionales de todo el mundo.
-          </p>
+            {/* Floating Decorative Cards */}
+            <div className="absolute -top-10 -right-10 z-20 glass-card p-5 shadow-2xl animate-float" style={{ animationDelay: '0s' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+                  <Zap size={20} className="fill-current" />
+                </div>
+                <div>
+                  <div className="text-[0.65rem] font-black uppercase text-slate-400 tracking-wider">Server Status</div>
+                  <div className="text-sm font-bold text-slate-900">100% Active</div>
+                </div>
+              </div>
+            </div>
 
-          <div className="animate-fade-in-up animation-delay-300" style={{ display: 'flex', gap: '1rem' }}>
-            <Link href="/comunidades" className="btn-primary" style={{ padding: '1.2rem 2.8rem' }}>
-              Explorar Ahora
-              <ArrowRight size={20} />
-            </Link>
-            <Link href="/register" className="btn-outline" style={{ padding: '1.2rem 2.8rem' }}>
-              Crear Grupo
-            </Link>
+            <div className="absolute -left-12 bottom-20 z-20 glass-card p-5 shadow-2xl animate-float" style={{ animationDelay: '1.5s' }}>
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-9 h-9 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[0.6rem] font-bold overflow-hidden">
+                       <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="text-[0.65rem] font-black uppercase text-slate-400 tracking-wider">Top Mentors</div>
+                  <div className="text-sm font-bold text-slate-900">+45 Expertos</div>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
 
-        <div className="animate-fade-in-up animation-delay-200" style={{ position: 'relative' }}>
-          <div style={{
-            position: 'absolute',
-            inset: '-20px',
-            background: 'var(--gradient-glow)',
-            zIndex: -1,
-            borderRadius: '50%',
-            filter: 'blur(40px)',
-          }} className="animate-float" />
-          <img 
-            src="/assets/hero_tech.png" 
-            alt="KomuLearn Tech Illustration"
-            style={{ 
-              width: '100%', 
-              height: 'auto', 
-              borderRadius: '24px',
-              boxShadow: 'var(--shadow-xl)',
-              border: '1px solid var(--border-glass)',
-            }}
-          />
         </div>
-
       </div>
     </section>
   );
