@@ -12,7 +12,7 @@ import { join } from 'path';
     // ConfigModule DEBE ser el primero: garantiza que JWT_SECRET esté disponible
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: join(process.cwd(), 'apps/api/.env'),
+      envFilePath: '.env',
     }),
     PrismaModule,
     AuthModule,
