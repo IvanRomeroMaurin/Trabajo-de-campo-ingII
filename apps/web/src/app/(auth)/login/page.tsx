@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6">
-      <div className="glass-card max-w-[420px] w-full p-10 py-12 border border-slate-200 shadow-xl shadow-slate-200/20">
+      <div className="glass-card max-w-md w-full p-10 py-12 border border-slate-200 shadow-xl shadow-slate-200/20">
 
         <div className="text-center mb-10">
           <div className="w-16 h-16 rounded-2xl bg-slate-950 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-slate-900/10">
@@ -31,7 +31,7 @@ export default function LoginPage() {
         </p>
 
         <div className="text-center mt-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-slate-400 text-[0.85rem] font-bold hover:text-slate-600 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-slate-400 text-xs font-bold hover:text-slate-600 transition-colors">
             <ArrowLeft size={14} /> Volver al sitio principal
           </Link>
         </div>

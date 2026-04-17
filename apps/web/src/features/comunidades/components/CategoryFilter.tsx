@@ -8,7 +8,7 @@ interface CategoryFilterProps {
 
 export function CategoryFilter({ categories, selectedCategory, onSelectCategory }: CategoryFilterProps) {
   return (
-    <div className="flex gap-3 mb-10 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none]">
+    <div className="flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-none">
       {categories.map((category) => {
         const isActive = selectedCategory === category;
         return (
@@ -16,10 +16,10 @@ export function CategoryFilter({ categories, selectedCategory, onSelectCategory 
             key={category}
             onClick={() => onSelectCategory(category)}
             className={`
-              px-5 py-2.5 rounded-full border text-[0.85rem] font-bold cursor-pointer whitespace-nowrap transition-all duration-200
+              px-5 py-2.5 rounded-full border text-xs font-bold cursor-pointer whitespace-nowrap transition-all duration-200
               ${isActive 
-                ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]' 
-                : 'border-[var(--border-subtle)] bg-black/5 text-[var(--text-secondary)] hover:border-[var(--text-muted)]'
+                ? 'border-sky-500 bg-sky-500/10 text-sky-500' 
+                : 'border-slate-200 bg-black/5 text-slate-600 hover:border-slate-400'
               }
             `}
           >

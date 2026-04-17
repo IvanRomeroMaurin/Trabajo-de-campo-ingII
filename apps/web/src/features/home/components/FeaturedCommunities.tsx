@@ -40,14 +40,14 @@ export function FeaturedCommunities() {
       <div className="max-w-7xl mx-auto">
 
         <div className="text-center mb-24 relative">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-500 text-[0.65rem] font-bold mb-8 shadow-sm uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-500 text-xs font-bold mb-8 shadow-sm uppercase tracking-widest">
             <Star size={12} className="text-amber-400 fill-amber-400" />
             Nodos Seleccionados
           </div>
           <h2 className="font-display text-4xl md:text-6xl font-black text-slate-950 tracking-tight mb-6">
             Comunidades de <span className="text-sky-600">Alto Impacto</span>
           </h2>
-          <p className="text-slate-600 max-w-[580px] mx-auto text-lg leading-relaxed font-medium">
+          <p className="text-slate-600 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
             Seleccionamos ecosistemas con mentores activos y contenido curado para acelerar tu crecimiento técnico.
           </p>
         </div>

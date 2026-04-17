@@ -14,7 +14,7 @@ export function AlertMessage({ type, message }: AlertMessageProps) {
 
   return (
     <div className={`
-      flex items-start gap-2.5 px-4 py-3.5 rounded-[12px] border text-[0.875rem] leading-relaxed
+      flex items-start gap-2.5 px-4 py-3.5 rounded-lg border text-sm leading-relaxed
       ${isSuccess 
         ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
         : 'bg-red-500/10 border-red-500/20 text-red-400'

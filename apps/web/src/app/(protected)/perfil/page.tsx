@@ -35,7 +35,7 @@ export default async function PerfilPage() {
       {/* Header del perfil con datos reales */}
       <div className="glass-card p-10 mb-8 border border-slate-100">
         <div className="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
-          <div className="w-24 h-24 rounded-3xl flex-shrink-0 bg-gradient-to-br from-sky-500 to-cyan-500 flex items-center justify-center shadow-xl shadow-sky-500/20 text-3xl font-black text-white ring-4 ring-white">
+          <div className="w-24 h-24 rounded-3xl shrink-0 bg-linear-to-br from-sky-500 to-cyan-500 flex items-center justify-center shadow-xl shadow-sky-500/20 text-3xl font-black text-white ring-4 ring-white">
             {usuario?.nombre?.[0]?.toUpperCase() ?? <User size={42} />}
           </div>
           <div className="flex-1">
@@ -68,7 +68,7 @@ export default async function PerfilPage() {
             <BookOpen size={24} />
           </div>
           <h3 className="font-black mb-1 text-slate-900 text-lg tracking-tight">Mis Suscripciones</h3>
-          <p className="text-slate-500 text-[0.85rem] font-medium leading-relaxed">Comunidades a las que pertenecés</p>
+          <p className="text-slate-500 text-xs font-medium leading-relaxed">Comunidades a las que pertenecés</p>
         </Link>
 
         <Link href="/perfil/comunidades" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300">
@@ -76,7 +76,7 @@ export default async function PerfilPage() {
             <Users size={24} />
           </div>
           <h3 className="font-black mb-1 text-slate-900 text-lg tracking-tight">Mis Comunidades</h3>
-          <p className="text-slate-500 text-[0.85rem] font-medium leading-relaxed">Comunidades que administrás</p>
+          <p className="text-slate-500 text-xs font-medium leading-relaxed">Comunidades que administrás</p>
         </Link>
 
         <Link href="/perfil/ajustes" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300">
@@ -84,7 +84,7 @@ export default async function PerfilPage() {
             <Settings size={24} />
           </div>
           <h3 className="font-black mb-1 text-slate-900 text-lg tracking-tight">Ajustes</h3>
-          <p className="text-slate-500 text-[0.85rem] font-medium leading-relaxed">Datos personales y contraseña</p>
+          <p className="text-slate-500 text-xs font-medium leading-relaxed">Datos personales y contraseña</p>
         </Link>
       </div>
 

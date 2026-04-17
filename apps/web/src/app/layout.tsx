@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="es" className={`${inter.variable} ${outfit.variable}`}>
       <body className="min-h-screen flex flex-col bg-white">
         <Navbar />
-        <main className="flex-1 w-full pt-[72px]">
+        <main className="flex-1 w-full pt-18">
           {children}
         </main>
 
@@ -70,7 +70,7 @@ export default function RootLayout({
 
               {/* Links */}
               <div>
-                <h4 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-500 mb-6">Producto</h4>
+                <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-6">Producto</h4>
                 <ul className="space-y-4">
                   {['Explorar', 'Comunidades', 'Crear Nodo', 'Para Equipos'].map(item => (
                     <li key={item}>
@@ -83,7 +83,7 @@ export default function RootLayout({
               </div>
 
               <div>
-                <h4 className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-500 mb-6">Legal</h4>
+                <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-6">Legal</h4>
                 <ul className="space-y-4">
                   {['Privacidad', 'Términos de Uso', 'Cookies', 'Accesibilidad'].map(item => (
                     <li key={item}>

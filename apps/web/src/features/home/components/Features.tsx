@@ -59,10 +59,10 @@ export function Features() {
         {/* Section Header — editorial left-aligned */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-24">
           <div className="max-w-xl">
-            <span className="inline-block text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">
+            <span className="inline-block text-xs font-black uppercase tracking-widest text-slate-400 mb-6">
               Capacidades del Ecosistema
             </span>
-            <h2 className="font-display text-4xl md:text-6xl font-black text-slate-950 tracking-tight leading-[1.0]">
+            <h2 className="font-display text-4xl md:text-6xl font-black text-slate-950 tracking-tight leading-none">
               Todo lo que<br />
               <span className="text-sky-600">necesitás</span> para crecer.
             </h2>
@@ -83,15 +83,15 @@ export function Features() {
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${colorMap[feat.color]}`}>
                   {feat.icon}
                 </div>
-                <span className={`text-[0.6rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${tagColorMap[feat.color]}`}>
+                <span className={`text-xs font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${tagColorMap[feat.color]}`}>
                   {feat.tag}
                 </span>
               </div>
 
               <div>
-                <div className="text-[0.65rem] font-black text-slate-300 tracking-[0.25em] mb-3">{feat.number}</div>
+                <div className="text-xs font-black text-slate-300 tracking-widest mb-3">{feat.number}</div>
                 <h3 className="font-display text-xl font-black text-slate-950 mb-3 tracking-tight">{feat.title}</h3>
-                <p className="text-slate-500 text-[0.875rem] leading-relaxed font-medium">{feat.desc}</p>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium">{feat.desc}</p>
               </div>
 
               <div className="mt-auto flex items-center gap-1.5 text-slate-300 group-hover:text-sky-500 transition-colors text-xs font-bold uppercase tracking-wider">

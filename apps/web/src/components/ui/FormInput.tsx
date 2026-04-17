@@ -16,7 +16,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       <div className="flex flex-col gap-1.5 w-full">
         <label
           htmlFor={inputId}
-          className="text-[0.82rem] font-bold text-slate-500 tracking-wide ml-1 uppercase"
+          className="text-xs font-bold text-slate-500 tracking-wide ml-1 uppercase"
         >
           {label}
         </label>
@@ -30,7 +30,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
             ref={ref}
             id={inputId}
             className={`
-              w-full rounded-2xl bg-slate-50 text-slate-900 text-[0.95rem] outline-none transition-all duration-200
+              w-full rounded-2xl bg-slate-50 text-slate-900 text-sm outline-none transition-all duration-200
               ${icon ? 'pl-12 pr-4' : 'px-4'}
               py-3.5 border
               ${error 

@@ -1,22 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { Sparkles, ArrowRight, Zap } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight, Zap } from 'lucide-react';
 
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-white pt-20 pb-20 md:pt-32 md:pb-40">
       {/* Dynamic Background Elements */}
-      <div className="absolute inset-0 dot-grid opacity-[0.25]" />
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-sky-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-500/5 blur-[120px] rounded-full translate-y-1/3 -translate-x-1/4" />
+      <div className="absolute inset-0 dot-grid opacity-25" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/5 blur-3xl rounded-full translate-y-1/3 -translate-x-1/4" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Main Content Area */}
           <div className="lg:col-span-7 pr-0 lg:pr-10">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900 text-white text-[0.65rem] font-black tracking-[0.15em] mb-12 uppercase shadow-2xl shadow-slate-900/20">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900 text-white text-xs font-black tracking-widest mb-12 uppercase shadow-2xl shadow-slate-900/20">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
@@ -24,13 +25,13 @@ export function Hero() {
               Nodos en tiempo real
             </div>
 
-            <h1 className="font-display text-6xl md:text-8xl font-black text-slate-950 leading-[0.95] tracking-[-0.04em] mb-10 transition-all">
+            <h1 className="font-display text-6xl md:text-8xl font-black text-slate-950 leading-tight tracking-tighter mb-10 transition-all">
               Domina la <br />
               <span className="text-sky-600">tecnología</span> en <br />
               <span className="text-slate-400">comunidad.</span>
             </h1>
 
-            <p className="text-xl text-slate-600 max-w-[540px] mb-14 leading-relaxed font-medium">
+            <p className="text-xl text-slate-600 max-w-lg mb-14 leading-relaxed font-medium">
               KomuLearn es el ecosistema donde expertos y aprendices convergen. 
               Suscripciones directas a nodos de conocimiento de alto impacto.
             </p>
@@ -49,11 +50,13 @@ export function Hero() {
           {/* Personality Elements / Composition Area */}
           <div className="lg:col-span-5 relative mt-16 lg:mt-0">
             {/* The Main "Tech Hub" Card */}
-            <div className="relative z-10 rounded-[2.5rem] border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-200/60 overflow-hidden transform rotate-2 hover:rotate-0 transition-transform duration-700">
-              <img 
+            <div className="relative z-10 rounded-3xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-200/60 overflow-hidden transform rotate-2 hover:rotate-0 transition-transform duration-700">
+              <Image 
                 src="/assets/hero_tech.png" 
                 alt="Product Preview"
-                className="w-full h-auto rounded-[2.2rem]"
+                width={600}
+                height={400}
+                className="w-full h-auto rounded-3xl"
               />
             </div>
 
@@ -64,7 +67,7 @@ export function Hero() {
                   <Zap size={20} className="fill-current" />
                 </div>
                 <div>
-                  <div className="text-[0.65rem] font-black uppercase text-slate-400 tracking-wider">Server Status</div>
+                  <div className="text-xs font-black uppercase text-slate-400 tracking-wider">Server Status</div>
                   <div className="text-sm font-bold text-slate-900">100% Active</div>
                 </div>
               </div>
@@ -74,13 +77,13 @@ export function Hero() {
               <div className="flex items-center gap-4">
                 <div className="flex -space-x-3">
                   {[1,2,3].map(i => (
-                    <div key={i} className="w-9 h-9 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[0.6rem] font-bold overflow-hidden">
-                       <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
+                    <div key={i} className="w-9 h-9 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-xs font-bold overflow-hidden">
+                       <Image src={`https://i.pravatar.cc/100?u=${i}`} alt="user" width={36} height={36} />
                     </div>
                   ))}
                 </div>
                 <div>
-                  <div className="text-[0.65rem] font-black uppercase text-slate-400 tracking-wider">Top Mentors</div>
+                  <div className="text-xs font-black uppercase text-slate-400 tracking-wider">Top Mentors</div>
                   <div className="text-sm font-bold text-slate-900">+45 Expertos</div>
                 </div>
               </div>

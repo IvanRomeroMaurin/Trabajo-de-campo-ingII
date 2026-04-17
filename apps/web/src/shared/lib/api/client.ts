@@ -16,9 +16,9 @@ export class ApiClient {
     const url = `${this.baseUrl}${endpoint}`;
     
     // Preparar cabeceras. En entornos de Server Action, cookies() es seguro.
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options?.headers,
+      ...(options?.headers as Record<string, string> || {}),
     };
 
     try {
@@ -43,7 +43,7 @@ export class ApiClient {
 
     // A veces una petición puede ser exitosa pero no devolver un JSON (como un HTTP 204 No Content)
     const text = await response.text();
-    return text ? JSON.parse(text) : undefined;
+    return text ? JSON.parse(text) : (undefined as T);
   }
 
   get<T>(endpoint: string, options?: RequestInit) {

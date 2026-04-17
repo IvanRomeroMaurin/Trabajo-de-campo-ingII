@@ -84,7 +84,7 @@ export default function ComunidadesPage() {
         {/* Cabecera de la página */}
         <header className="mb-20 text-left">
           <div className="mb-6">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-500 text-[0.65rem] font-bold uppercase tracking-wider shadow-sm">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider shadow-sm">
               <Sparkles size={12} className="text-sky-500" />
               Explorar el conocimiento
             </span>
@@ -93,7 +93,7 @@ export default function ComunidadesPage() {
             Descubrí tu próxima <br />
             <span className="text-sky-600">comunidad de expertos</span>
           </h1>
-          <p className="text-slate-600 max-w-[600px] text-lg leading-relaxed font-medium">
+          <p className="text-slate-600 max-w-2xl text-lg leading-relaxed font-medium">
             Unite a grupos liderados por mentores activos, compartí recursos y aprendé junto a miles de profesionales.
           </p>
         </header>
@@ -109,7 +109,7 @@ export default function ComunidadesPage() {
               placeholder="Buscar por nombre o descripción..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-[1rem] outline-none transition-all focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 placeholder:text-slate-400 font-medium"
+              className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-base outline-none transition-all focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 placeholder:text-slate-400 font-medium"
             />
           </div>
 
