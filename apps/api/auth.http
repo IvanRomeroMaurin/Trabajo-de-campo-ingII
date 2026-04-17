@@ -1,0 +1,40 @@
+### Variables
+@baseUrl = http://localhost:3001
+@email = juan.test@ejemplo.com
+@password = ClaseSecreta123
+@nombre = Juan
+@apellido = Perez
+
+### ===============================
+### 1. Registrar Nuevo Usuario
+### ===============================
+POST {{baseUrl}}/auth/registrar
+Content-Type: application/json
+
+{
+  "nombre": "{{nombre}}",
+  "apellido": "{{apellido}}",
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### ===============================
+### 2. Iniciar Sesión (Obtiene el JWT)
+### ===============================
+# @name login
+POST {{baseUrl}}/auth/iniciar-sesion
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### ===============================
+### 3. Solicitar Perfil (Ruta Protegida Jwt)
+### ===============================
+# Extrae el atributo access_token directamente de la petición anterior
+@miTokenSeguro = {{login.response.body.access_token}}
+
+GET {{baseUrl}}/auth/perfil
+Authorization: Bearer {{miTokenSeguro}}
