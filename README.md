@@ -1,159 +1,81 @@
-# Turborepo starter
+# Proyecto de Ingeniería de Software II
 
-This Turborepo starter is maintained by the Turborepo core team.
+Este repositorio contiene el código fuente para el proyecto de la materia **Ingeniería de Software II**.
+Está estructurado como un monorepo utilizando [Turborepo](https://turborepo.org/) para separar las diferentes partes de la aplicación de manera limpia y modular.
 
-## Using this example
+## 🚀 Tecnologías Utilizadas
 
-Run the following command:
+El proyecto está desarrollado utilizando herramientas modernas para garantizar escalabilidad y rendimiento:
 
-```sh
-npx create-turbo@latest
+**Arquitectura & Herramientas Core:**
+- **Turborepo** - Arquitectura de monorepo y sistema de compilación de alta eficiencia.
+- **pnpm** - Gestor de paquetes rápido.
+- **TypeScript** - Garantizando un tipado fuerte y seguro a lo largo de todo el proyecto (100% tipado).
+
+**Aplicación Frontend:**
+- **Next.js** - Múltiples aplicaciones frontend potenciadas con el framework de React.
+- **React** - Construcción de interfaces de usuario robustas.
+
+**Servicios Backend (API):**
+- **NestJS** - Framework progresivo y robusto para Node.js.
+- **Fastify** - Motor web detrás de NestJS de ultra alto rendimiento.
+- **Prisma ORM** - Modelado moderno de base de datos y tipado seguro en las consultas.
+- **JWT** - Estrategias de autenticación seguras mediante tokens.
+
+## 🛠 Instalación y Configuración Local
+
+Sigue estos pasos para instalar y ejecutar todos los componentes del sistema de forma local.
+
+### Prerrequisitos
+
+Debes asegurarte de tener en tu equipo local:
+- [Node.js](https://nodejs.org/) (Versión 18 o superior)
+- [pnpm](https://pnpm.io/installation) (Preferentemente en versión 9.x)
+
+### Instalación en 3 Pasos
+
+1. **Clonar el proyecto**
+   ```bash
+   git clone <URL_DEL_GITHUB>
+   cd subscriptions-monorepo
+   ```
+
+2. **Instalar dependencias del monorepo**
+   ```bash
+   # En la raíz del proyecto
+   pnpm install
+   ```
+
+3. **Configurar el entorno (`.env`) y la Base de Datos**
+   
+   Asegúrate de preparar y colocar los archivos ambientales `.env`. Esto es especialmente importante para la `api` en `apps/api` (por ejemplo, definir las variables `DATABASE_URL` y `JWT_SECRET`).
+
+   Una vez definidos los accesos, genera y sincroniza la estructura de la base de datos con Prisma:
+   ```bash
+   cd apps/api
+   npx prisma generate
+   npx prisma db push   # Aplicar los schemas a la base de datos de desarrollo
+   cd ../..
+   ```
+
+## 💻 Desarrollo y Compilación
+
+Las utilidades de `Turborepo` permiten levantar todos los entornos con un solo comando centralizado:
+
+```bash
+# Iniciar frontend, backend y todos los paquetes en modo desarrollo
+pnpm run dev
 ```
 
-## What's inside?
+### Otros comandos útiles
 
-This Turborepo includes the following packages/apps:
+- `pnpm run build`: Compila todas las aplicaciones y paquetes a su versión de producción de forma concurrente, aprovechando el caché de Turbo.
+- `pnpm run lint`: Ejecuta las validaciones de linteo sobre la base de datos completa de código.
+- `pnpm run format`: Aplica Prettier para formatear todos los archivos que lo soporten en base a las reglas configuradas.
 
-### Apps and Packages
+## 📦 Estructura de Directorios
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- `apps/api`: Servidor Backend estructurado bajo NestJS y conectado vía Prisma.
+- `apps/web`: Aplicación cliente basada en Next.js.
+- `apps/docs`: Documentación o sistema suplementario en Next.js.
+- `packages/*`: Diversos paquetes TypeScript compartidos transversalmente (componentes UI, configuradores TS/ESLint, etc).

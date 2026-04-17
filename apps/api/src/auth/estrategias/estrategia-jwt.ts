@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { IJwtPayload } from '@repo/types';
 
 /**
  * Estrategia de Validación de Token JWT
@@ -24,7 +25,7 @@ export class EstrategiaJwt extends PassportStrategy(Strategy) {
    * Lo que devuelva esta función, se asignará sin problemas en el objeto `req.user` de los Controladores.
    * @param payload Contenido desencriptado de las tripas del Token.
    */
-  public async validate(payload: any): Promise<{ id_usuario: number; email: string }> {
+  public async validate(payload: IJwtPayload): Promise<{ id_usuario: number; email: string }> {
     return { id_usuario: parseInt(payload.sub, 10), email: payload.email };
   }
 }

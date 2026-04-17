@@ -3,28 +3,15 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
+/**
+ * Servicio de Prisma
+ * Wrapper que inicializa PrismaClient usando el Driver Adapter de pg para Supabase.
+ * DATABASE_URL es cargada por ConfigModule antes de que este módulo se inicialice.
+ */
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
-    const path = require('path');
-    const fs = require('fs');
-    
-    // Rutas posibles para el .env en monorepo
-    const paths = [
-      path.join(process.cwd(), 'apps/api/.env'),
-      path.join(process.cwd(), '.env'),
-      path.join(__dirname, '..', '..', '.env')
-    ];
-
-    for (const p of paths) {
-      if (fs.existsSync(p)) {
-        require('dotenv').config({ path: p });
-        break;
-      }
-    }
-
-    const connectionString = process.env.DATABASE_URL;
-    const pool = new Pool({ connectionString });
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
     const adapter = new PrismaPg(pool);
     super({ adapter });
   }

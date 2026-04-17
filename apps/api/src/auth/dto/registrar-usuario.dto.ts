@@ -1,11 +1,12 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IRegistrarUsuario } from '@repo/types';
 
 /**
  * Objeto de Transferencia de Datos (DTO) para el Registro de Usuario.
  * Contiene todas las validaciones previas necesarias para garantizar que no se intenten guardar
  * datos malintencionados o incompletos en la base de datos de Postgres.
  */
-export class RegistrarUsuarioDto {
+export class RegistrarUsuarioDto implements IRegistrarUsuario {
   @IsNotEmpty({ message: 'El nombre es requerido' })
   @IsString()
   nombre: string;
