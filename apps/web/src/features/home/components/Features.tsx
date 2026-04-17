@@ -4,32 +4,32 @@ import { Users, BookOpen, TrendingUp, Shield } from 'lucide-react';
 
 const featuresData = [
   {
-    icon: <Users size={24} />,
-    title: 'Comunidades Activas',
-    desc: 'Conectate con cientos de personas aprendiendo lo mismo que vos. Resolución colectiva y networking real.',
-    color: 'rgba(139, 92, 246, 0.15)',
-    iconColor: '#a78bfa',
+    icon: <Users size={28} />,
+    title: 'Nodos de Aprendizaje',
+    desc: 'Conexión directa con expertos y pares. Resolución de dudas en tiempo real y mentoría continua.',
+    color: 'rgba(14, 165, 233, 0.1)',
+    iconColor: 'var(--accent-primary)',
   },
   {
-    icon: <BookOpen size={24} />,
-    title: 'Contenido Exclusivo',
-    desc: 'Clases, recursos, grabaciones y materiales que no encontrarás en ningún otro lugar.',
-    color: 'rgba(6, 182, 212, 0.15)',
-    iconColor: '#22d3ee',
+    icon: <BookOpen size={28} />,
+    title: 'Recursos Curados',
+    desc: 'Acceso a documentación técnica, repositorios y clases maestras de alta fidelidad.',
+    color: 'rgba(6, 182, 212, 0.1)',
+    iconColor: 'var(--accent-secondary)',
   },
   {
-    icon: <TrendingUp size={24} />,
-    title: 'Crecé a tu ritmo',
-    desc: 'Accedé al contenido cuando quieras, sin horarios. El conocimiento te espera.',
-    color: 'rgba(236, 72, 153, 0.15)',
-    iconColor: '#f472b6',
+    icon: <TrendingUp size={28} />,
+    title: 'Escalamiento Técnico',
+    desc: 'Rutas de aprendizaje diseñadas para llevar tus habilidades al siguiente nivel profesional.',
+    color: 'rgba(124, 58, 237, 0.08)',
+    iconColor: 'var(--accent-tertiary)',
   },
   {
-    icon: <Shield size={24} />,
-    title: 'Calidad Garantizada',
-    desc: 'Cada creador pasa un proceso de verificación. Solo expertos comparten conocimiento.',
-    color: 'rgba(16, 185, 129, 0.15)',
-    iconColor: '#34d399',
+    icon: <Shield size={28} />,
+    title: 'Verificación de Expertos',
+    desc: 'Cada mentor pasa por una rigurosa auditoría técnica para garantizar la calidad del contenido.',
+    color: 'rgba(14, 165, 233, 0.1)',
+    iconColor: 'var(--accent-primary)',
   },
 ];
 
@@ -43,12 +43,12 @@ export function Features() {
     }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '0.8rem' }}>
-            ¿Por qué <span className="text-gradient">KomuLearn</span>?
+        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+          <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontWeight: 900, letterSpacing: '-0.04em', marginBottom: '1rem', color: 'var(--text-primary)' }}>
+            Nuestra <span className="text-gradient-tech">Infraestructura Digital</span>
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '500px', margin: '0 auto', fontSize: '1.05rem' }}>
-            Diseñamos la plataforma pensando en que el conocimiento fluya de manera natural entre personas.
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.15rem', lineHeight: 1.6 }}>
+            Combinamos tecnología de punta con la calidez del aprendizaje colaborativo para ofrecer una experiencia educativa inigualable.
           </p>
           <div className="divider-glow"></div>
         </div>

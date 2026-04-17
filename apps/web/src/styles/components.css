@@ -1,12 +1,15 @@
 /* === NAVBAR === */
 .navbar-glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-glass);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border-bottom: 1px solid var(--border-glass);
   position: sticky;
   top: 0;
   z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
 }
 
 /* === CARDS === */
@@ -14,14 +17,14 @@
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-sm);
-  border-radius: 16px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .glass-card:hover {
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent-purple);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--accent-primary);
+  transform: translateY(-4px);
 }
 
 /* === BUTTONS === */
@@ -29,64 +32,63 @@
   background: var(--gradient-accent);
   color: white;
   border: none;
-  padding: 0.65rem 1.5rem;
-  border-radius: 10px;
+  padding: 0.75rem 1.8rem;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.2);
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.3);
-  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35);
+  filter: brightness(1.1);
 }
 
 .btn-outline {
-  background: #ffffff;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
-  padding: 0.65rem 1.5rem;
-  border-radius: 10px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-subtle);
+  padding: 0.75rem 1.8rem;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .btn-outline:hover {
-  border-color: var(--accent-purple);
-  color: var(--accent-purple);
-  background: #fdfcff;
-  box-shadow: var(--shadow-sm);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(14, 165, 233, 0.03);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--text-secondary);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .btn-ghost:hover {
-  color: var(--text-primary);
-  background: #f1f5f9;
+  color: var(--accent-primary);
+  background: rgba(14, 165, 233, 0.05);
 }
 
 /* === TEXT GRADIENTS === */
@@ -97,8 +99,8 @@
   background-clip: text;
 }
 
-.text-gradient-warm {
-  background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
+.text-gradient-tech {
+  background: var(--gradient-tech);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -109,25 +111,26 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.35rem 0.9rem;
+  padding: 0.45rem 1.1rem;
   border-radius: 50px;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   border: 1px solid;
 }
 
-.badge-purple {
-  background: #f5f3ff;
-  border-color: #ddd6fe;
-  color: #7c3aed;
+.badge-tech {
+  background: rgba(14, 165, 233, 0.05);
+  border-color: rgba(14, 165, 233, 0.2);
+  color: var(--accent-primary);
 }
 
 .divider-glow {
-  width: 48px;
-  height: 3px;
+  width: 60px;
+  height: 4px;
   background: var(--gradient-accent);
   border-radius: 20px;
-  margin: 1.2rem auto;
+  margin: 1.5rem auto;
+  box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
 }
 
 /* Community Cards */

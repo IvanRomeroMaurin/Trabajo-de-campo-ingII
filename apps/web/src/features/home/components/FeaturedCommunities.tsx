@@ -7,65 +7,65 @@ import { CommunityCard, type Community } from '@/features/comunidades/components
 const communidades: Community[] = [
   {
     id: '1',
-    nombre: 'Dev Fullstack',
-    descripcion: 'Aprende patrones avanzados de React, Next.js y ecosistema moderno con proyectos reales.',
-    categoria: 'Programación',
+    nombre: 'Frontend Engineering',
+    descripcion: 'Domina Next.js 14, TypeScript y arquitecturas escalables con estándares de la industria.',
+    categoria: 'Development',
     miembros: 1240,
     estrellas: 4.9,
-    color: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+    color: 'linear-gradient(135deg, #0ea5e9, #2563eb)',
   },
   {
     id: '2',
-    nombre: 'Diseño UX/UI',
-    descripcion: 'Espacio para diseñadores que buscan dominar Figma, sistemas de diseño y psicología visual.',
-    categoria: 'Diseño',
+    nombre: 'SaaS Design System',
+    descripcion: 'Crea sistemas de diseño profesionales. Tokens, componentes y documentación técnica.',
+    categoria: 'Design',
     miembros: 873,
     estrellas: 4.8,
-    color: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
+    color: 'linear-gradient(135deg, #06b6d4, #0ea5e9)',
   },
   {
     id: '3',
-    nombre: 'Data & IA',
-    descripcion: 'Python, Machine Learning, redes neuronales y análisis de datos con proyectos reales.',
-    categoria: 'IA',
+    nombre: 'AI & Data Ops',
+    descripcion: 'Modelos de lenguaje, pipelines de datos y automatización avanzada para desarrolladores.',
+    categoria: 'Intelligence',
     miembros: 2100,
     estrellas: 5.0,
-    color: 'linear-gradient(135deg, #0cebeb, #20e3b2)',
+    color: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)',
   },
 ];
 
 export function FeaturedCommunities() {
   return (
-    <section style={{ padding: '4rem 1.5rem' }}>
+    <section style={{ padding: '6rem 1.5rem' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
-        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <span className="badge badge-purple" style={{ marginBottom: '1rem' }}>
-            <Star size={12} />
-            Comunidades Destacadas
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <span className="badge badge-tech" style={{ marginBottom: '1.2rem' }}>
+            <Star size={14} fill="currentColor" stroke="none" />
+            Nodos Destacados
           </span>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, letterSpacing: '-0.04em', marginBottom: '0.8rem' }}>
-            Empezá hoy mismo
+          <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', fontWeight: 900, letterSpacing: '-0.04em', marginBottom: '1rem', color: 'var(--text-primary)' }}>
+            Comunidades de <span className="text-gradient-tech">Alto Impacto</span>
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '500px', margin: '0 auto', fontSize: '1.05rem' }}>
-            Elegí la comunidad que más se ajusta a tus objetivos y suscribite en segundos.
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto', fontSize: '1.1rem', lineHeight: 1.6 }}>
+            Seleccionamos comunidades con mentores activos y contenido curado para acelerar tu crecimiento técnico.
           </p>
           <div className="divider-glow"></div>
         </div>
 
         <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-          gap: '1.5rem' 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', 
+          gap: '2rem' 
         }}>
           {communidades.map((community) => (
             <CommunityCard key={community.id} community={community} />
           ))}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-          <Link href="/comunidades" className="btn-outline" style={{ padding: '0.8rem 2rem' }}>
-            Ver todas las comunidades <ArrowRight size={16} />
+        <div style={{ textAlign: 'center', marginTop: '4rem' }}>
+          <Link href="/comunidades" className="btn-outline" style={{ padding: '1rem 2.5rem' }}>
+            Explorar todo el ecosistema <ArrowRight size={18} />
           </Link>
         </div>
       </div>

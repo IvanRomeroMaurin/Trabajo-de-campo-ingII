@@ -23,8 +23,21 @@ a {
   text-decoration: none;
 }
 
-/* Patrón de rejilla de puntos sutil para fondos premium */
+/* Patrón de rejilla de puntos más nítido y tecnológico */
 .dot-grid {
-  background-image: radial-gradient(var(--border-subtle) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(var(--border-subtle) 0.5px, transparent 0.5px);
+  background-size: 32px 32px;
+}
+
+/* Typography utilities */
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  letter-spacing: -0.02em;
+}
+
+.text-gradient-tech {
+  background: var(--gradient-tech);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

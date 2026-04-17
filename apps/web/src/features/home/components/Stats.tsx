@@ -9,18 +9,20 @@ const stats = [
 
 export function Stats() {
   return (
-    <section style={{ padding: '2rem 1.5rem 4rem' }}>
+    <section style={{ padding: '0 1.5rem 6rem' }}>
       <div style={{ 
-        maxWidth: '1000px', 
+        maxWidth: '1100px', 
         margin: '0 auto', 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-        gap: '1.5rem' 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
+        gap: '2rem' 
       }}>
         {stats.map((stat, i) => (
-          <div key={i} className="glass-card" style={{ padding: '2rem', textAlign: 'center' }}>
-            <div className="stat-number text-gradient">{stat.numero}</div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: '0.4rem', fontWeight: 500 }}>
+          <div key={i} className="glass-card" style={{ padding: '2rem 1.5rem', textAlign: 'center', border: '1px solid var(--border-glass)' }}>
+            <div className="stat-number font-mono text-gradient-tech" style={{ fontSize: '2.5rem', fontWeight: 900, letterSpacing: '-0.05em' }}>
+              {stat.numero}
+            </div>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '0.6rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               {stat.label}
             </div>
           </div>

@@ -6,73 +6,103 @@ import { Sparkles, ArrowRight, Zap } from 'lucide-react';
 export function Hero() {
   return (
     <section className="dot-grid" style={{ 
-      padding: '8rem 1.5rem 6rem', 
+      padding: '6rem 1.5rem 8rem', 
       textAlign: 'center', 
       position: 'relative', 
       zIndex: 1,
-      minHeight: '65vh',
+      minHeight: '80vh',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      borderBottom: '1px solid var(--border-subtle)',
-      marginBottom: '3rem'
+      borderBottom: '1px solid var(--border-glass)',
+      overflow: 'hidden'
     }}>
-      {/* Overlay sutil para profundidad y gradiente suave */}
+      {/* Visual Aura - Tech Background Element */}
       <div style={{
         position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(circle at top, rgba(139, 92, 246, 0.03) 0%, transparent 70%), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%)',
+        top: '20%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '600px',
+        height: '600px',
+        background: 'radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%)',
+        filter: 'blur(80px)',
         zIndex: -1,
-      }} />
+      }} className="animate-pulse" />
 
-      <div style={{ maxWidth: '850px', margin: '0 auto' }}>
-        <div className="animate-fade-in-up" style={{ marginBottom: '2rem' }}>
-          <span className="badge badge-purple">
-            <Sparkles size={12} />
-            Plataforma Educativa de nueva generación
-          </span>
+      <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '4rem', alignItems: 'center', textAlign: 'left' }}>
+        
+        <div>
+          <div className="animate-fade-in-up" style={{ marginBottom: '1.5rem' }}>
+            <span className="badge badge-tech">
+              <Zap size={14} fill="currentColor" />
+              Suscripciones Educativas 2.0
+            </span>
+          </div>
+
+          <h1
+            className="animate-fade-in-up animation-delay-100"
+            style={{ 
+              fontSize: 'clamp(3rem, 6vw, 4.5rem)', 
+              fontWeight: 900, 
+              lineHeight: 1.05, 
+              letterSpacing: '-0.04em', 
+              marginBottom: '1.5rem',
+              color: 'var(--text-primary)'
+            }}
+          >
+            Impulsá tu carrera con<br />
+            <span className="text-gradient-tech">comunidades reales</span>
+          </h1>
+
+          <p
+            className="animate-fade-in-up animation-delay-200"
+            style={{ 
+              fontSize: '1.25rem', 
+              color: 'var(--text-secondary)', 
+              maxWidth: '540px', 
+              marginBottom: '3rem', 
+              lineHeight: 1.6,
+              fontWeight: 450
+            }}
+          >
+            Sumate a ecosistemas de aprendizaje liderados por expertos. 
+            Adquirí habilidades demandadas y conectá con profesionales de todo el mundo.
+          </p>
+
+          <div className="animate-fade-in-up animation-delay-300" style={{ display: 'flex', gap: '1rem' }}>
+            <Link href="/comunidades" className="btn-primary" style={{ padding: '1.2rem 2.8rem' }}>
+              Explorar Ahora
+              <ArrowRight size={20} />
+            </Link>
+            <Link href="/register" className="btn-outline" style={{ padding: '1.2rem 2.8rem' }}>
+              Crear Grupo
+            </Link>
+          </div>
         </div>
 
-        <h1
-          className="animate-fade-in-up animation-delay-100"
-          style={{ 
-            fontSize: 'clamp(2.8rem, 8vw, 4.8rem)', 
-            fontWeight: 900, 
-            lineHeight: 1.05, 
-            letterSpacing: '-0.04em', 
-            marginBottom: '1.8rem',
-            color: 'var(--text-primary)'
-          }}
-        >
-          El lugar donde el<br />
-          <span className="text-gradient-warm">conocimiento une comunidades</span>
-        </h1>
-
-        <p
-          className="animate-fade-in-up animation-delay-200"
-          style={{ 
-            fontSize: '1.25rem', 
-            color: 'var(--text-secondary)', 
-            maxWidth: '620px', 
-            margin: '0 auto 3.5rem', 
-            lineHeight: 1.6,
-            fontWeight: 450
-          }}
-        >
-          Suscribite a comunidades de expertos, aprendé a tu ritmo y, cuando estés listo, 
-          creá la tuya propia para compartir lo que sabés con el mundo.
-        </p>
-
-        <div className="animate-fade-in-up animation-delay-300" style={{ display: 'flex', gap: '1.2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/comunidades" className="btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1rem' }}>
-            Explorar Comunidades
-            <ArrowRight size={18} />
-          </Link>
-          <Link href="/register" className="btn-outline" style={{ padding: '1rem 2.5rem', fontSize: '1rem' }}>
-            Crear mi Comunidad
-            <Zap size={16} />
-          </Link>
+        <div className="animate-fade-in-up animation-delay-200" style={{ position: 'relative' }}>
+          <div style={{
+            position: 'absolute',
+            inset: '-20px',
+            background: 'var(--gradient-glow)',
+            zIndex: -1,
+            borderRadius: '50%',
+            filter: 'blur(40px)',
+          }} className="animate-float" />
+          <img 
+            src="/assets/hero_tech.png" 
+            alt="KomuLearn Tech Illustration"
+            style={{ 
+              width: '100%', 
+              height: 'auto', 
+              borderRadius: '24px',
+              boxShadow: 'var(--shadow-xl)',
+              border: '1px solid var(--border-glass)',
+            }}
+          />
         </div>
+
       </div>
     </section>
   );
