@@ -35,7 +35,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('local'))
   @Post('iniciar-sesion')
-  public async iniciarSesion(@Request() req: any): Promise<IRespuestaAuth> {
+  public async iniciarSesion(@Request() req: { user: IUsuario }): Promise<IRespuestaAuth> {
     // El AuthGuard('local') valida las credenciales y añade el usuario a req.user
     return this.authService.iniciarSesion(req.user);
   }
@@ -47,7 +47,7 @@ export class AuthController {
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('perfil')
-  public obtenerPerfil(@Request() req: any): Partial<IUsuario> {
+  public obtenerPerfil(@Request() req: { user: Partial<IUsuario> }): Partial<IUsuario> {
     return req.user;
   }
 }
