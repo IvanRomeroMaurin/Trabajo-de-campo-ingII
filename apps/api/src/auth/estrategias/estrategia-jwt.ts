@@ -1,8 +1,9 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IJwtPayload } from '@repo/types';
+import { IJwtPayload, IUsuario } from '@repo/types';
+import { UsuariosService } from '../../usuarios/usuarios.service';
 
 /**
  * Estrategia de Validación de Token JWT
@@ -12,7 +13,10 @@ import { IJwtPayload } from '@repo/types';
  */
 @Injectable()
 export class EstrategiaJwt extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService) {
+  constructor(
+    configService: ConfigService,
+    private readonly usuariosService: UsuariosService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -25,7 +29,19 @@ export class EstrategiaJwt extends PassportStrategy(Strategy) {
    * Lo que devuelva esta función, se asignará sin problemas en el objeto `req.user` de los Controladores.
    * @param payload Contenido desencriptado de las tripas del Token.
    */
-  public async validate(payload: IJwtPayload): Promise<{ id_usuario: number; email: string }> {
-    return { id_usuario: parseInt(payload.sub, 10), email: payload.email };
+  public async validate(payload: IJwtPayload): Promise<IUsuario> {
+    const usuario = await this.usuariosService.buscarPorId(parseInt(payload.sub, 10));
+    
+    if (!usuario) {
+      throw new UnauthorizedException('Usuario no encontrado');
+    }
+
+    // Convertimos password_hash a omitido y BigInt a string/number para el front
+    const { password_hash, id_usuario, ...res } = usuario;
+    
+    return {
+      ...res,
+      id_usuario: id_usuario.toString(),
+    } as unknown as IUsuario;
   }
 }

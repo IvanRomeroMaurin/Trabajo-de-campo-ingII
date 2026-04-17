@@ -35,4 +35,14 @@ export class UsuariosService {
       data,
     });
   }
+
+  /**
+   * Busca un usuario por su ID (BigInt).
+   * @param id El ID del usuario.
+   */
+  public async buscarPorId(id: number): Promise<usuario | null> {
+    return this.prisma.usuario.findUnique({
+      where: { id_usuario: BigInt(id) },
+    });
+  }
 }
