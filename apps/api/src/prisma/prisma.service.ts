@@ -9,7 +9,10 @@ import { Pool } from 'pg';
  * DATABASE_URL es cargada por ConfigModule antes de que este módulo se inicialice.
  */
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   private readonly pool: Pool;
 
   constructor() {

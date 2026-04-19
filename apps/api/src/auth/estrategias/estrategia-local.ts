@@ -6,7 +6,7 @@ import { IUsuario } from '@repo/types';
 
 /**
  * Estrategia de Autenticación Local
- * Hereda de la estrategia de Passport tradicional. Es llamada tácitamente cuando decoramos la 
+ * Hereda de la estrategia de Passport tradicional. Es llamada tácitamente cuando decoramos la
  * ruta de login con el @UseGuards('local').
  */
 @Injectable()
@@ -28,7 +28,9 @@ export class EstrategiaLocal extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Credenciales incorrectas');
     }
     if (!usuario.activa) {
-      throw new UnauthorizedException('Tu cuenta se encuentra suspendida o dada de baja');
+      throw new UnauthorizedException(
+        'Tu cuenta se encuentra suspendida o dada de baja',
+      );
     }
     return usuario;
   }

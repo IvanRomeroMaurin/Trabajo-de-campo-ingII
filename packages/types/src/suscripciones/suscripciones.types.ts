@@ -45,3 +45,18 @@ export interface ISuscripcion {
   plan_comunidad?: IPlanComunidad;
   usuario?: IUsuario;
 }
+
+export interface ICreatePlanRequest {
+  titulo: string;
+  descripcion?: string;
+  precio: number;
+  frecuencia: number;
+  tipo_frecuencia: 'months' | 'days';
+  moneda: 'ARS' | 'USD';
+  id_comunidad: string;
+}
+
+export interface ICreatePlanResponse {
+  plan: IPlanComunidad;
+}
+

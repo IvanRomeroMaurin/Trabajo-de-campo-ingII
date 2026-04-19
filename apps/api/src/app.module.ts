@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { PlansModule } from './plans/plans.module';
 import { join } from 'path';
 
 @Module({
@@ -17,7 +18,9 @@ import { join } from 'path';
     PrismaModule,
     AuthModule,
     UsuariosModule,
+    PlansModule,
   ],
+
   controllers: [AppController],
   providers: [AppService],
 })
