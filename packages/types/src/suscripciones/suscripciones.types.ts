@@ -27,7 +27,7 @@ export interface IPlanComunidad {
 }
 
 export interface ISuscripcion {
-  suscripcion_id: string;
+  id_suscripcion: string;
   fecha_suscripcion: string | Date;
   fecha_inicio?: string | Date | null;
   fecha_fin?: string | Date | null;
