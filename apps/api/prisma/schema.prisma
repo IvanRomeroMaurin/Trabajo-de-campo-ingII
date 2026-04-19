@@ -7,49 +7,192 @@ datasource db {
 }
 
 model categoria_comunidad {
-  id_categoria_comunidad BigInt  @id @default(autoincrement())
+  id_categoria_comunidad BigInt      @id @default(autoincrement())
   descripcion            String
-  activa                 Boolean @default(true)
+  activa                 Boolean     @default(true)
+  comunidad              comunidad[]
 }
 
 model ciclo_pago {
-  id_ciclo_pago   BigInt @id @default(autoincrement())
+  id_ciclo_pago   BigInt           @id @default(autoincrement())
   frecuencia      Int
   tipo_frecuencia String
+  plan_comunidad  plan_comunidad[]
 }
 
 model estado_pago {
   id_estado_pago BigInt @id @default(autoincrement())
   estado         String
+  pago           pago[]
 }
 
 model estado_suscripcion {
-  id_estado_suscripcion BigInt @id @default(autoincrement())
+  id_estado_suscripcion BigInt        @id @default(autoincrement())
   estado                String
+  suscripcion           suscripcion[]
 }
 
 model moneda {
-  id_moneda BigInt @id @default(autoincrement())
-  moneda    String
+  id_moneda      BigInt           @id @default(autoincrement())
+  moneda         String
+  pago           pago[]
+  plan_comunidad plan_comunidad[]
 }
 
 model rol {
-  id_rol BigInt @id @default(autoincrement())
-  rol    String
+  id_rol            BigInt              @id @default(autoincrement())
+  rol               String
+  miembro_comunidad miembro_comunidad[]
 }
 
 model tipo_contenido {
-  id_tipo_contenido BigInt  @id @default(autoincrement())
+  id_tipo_contenido BigInt      @id @default(autoincrement())
   descripcion       String
-  activa            Boolean @default(true)
+  activa            Boolean     @default(true)
+  contenido         contenido[]
 }
 
 model usuario {
-  id_usuario    BigInt   @id @default(autoincrement())
-  nombre        String
-  apellido      String
-  email         String   @unique
-  password_hash String
-  fecha_alta    DateTime @default(now()) @db.Timestamptz(6)
-  activa        Boolean  @default(true)
+  id_usuario        BigInt              @id @default(autoincrement())
+  nombre            String
+  apellido          String
+  email             String              @unique
+  password_hash     String
+  fecha_alta        DateTime            @default(now()) @db.Timestamptz(6)
+  activa            Boolean             @default(true)
+  miembro_comunidad miembro_comunidad[]
+  suscripcion       suscripcion[]
+}
+
+model comunidad {
+  id_comunidad           BigInt              @id @default(autoincrement())
+  nombre                 String
+  slug                   String              @unique
+  portada_url            String?
+  activa                 Boolean             @default(false)
+  fecha_creacion         DateTime            @default(now()) @db.Timestamptz(6)
+  descripcion            String?
+  id_categoria_comunidad BigInt
+  categoria_comunidad    categoria_comunidad @relation(fields: [id_categoria_comunidad], references: [id_categoria_comunidad], onDelete: NoAction, onUpdate: NoAction, map: "fk_comunidad_categoria")
+  curso                  curso[]
+  miembro_comunidad      miembro_comunidad[]
+  plan_comunidad         plan_comunidad[]
+}
+
+model contenido {
+  id_contenido      BigInt         @id @default(autoincrement())
+  titulo            String
+  descripcion       String?
+  orden             Int
+  activa            Boolean        @default(true)
+  fecha_creacion    DateTime       @default(now()) @db.Timestamptz(6)
+  url_contenido     String?
+  duracion          Int?
+  id_modulo         BigInt
+  id_tipo_contenido BigInt
+  modulo            modulo         @relation(fields: [id_modulo], references: [id_modulo], onDelete: NoAction, onUpdate: NoAction, map: "fk_contenido_modulo")
+  tipo_contenido    tipo_contenido @relation(fields: [id_tipo_contenido], references: [id_tipo_contenido], onDelete: NoAction, onUpdate: NoAction, map: "fk_contenido_tipo")
+}
+
+model curso {
+  id_curso               BigInt           @id @default(autoincrement())
+  titulo                 String
+  descripcion            String?
+  imagen_url             String?
+  certificado_habilitado Boolean          @default(false)
+  activa                 Boolean          @default(true)
+  fecha_creacion         DateTime         @default(now()) @db.Timestamptz(6)
+  id_comunidad           BigInt
+  id_dificultad          BigInt
+  comunidad              comunidad        @relation(fields: [id_comunidad], references: [id_comunidad], onDelete: NoAction, onUpdate: NoAction, map: "fk_curso_comunidad")
+  nivel_dificultad       nivel_dificultad @relation(fields: [id_dificultad], references: [id_dificultad], onDelete: NoAction, onUpdate: NoAction, map: "fk_curso_nivel_dificultad")
+  modulo                 modulo[]
+}
+
+model miembro_comunidad {
+  id_miembro          BigInt    @id @default(autoincrement())
+  id_usuario          BigInt
+  id_comunidad        BigInt
+  id_rol_comunidad    BigInt
+  fecha_ingreso       DateTime  @default(now()) @db.Timestamptz(6)
+  fecha_actualizacion DateTime? @db.Timestamptz(6)
+  comunidad           comunidad @relation(fields: [id_comunidad], references: [id_comunidad], onDelete: NoAction, onUpdate: NoAction, map: "fk_miembro_comunidad")
+  rol                 rol       @relation(fields: [id_rol_comunidad], references: [id_rol], onDelete: NoAction, onUpdate: NoAction, map: "fk_miembro_rol")
+  usuario             usuario   @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_miembro_usuario")
+}
+
+model modulo {
+  id_modulo      BigInt      @id @default(autoincrement())
+  titulo         String
+  descripcion    String?
+  orden          Int
+  activa         Boolean     @default(true)
+  fecha_creacion DateTime    @default(now()) @db.Timestamptz(6)
+  id_curso       BigInt
+  contenido      contenido[]
+  curso          curso       @relation(fields: [id_curso], references: [id_curso], onDelete: NoAction, onUpdate: NoAction, map: "fk_modulo_curso")
+}
+
+model nivel_dificultad {
+  id_dificultad BigInt  @id @default(autoincrement())
+  dificultad    String
+  descripcion   String?
+  curso         curso[]
+}
+
+model pago {
+  id_pago              BigInt      @id @default(autoincrement())
+  id_suscripcion       BigInt
+  monto                Decimal     @db.Decimal(10, 2)
+  monto_neto           Decimal?    @db.Decimal(10, 2)
+  mp_payment_id        BigInt?     @unique
+  id_estado            BigInt
+  fecha_pago           DateTime?   @db.Timestamptz(6)
+  id_moneda            BigInt
+  mp_payload_respuesta Json?
+  fecha_creacion       DateTime    @default(now()) @db.Timestamptz(6)
+  fecha_actualizacion  DateTime?   @db.Timestamptz(6)
+  mp_payment_method_id String?
+  descripcion          String?
+  estado_pago          estado_pago @relation(fields: [id_estado], references: [id_estado_pago], onDelete: NoAction, onUpdate: NoAction, map: "fk_pago_estado")
+  moneda               moneda      @relation(fields: [id_moneda], references: [id_moneda], onDelete: NoAction, onUpdate: NoAction, map: "fk_pago_moneda")
+  suscripcion          suscripcion @relation(fields: [id_suscripcion], references: [suscripcion_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pago_suscripcion")
+}
+
+model plan_comunidad {
+  id_plan_comunidad      BigInt        @id @default(autoincrement())
+  precio                 Decimal       @db.Decimal(10, 2)
+  titulo                 String
+  descripcion            String?
+  activa                 Boolean       @default(true)
+  mp_preapproval_plan_id String?
+  fecha_creacion         DateTime      @default(now()) @db.Timestamptz(6)
+  fecha_modificacion     DateTime?     @db.Timestamptz(6)
+  id_comunidad           BigInt
+  id_ciclo_pago          BigInt
+  id_moneda              BigInt
+  ciclo_pago             ciclo_pago    @relation(fields: [id_ciclo_pago], references: [id_ciclo_pago], onDelete: NoAction, onUpdate: NoAction, map: "fk_plan_comunidad_ciclo_pago")
+  comunidad              comunidad     @relation(fields: [id_comunidad], references: [id_comunidad], onDelete: NoAction, onUpdate: NoAction, map: "fk_plan_comunidad_comunidad")
+  moneda                 moneda        @relation(fields: [id_moneda], references: [id_moneda], onDelete: NoAction, onUpdate: NoAction, map: "fk_plan_comunidad_moneda")
+  suscripcion            suscripcion[]
+}
+
+model suscripcion {
+  suscripcion_id      BigInt             @id @default(autoincrement())
+  fecha_suscripcion   DateTime           @default(now()) @db.Timestamptz(6)
+  fecha_inicio        DateTime?          @db.Timestamptz(6)
+  fecha_fin           DateTime?          @db.Timestamptz(6)
+  external_reference  String?            @unique
+  mp_subscription_id  String?            @unique
+  init_point          String?
+  fecha_actualizacion DateTime?          @db.Timestamptz(6)
+  fecha_proximo_pago  DateTime?          @db.Timestamptz(6)
+  back_url            String?
+  id_usuario          BigInt
+  id_plan_comunidad   BigInt
+  id_estado           BigInt
+  pago                pago[]
+  estado_suscripcion  estado_suscripcion @relation(fields: [id_estado], references: [id_estado_suscripcion], onDelete: NoAction, onUpdate: NoAction, map: "fk_suscripcion_estado")
+  plan_comunidad      plan_comunidad     @relation(fields: [id_plan_comunidad], references: [id_plan_comunidad], onDelete: NoAction, onUpdate: NoAction, map: "fk_suscripcion_plan")
+  usuario             usuario            @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_suscripcion_usuario")
 }
