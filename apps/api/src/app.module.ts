@@ -6,7 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { ComunidadModule } from './comunidad/comunidad.module';
-import { PlansModule } from './plans/plans.module';
+import { PlanesModule } from './planes/planes.module';
 import { join } from 'path';
 
 @Module({
@@ -20,7 +20,7 @@ import { join } from 'path';
     AuthModule,
     UsuariosModule,
     ComunidadModule,
-    PlansModule,
+    PlanesModule,
   ],
 
   controllers: [AppController],

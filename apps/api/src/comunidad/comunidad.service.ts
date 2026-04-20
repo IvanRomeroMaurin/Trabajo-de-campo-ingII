@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   ConflictException,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -21,6 +22,8 @@ import { IComunidad } from '@repo/types';
  */
 @Injectable()
 export class ComunidadService {
+  private readonly logger = new Logger(ComunidadService.name);
+
   constructor(private readonly prisma: PrismaService) { }
 
   // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -369,6 +372,26 @@ export class ComunidadService {
 
     if (!esCreador) {
       throw new ForbiddenException('No tenés permisos para modificar esta comunidad');
+    }
+  }
+
+  /**
+   * Setea activa = true en la comunidad cuando se crea su primer plan.
+   * Corresponde al paso activarComunidad del diagrama de secuencia.
+   */
+  public async activarComunidad(
+    tx: Prisma.TransactionClient,
+    id_comunidad: string,
+  ): Promise<void> {
+    try {
+      await tx.comunidad.update({
+        where: { id_comunidad: BigInt(id_comunidad) },
+        data: { activa: true },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'No se pudo activar la comunidad correctamente, intentá de nuevo',
+      );
     }
   }
 }

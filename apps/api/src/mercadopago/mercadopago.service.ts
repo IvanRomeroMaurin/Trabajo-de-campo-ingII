@@ -51,7 +51,6 @@ export class MercadoPagoService {
 
       return { mp_preapproval_plan_id: response.id };
     } catch (error) {
-      this.logger.error('Error al crear plan en Mercado Pago', error);
       const errorMessage =
         error instanceof Error ? error.message : 'Error desconocido';
       throw new HttpException(
