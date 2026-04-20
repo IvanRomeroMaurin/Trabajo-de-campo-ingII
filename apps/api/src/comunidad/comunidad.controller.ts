@@ -81,11 +81,21 @@ export class ComunidadController {
   }
 
   /**
+   * Obtiene una comunidad por su slug.
+   * @route GET /comunidades/:slug
+   * @access Público
+   */
+  @Get(':slug([a-zA-Z0-9\\-]+)')
+  public async getComunidadPorSlug(@Param('slug') slug: string): Promise<IComunidad> {
+    return this.comunidadService.getComunidadPorSlug(slug);
+  }
+
+  /**
    * Obtiene una comunidad por su ID.
    * @route GET /comunidades/:id
    * @access Público
    */
-  @Get(':id')
+  @Get(':id(\\d+)')
   public async getComunidad(@Param('id') id: string): Promise<IComunidad> {
     return this.comunidadService.getComunidad(id);
   }
