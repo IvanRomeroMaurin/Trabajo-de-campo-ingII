@@ -143,6 +143,21 @@ export class ComunidadService {
   }
 
   /**
+   * Obtiene todas las categorías de comunidades disponibles.
+   * @route GET /comunidades/categorias
+   */
+  public async getCategorias(): Promise<any[]> {
+    const categorias = await this.prisma.categoria_comunidad.findMany({
+      where: { activa: true },
+    });
+
+    return categorias.map((cat) => ({
+      ...cat,
+      id_categoria_comunidad: cat.id_categoria_comunidad.toString(),
+    }));
+  }
+
+  /**
    * Lista todas las comunidades en las que el usuario autenticado es Creador (id_rol = 1).
    * @param idCreador ID del usuario autenticado
    */

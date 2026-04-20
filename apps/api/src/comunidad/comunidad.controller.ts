@@ -56,6 +56,16 @@ export class ComunidadController {
   }
 
   /**
+   * Obtiene la lista de categorías para comunidades.
+   * @route GET /comunidades/categorias
+   * @access Público
+   */
+  @Get('categorias')
+  public async getCategorias(): Promise<any[]> {
+    return this.comunidadService.getCategorias();
+  }
+
+  /**
    * Lista las comunidades donde el usuario autenticado es el Creador.
    * IMPORTANTE: esta ruta DEBE ir antes de GET /:id para que NestJS
    * no la interprete como un parámetro dinámico.
