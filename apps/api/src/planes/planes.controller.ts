@@ -1,10 +1,12 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
   UseGuards,
   HttpCode,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { PlanesService } from './planes.service';
 import { CrearPlanDto } from './dto/crear-plan.dto';
@@ -30,4 +32,24 @@ export class PlanesController {
   }
 
   // TODO: validar que req.user.id_usuario sea creador de la comunidad (ownership)
+
+  /**
+   * Obtiene las configuraciones de ciclos de pago válidos (frecuencia/tipo).
+   * Se usa para poblar los selectores del formulario de creación de planes.
+   */
+  @Get('config/ciclos-pago')
+  async getCiclosPago() {
+    return this.planesService.getValidCiclosPago();
+  }
+
+  /**
+   * Obtiene la lista de planes asociados a una comunidad.
+   * Devuelve todos los planes (activos e inactivos).
+   *
+   * @param id_comunidad ID numérico de la comunidad
+   */
+  @Get('comunidad/:id_comunidad')
+  async getPlanesPorComunidad(@Param('id_comunidad') id_comunidad: string) {
+    return this.planesService.getPlanesPorComunidad(id_comunidad);
+  }
 }

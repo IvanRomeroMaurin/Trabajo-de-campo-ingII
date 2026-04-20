@@ -1,5 +1,6 @@
 import { comunidadService } from '@/features/comunidades/services/comunidadService';
-import { Sparkles, Plus, Settings, Users, CreditCard, ArrowLeft, ExternalLink } from 'lucide-react';
+import { planService } from '@/features/planes/services/planService';
+import { Sparkles, Plus, Settings, Users, CreditCard, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -11,13 +12,24 @@ export default async function ComunidadDetallePage({ params }: Props) {
   const { slug } = await params;
   
   let comunidad;
+  let planesComunidad = [];
+
   try {
     comunidad = await comunidadService.getComunidadBySlug(slug);
+    // Obtener los planes (activos e inactivos) de forma dinámica
+    planesComunidad = await planService.getPlanesPorComunidad(comunidad.id_comunidad);
   } catch (error) {
+    console.error('Error al cargar detalle de comunidad:', error);
     return notFound();
   }
 
-  const planes = comunidad.plan_comunidad || [];
+  const formatFrecuencia = (ciclo: any) => {
+    if (!ciclo) return 'Mensual';
+    const unidad = ciclo.tipo_frecuencia === 'months' ? 'meses' : 'días';
+    if (ciclo.frecuencia === 1 && ciclo.tipo_frecuencia === 'months') return 'Mensual';
+    if (ciclo.frecuencia === 12 && ciclo.tipo_frecuencia === 'months') return 'Anual';
+    return `Cada ${ciclo.frecuencia} ${unidad}`;
+  };
 
   return (
     <div className="min-h-screen bg-slate-50/50 py-24 px-4 sm:px-6 lg:px-8">
@@ -76,7 +88,7 @@ export default async function ComunidadDetallePage({ params }: Props) {
             </div>
             <div>
               <p className="text-slate-400 text-xs font-black uppercase tracking-widest">Planes</p>
-              <p className="text-2xl font-black text-slate-900">{planes.length}</p>
+              <p className="text-2xl font-black text-slate-900">{planesComunidad.length}</p>
             </div>
           </div>
           <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex items-center gap-6">
@@ -108,7 +120,7 @@ export default async function ComunidadDetallePage({ params }: Props) {
             </Link>
           </div>
 
-          {!comunidad.activa && planes.length === 0 && (
+          {!comunidad.activa && planesComunidad.length === 0 && (
             <div className="p-8 bg-sky-50 border border-sky-100 rounded-3xl flex items-start gap-6">
               <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-sky-600 shrink-0 shadow-sm">
                 <Sparkles size={24} />
@@ -123,10 +135,14 @@ export default async function ComunidadDetallePage({ params }: Props) {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {planes.map((plan: any) => (
+            {planesComunidad.map((plan: any) => (
               <div key={plan.id_plan_comunidad} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-md relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-4">
-                  <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${plan.activa ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
+                  <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${
+                    plan.activa 
+                      ? 'bg-emerald-50 text-emerald-600 border-emerald-100' 
+                      : 'bg-slate-100 text-slate-500 border-slate-200'
+                  }`}>
                     {plan.activa ? 'Activo' : 'Inactivo'}
                   </span>
                 </div>
@@ -137,12 +153,19 @@ export default async function ComunidadDetallePage({ params }: Props) {
                   </p>
                   <div className="pt-4 flex items-end gap-1">
                     <span className="text-3xl font-black text-slate-950">${Number(plan.precio).toFixed(0)}</span>
-                    <span className="text-slate-400 text-sm font-bold mb-1">/ mes</span>
+                    <span className="text-slate-400 text-sm font-bold mb-1">
+                      / {formatFrecuencia(plan.ciclo_pago).toLowerCase()}
+                    </span>
                   </div>
                 </div>
                 <div className="mt-8 pt-6 border-t border-slate-50 flex justify-between items-center">
-                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">ID MP: {plan.mp_preapproval_plan_id?.substring(0, 8)}...</span>
-                   <Link href="#" className="text-sky-500 hover:text-sky-600 transition-colors">
+                   <div className="flex flex-col">
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">ID Mercado Pago</span>
+                     <span className="text-[10px] font-bold text-slate-600 truncate max-w-[120px]">
+                       {plan.mp_preapproval_plan_id || 'No vinculado'}
+                     </span>
+                   </div>
+                   <Link href="#" className="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 hover:text-sky-600 hover:bg-sky-50 transition-all flex items-center justify-center">
                      <Settings size={18} />
                    </Link>
                 </div>

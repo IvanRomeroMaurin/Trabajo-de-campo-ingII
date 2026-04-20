@@ -1,18 +1,38 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { CreditCard, Calendar, Tag, ArrowRight, Loader2, DollarSign } from 'lucide-react';
+import { CreditCard, Calendar, Tag, ArrowRight, Loader2, DollarSign, CheckCircle2 } from 'lucide-react';
 import { createPlanAction } from '../actions/planActions';
+import { ICicloPago } from '@repo/types';
 
 interface CreatePlanFormProps {
   idComunidad: string;
+  slug: string;
+  ciclos: ICicloPago[];
 }
 
-export function CreatePlanForm({ idComunidad }: CreatePlanFormProps) {
+export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProps) {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCiclo, setSelectedCiclo] = useState<string>(
+    ciclos.length > 0 ? ciclos[0].id_ciclo_pago : ''
+  );
+
+  const currentCiclo = ciclos.find(c => c.id_ciclo_pago === selectedCiclo);
+
+  /**
+   * Helper para traducir tipos de frecuencia a español amigable
+   */
+  const formatCiclo = (c: ICicloPago) => {
+    const unit = c.tipo_frecuencia === 'months' ? (c.frecuencia === 1 ? 'Mes' : 'Meses') : (c.frecuencia === 1 ? 'Día' : 'Días');
+    if (c.frecuencia === 1 && c.tipo_frecuencia === 'months') return 'Mensual (1 mes)';
+    if (c.frecuencia === 3 && c.tipo_frecuencia === 'months') return 'Trimestral (3 meses)';
+    if (c.frecuencia === 6 && c.tipo_frecuencia === 'months') return 'Semestral (6 meses)';
+    if (c.frecuencia === 1 && c.tipo_frecuencia === 'days') return 'Diario (1 día)';
+    return `${c.frecuencia} ${unit}`;
+  };
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,7 +45,8 @@ export function CreatePlanForm({ idComunidad }: CreatePlanFormProps) {
     try {
       const result = await createPlanAction(formData);
       if (result.success) {
-        router.push(`/comunidades/${idComunidad}`);
+        // Redirigir usando el SLUG de la comunidad, no el ID numérico
+        router.push(`/comunidades/${slug}`);
       } else {
         setError(result.error || 'Error al crear el plan');
       }
@@ -110,46 +131,47 @@ export function CreatePlanForm({ idComunidad }: CreatePlanFormProps) {
               <label htmlFor="moneda" className="text-sm font-bold text-slate-700 ml-1">
                 Moneda
               </label>
-              <select
-                id="moneda"
-                name="moneda"
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 font-bold appearance-none"
-              >
-                <option value="ARS">Peso Argentino (ARS)</option>
-                <option value="USD">Dólar (USD)</option>
-              </select>
+              <div className="relative">
+                <select
+                  id="moneda"
+                  name="moneda"
+                  disabled
+                  className="w-full px-5 py-4 bg-slate-100 border border-slate-200 rounded-2xl text-slate-500 outline-none font-bold appearance-none cursor-not-allowed"
+                >
+                  <option value="ARS">Peso Argentino (ARS)</option>
+                </select>
+                <CheckCircle2 className="absolute right-5 top-1/2 -translate-y-1/2 text-emerald-500" size={18} />
+                <input type="hidden" name="moneda" value="ARS" />
+              </div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider ml-1">Solo pesos admitidos por Mercado Pago</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4 pt-2">
             <div className="space-y-2">
-              <label htmlFor="frecuencia" className="text-sm font-bold text-slate-700 ml-1">
-                Frecuencia
+              <label htmlFor="ciclo_id" className="text-sm font-bold text-slate-700 ml-1">
+                Frecuencia del cobro
               </label>
-              <input
-                required
-                id="frecuencia"
-                name="frecuencia"
-                type="number"
-                min="1"
-                defaultValue="1"
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 font-bold"
-              />
+              <div className="relative">
+                <select
+                  id="ciclo_id"
+                  value={selectedCiclo}
+                  onChange={(e) => setSelectedCiclo(e.target.value)}
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 font-bold appearance-none cursor-pointer"
+                >
+                  {ciclos.map(c => (
+                    <option key={c.id_ciclo_pago} value={c.id_ciclo_pago}>
+                      {formatCiclo(c)}
+                    </option>
+                  ))}
+                </select>
+                <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="tipo_frecuencia" className="text-sm font-bold text-slate-700 ml-1">
-                Período
-              </label>
-              <select
-                id="tipo_frecuencia"
-                name="tipo_frecuencia"
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 font-bold appearance-none"
-              >
-                <option value="months">Meses</option>
-                <option value="days">Días</option>
-              </select>
-            </div>
+            {/* Inputs ocultos para mantener compatibilidad con el action sin cambiar el DTO */}
+            <input type="hidden" name="frecuencia" value={currentCiclo?.frecuencia || 1} />
+            <input type="hidden" name="tipo_frecuencia" value={currentCiclo?.tipo_frecuencia || 'months'} />
           </div>
         </div>
 

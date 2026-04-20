@@ -2,6 +2,7 @@ import { CreatePlanForm } from '@/features/planes/components/CreatePlanForm';
 import { CreditCard, ArrowLeft, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { comunidadService } from '@/features/comunidades/services/comunidadService';
+import { planService } from '@/features/planes/services/planService';
 import { notFound } from 'next/navigation';
 
 interface Props {
@@ -12,9 +13,17 @@ export default async function CrearPlanPage({ params }: Props) {
   const { slug } = await params;
 
   let comunidad;
+  let ciclos = [];
+  
   try {
-    comunidad = await comunidadService.getComunidadBySlug(slug);
+    const [comunidadRes, ciclosRes] = await Promise.all([
+      comunidadService.getComunidadBySlug(slug),
+      planService.getCiclosPago()
+    ]);
+    comunidad = comunidadRes;
+    ciclos = ciclosRes;
   } catch (error) {
+    console.error('Error cargando datos para el plan:', error);
     return notFound();
   }
 
@@ -53,7 +62,11 @@ export default async function CrearPlanPage({ params }: Props) {
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-50 rounded-full blur-3xl -z-10 opacity-60" />
           <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-sky-50 rounded-full blur-3xl -z-10 opacity-60" />
           
-          <CreatePlanForm idComunidad={comunidad.id_comunidad} />
+          <CreatePlanForm 
+            idComunidad={comunidad.id_comunidad} 
+            slug={slug} 
+            ciclos={ciclos} 
+          />
         </div>
 
         {/* Nota informativa */}

@@ -9,7 +9,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { MercadoPagoService } from '../mercadopago/mercadopago.service';
 import { ComunidadService } from '../comunidad/comunidad.service';
 import { CrearPlanDto } from './dto/crear-plan.dto';
-import { ICreatePlanResponse, IPlanComunidad } from '@repo/types';
+import { ICreatePlanResponse, IPlanComunidad, ICicloPago } from '@repo/types';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -216,5 +216,60 @@ export class PlanesService {
       descripcion: plan.descripcion ?? undefined,
       mp_preapproval_plan_id: plan.mp_preapproval_plan_id ?? undefined,
     } as IPlanComunidad;
+  }
+
+  /**
+   * Obtiene la lista de ciclos de pago configurados en la base de datos.
+   * Útil para poblar selectores en el frontend.
+   *
+   * @returns Lista de ciclos de pago (frecuencia y tipo).
+   */
+  async getValidCiclosPago(): Promise<ICicloPago[]> {
+    const ciclos = await this.prisma.ciclo_pago.findMany({
+      orderBy: [{ tipo_frecuencia: 'asc' }, { frecuencia: 'asc' }],
+    });
+
+    return ciclos.map((c) => ({
+      ...c,
+      id_ciclo_pago: c.id_ciclo_pago.toString(),
+    }));
+  }
+
+  /**
+   * Obtiene todos los planes asociados a una comunidad específica.
+   * Devuelve tanto activos como inactivos para gestión del creador.
+   *
+   * @param id_comunidad - ID de la comunidad a consultar.
+   * @returns Lista de planes con detalles de ciclo y moneda.
+   */
+  async getPlanesPorComunidad(id_comunidad: string): Promise<IPlanComunidad[]> {
+    const planes = await this.prisma.plan_comunidad.findMany({
+      where: { id_comunidad: BigInt(id_comunidad) },
+      include: {
+        ciclo_pago: true,
+        moneda: true,
+      },
+      orderBy: { fecha_creacion: 'desc' },
+    });
+
+    return planes.map((p) => ({
+      ...p,
+      id_plan_comunidad: p.id_plan_comunidad.toString(),
+      id_comunidad: p.id_comunidad.toString(),
+      id_ciclo_pago: p.id_ciclo_pago.toString(),
+      id_moneda: p.id_moneda.toString(),
+      precio: Number(p.precio),
+      descripcion: p.descripcion ?? undefined,
+      mp_preapproval_plan_id: p.mp_preapproval_plan_id ?? undefined,
+      // Serializar relaciones anidadas que también tienen BigInt
+      ciclo_pago: p.ciclo_pago ? {
+        ...p.ciclo_pago,
+        id_ciclo_pago: p.ciclo_pago.id_ciclo_pago.toString()
+      } : undefined,
+      moneda: p.moneda ? {
+        ...p.moneda,
+        id_moneda: p.moneda.id_moneda.toString()
+      } : undefined,
+    })) as IPlanComunidad[];
   }
 }
