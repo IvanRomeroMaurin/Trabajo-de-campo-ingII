@@ -31,12 +31,6 @@ export default async function ExplorarPage() {
 
         {/* Cabecera de la página */}
         <header className="mb-20 text-left">
-          <div className="mb-6">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider shadow-sm">
-              <Sparkles size={12} className="text-sky-500" />
-              Explorar el conocimiento
-            </span>
-          </div>
           <h1 className="font-display text-4xl md:text-6xl font-black mb-6 tracking-tight text-slate-950 leading-tight">
             Descubrí tu próxima <br />
             <span className="text-sky-600">comunidad de expertos</span>

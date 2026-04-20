@@ -54,14 +54,6 @@ export default async function ComunidadDetallePage({ params }: Props) {
               {comunidad.nombre[0]}
             </div>
             <div className="flex-1 text-center md:text-left space-y-4">
-              <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                <span className="px-3 py-1 rounded-full bg-sky-50 text-sky-600 text-[10px] font-black uppercase tracking-widest border border-sky-100">
-                  {comunidad.activa ? 'Activa' : 'Inactiva'}
-                </span>
-                <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-500 text-[10px] font-black uppercase tracking-widest border border-slate-200">
-                  ID: {comunidad.id_comunidad}
-                </span>
-              </div>
               <h1 className="text-4xl md:text-5xl font-black text-slate-950 tracking-tight">
                 {comunidad.nombre}
               </h1>

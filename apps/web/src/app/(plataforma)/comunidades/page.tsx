@@ -19,10 +19,6 @@ export default async function MisComunidadesPage() {
         {/* Cabecera del Dashboard */}
         <header className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 w-fit shadow-sm">
-              <Layers size={14} className="text-sky-500" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Panel de Control</span>
-            </div>
             <h1 className="text-4xl md:text-5xl font-black text-slate-950 tracking-tight">
               Mis <span className="text-sky-600">Comunidades</span>
             </h1>
