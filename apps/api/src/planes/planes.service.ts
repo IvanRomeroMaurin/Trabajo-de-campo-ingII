@@ -21,7 +21,7 @@ export class PlanesService {
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly configService: ConfigService,
     private readonly comunidadService: ComunidadService,
-  ) { }
+  ) {}
 
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
@@ -49,9 +49,7 @@ export class PlanesService {
     // PASO 4 — createPreapprovalPlan
     const frontendUrl = this.configService.get<string>('FRONTEND_URL');
     if (!frontendUrl) {
-      throw new InternalServerErrorException(
-        'No se configuro el FRONTEND_URL',
-      );
+      throw new InternalServerErrorException('No se configuro el FRONTEND_URL');
     }
 
     // Limpiamos la URL de posibles barras al final y construimos la back_url
@@ -179,7 +177,6 @@ export class PlanesService {
       id_comunidad: string;
     },
   ): Promise<IPlanComunidad> {
-
     // a. Crear el registro
     const plan = await tx.plan_comunidad.create({
       data: {
@@ -262,14 +259,18 @@ export class PlanesService {
       descripcion: p.descripcion ?? undefined,
       mp_preapproval_plan_id: p.mp_preapproval_plan_id ?? undefined,
       // Serializar relaciones anidadas que también tienen BigInt
-      ciclo_pago: p.ciclo_pago ? {
-        ...p.ciclo_pago,
-        id_ciclo_pago: p.ciclo_pago.id_ciclo_pago.toString()
-      } : undefined,
-      moneda: p.moneda ? {
-        ...p.moneda,
-        id_moneda: p.moneda.id_moneda.toString()
-      } : undefined,
+      ciclo_pago: p.ciclo_pago
+        ? {
+            ...p.ciclo_pago,
+            id_ciclo_pago: p.ciclo_pago.id_ciclo_pago.toString(),
+          }
+        : undefined,
+      moneda: p.moneda
+        ? {
+            ...p.moneda,
+            id_moneda: p.moneda.id_moneda.toString(),
+          }
+        : undefined,
     })) as IPlanComunidad[];
   }
 }

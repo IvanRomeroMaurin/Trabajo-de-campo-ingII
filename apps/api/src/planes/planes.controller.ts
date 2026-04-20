@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @Controller('planes')
 @UseGuards(JwtAuthGuard)
 export class PlanesController {
-  constructor(private readonly planesService: PlanesService) { }
+  constructor(private readonly planesService: PlanesService) {}
 
   /**
    * Endpoint para crear un nuevo plan de suscripción.

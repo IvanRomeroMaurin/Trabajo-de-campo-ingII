@@ -27,7 +27,7 @@ import { IComunidad, IUsuario } from '@repo/types';
  */
 @Controller('comunidades')
 export class ComunidadController {
-  constructor(private readonly comunidadService: ComunidadService) { }
+  constructor(private readonly comunidadService: ComunidadService) {}
 
   /**
    * Crea una nueva comunidad.
@@ -42,7 +42,10 @@ export class ComunidadController {
     @Body() dto: CrearComunidadDto,
     @Request() req: { user: IUsuario },
   ): Promise<IComunidad> {
-    return this.comunidadService.crearComunidad(dto, req.user.id_usuario.toString());
+    return this.comunidadService.crearComunidad(
+      dto,
+      req.user.id_usuario.toString(),
+    );
   }
 
   /**
@@ -77,7 +80,9 @@ export class ComunidadController {
   public async getMisComunidades(
     @Request() req: { user: IUsuario },
   ): Promise<IComunidad[]> {
-    return this.comunidadService.getMisComunidades(req.user.id_usuario.toString());
+    return this.comunidadService.getMisComunidades(
+      req.user.id_usuario.toString(),
+    );
   }
 
   /**
@@ -87,7 +92,9 @@ export class ComunidadController {
    * @access Público
    */
   @Get('s/:slug')
-  public async getComunidadPorSlug(@Param('slug') slug: string): Promise<IComunidad> {
+  public async getComunidadPorSlug(
+    @Param('slug') slug: string,
+  ): Promise<IComunidad> {
     return this.comunidadService.getComunidadPorSlug(slug);
   }
 
@@ -113,7 +120,11 @@ export class ComunidadController {
     @Body() dto: ActualizarComunidadDto,
     @Request() req: { user: IUsuario },
   ): Promise<IComunidad> {
-    return this.comunidadService.actualizarComunidad(id, dto, req.user.id_usuario.toString());
+    return this.comunidadService.actualizarComunidad(
+      id,
+      dto,
+      req.user.id_usuario.toString(),
+    );
   }
 
   /**
@@ -128,6 +139,9 @@ export class ComunidadController {
     @Param('id') id: string,
     @Request() req: { user: IUsuario },
   ): Promise<{ mensaje: string }> {
-    return this.comunidadService.desactivarComunidad(id, req.user.id_usuario.toString());
+    return this.comunidadService.desactivarComunidad(
+      id,
+      req.user.id_usuario.toString(),
+    );
   }
 }

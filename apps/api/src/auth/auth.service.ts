@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -46,7 +42,7 @@ export class AuthService {
    * @param usuario El objeto usuario validado por la Estrategia Local anteriormente.
    * @returns Un token JWT con la expiración que haya sido configurada en la importación.
    */
-  public async iniciarSesion(usuario: IUsuario): Promise<IRespuestaAuth> {
+  public iniciarSesion(usuario: IUsuario): IRespuestaAuth {
     const payload = {
       email: usuario.email,
       sub: usuario.id_usuario.toString(),

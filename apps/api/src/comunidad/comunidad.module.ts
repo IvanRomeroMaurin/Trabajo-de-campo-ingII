@@ -12,4 +12,4 @@ import { ComunidadController } from './comunidad.controller';
   providers: [ComunidadService],
   exports: [ComunidadService],
 })
-export class ComunidadModule { }
+export class ComunidadModule {}

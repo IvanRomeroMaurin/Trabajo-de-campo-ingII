@@ -2,7 +2,6 @@ import {
   Injectable,
   NotFoundException,
   ForbiddenException,
-  ConflictException,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
@@ -24,7 +23,7 @@ import { IComunidad } from '@repo/types';
 export class ComunidadService {
   private readonly logger = new Logger(ComunidadService.name);
 
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -37,9 +36,9 @@ export class ComunidadService {
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '') // elimina tildes
-      .replace(/[^a-z0-9\s-]/g, '')    // elimina caracteres especiales
+      .replace(/[^a-z0-9\s-]/g, '') // elimina caracteres especiales
       .trim()
-      .replace(/\s+/g, '-');            // espacios → guiones
+      .replace(/\s+/g, '-'); // espacios → guiones
   }
 
   /**
@@ -80,7 +79,10 @@ export class ComunidadService {
    * @param dto Datos de la comunidad a crear
    * @param idCreador ID del usuario autenticado que crea la comunidad
    */
-  public async crearComunidad(dto: CrearComunidadDto, idCreador: string): Promise<IComunidad> {
+  public async crearComunidad(
+    dto: CrearComunidadDto,
+    idCreador: string,
+  ): Promise<IComunidad> {
     const slug = await this.generarSlugUnico(dto.nombre);
     const idCategoria = BigInt(dto.id_categoria_comunidad);
     const idUsuario = BigInt(idCreador);
@@ -90,7 +92,9 @@ export class ComunidadService {
       where: { id_categoria_comunidad: idCategoria },
     });
     if (!categoria) {
-      throw new NotFoundException(`La categoría con id ${dto.id_categoria_comunidad} no existe`);
+      throw new NotFoundException(
+        `La categoría con id ${dto.id_categoria_comunidad} no existe`,
+      );
     }
 
     // Transacción: crear comunidad → agregarMiembro (con cliente tx para atomicidad)
@@ -116,7 +120,7 @@ export class ComunidadService {
           tx,
         );
       } catch {
-        // Al lanzar aquí, Prisma revierte el create de la comunidad 
+        // Al lanzar aquí, Prisma revierte el create de la comunidad
         throw new InternalServerErrorException(
           'Error al configurar permisos, intentá de nuevo',
         );
@@ -190,7 +194,9 @@ export class ComunidadService {
     });
 
     if (!comunidad) {
-      throw new NotFoundException(`La comunidad con id ${id} no fue encontrada`);
+      throw new NotFoundException(
+        `La comunidad con id ${id} no fue encontrada`,
+      );
     }
 
     return this.serializarComunidad(comunidad);
@@ -209,7 +215,9 @@ export class ComunidadService {
     });
 
     if (!comunidad) {
-      throw new NotFoundException(`La comunidad con slug '${slug}' no fue encontrada`);
+      throw new NotFoundException(
+        `La comunidad con slug '${slug}' no fue encontrada`,
+      );
     }
 
     return this.serializarComunidad(comunidad);
@@ -223,7 +231,11 @@ export class ComunidadService {
    * @param dto Campos a actualizar (todos opcionales)
    * @param idUsuario ID del usuario autenticado
    */
-  public async actualizarComunidad(id: string, dto: ActualizarComunidadDto, idUsuario: string): Promise<IComunidad> {
+  public async actualizarComunidad(
+    id: string,
+    dto: ActualizarComunidadDto,
+    idUsuario: string,
+  ): Promise<IComunidad> {
     await this.verificarExistenciaYAutoria(id, idUsuario);
 
     const data: any = {};
@@ -240,7 +252,9 @@ export class ComunidadService {
         where: { id_categoria_comunidad: idCategoria },
       });
       if (!categoria) {
-        throw new NotFoundException(`La categoría con id ${dto.id_categoria_comunidad} no existe`);
+        throw new NotFoundException(
+          `La categoría con id ${dto.id_categoria_comunidad} no existe`,
+        );
       }
       data.id_categoria_comunidad = idCategoria;
     }
@@ -258,7 +272,10 @@ export class ComunidadService {
    * @param id ID de la comunidad a desactivar
    * @param idUsuario ID del usuario autenticado
    */
-  public async desactivarComunidad(id: string, idUsuario: string): Promise<{ mensaje: string }> {
+  public async desactivarComunidad(
+    id: string,
+    idUsuario: string,
+  ): Promise<{ mensaje: string }> {
     await this.verificarExistenciaYAutoria(id, idUsuario);
 
     await this.prisma.comunidad.update({
@@ -266,7 +283,9 @@ export class ComunidadService {
       data: { activa: false },
     });
 
-    return { mensaje: `La comunidad con id ${id} fue desactivada correctamente` };
+    return {
+      mensaje: `La comunidad con id ${id} fue desactivada correctamente`,
+    };
   }
 
   // ─── Gestión de Miembros ──────────────────────────────────────────────────────
@@ -397,13 +416,18 @@ export class ComunidadService {
    * Verifica que la comunidad exista y que el usuario sea su creador (id_rol = 1).
    * Lanza NotFoundException si no existe, ForbiddenException si no es el creador.
    */
-  private async verificarExistenciaYAutoria(idComunidad: string, idUsuario: string): Promise<void> {
+  private async verificarExistenciaYAutoria(
+    idComunidad: string,
+    idUsuario: string,
+  ): Promise<void> {
     const comunidad = await this.prisma.comunidad.findUnique({
       where: { id_comunidad: BigInt(idComunidad) },
     });
 
     if (!comunidad) {
-      throw new NotFoundException(`La comunidad con id ${idComunidad} no fue encontrada`);
+      throw new NotFoundException(
+        `La comunidad con id ${idComunidad} no fue encontrada`,
+      );
     }
 
     const esCreador = await this.prisma.miembro_comunidad.findFirst({
@@ -415,7 +439,9 @@ export class ComunidadService {
     });
 
     if (!esCreador) {
-      throw new ForbiddenException('No tenés permisos para modificar esta comunidad');
+      throw new ForbiddenException(
+        'No tenés permisos para modificar esta comunidad',
+      );
     }
   }
 
