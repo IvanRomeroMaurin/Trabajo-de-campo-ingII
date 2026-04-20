@@ -1,4 +1,13 @@
-import { Controller, Request, Post, UseGuards, Body, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  Body,
+  Get,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { RegistrarUsuarioDto } from './dto/registrar-usuario.dto';
@@ -22,7 +31,9 @@ export class AuthController {
    * @returns El usuario recién creado guardado en la base de datos.
    */
   @Post('registrar')
-  public async registrar(@Body() registrarUsuarioDto: RegistrarUsuarioDto): Promise<IUsuario> {
+  public async registrar(
+    @Body() registrarUsuarioDto: RegistrarUsuarioDto,
+  ): Promise<IUsuario> {
     return this.authService.registrarUsuario(registrarUsuarioDto);
   }
 
@@ -35,7 +46,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('local'))
   @Post('iniciar-sesion')
-  public async iniciarSesion(@Request() req: { user: IUsuario }): Promise<IRespuestaAuth> {
+  public async iniciarSesion(
+    @Request() req: { user: IUsuario },
+  ): Promise<IRespuestaAuth> {
     // El AuthGuard('local') valida las credenciales y añade el usuario a req.user
     return this.authService.iniciarSesion(req.user);
   }
@@ -47,7 +60,9 @@ export class AuthController {
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('perfil')
-  public obtenerPerfil(@Request() req: { user: Partial<IUsuario> }): Partial<IUsuario> {
+  public obtenerPerfil(
+    @Request() req: { user: Partial<IUsuario> },
+  ): Partial<IUsuario> {
     return req.user;
   }
 }

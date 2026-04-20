@@ -1,10 +1,10 @@
-import { ISuscripcion } from '../suscripciones';
+import { IPlanComunidad, ISuscripcion } from '../suscripciones';
 
 export interface ICicloPago {
   id_ciclo_pago: string;
   frecuencia: number;
   tipo_frecuencia: string;
-  plan_comunidad?: any[]; // Avoiding circularity with IPlanComunidad if possible, or use import later
+  plan_comunidad?: IPlanComunidad[];
 }
 
 export interface IEstadoPago {
@@ -17,7 +17,7 @@ export interface IMoneda {
   id_moneda: string;
   moneda: string;
   pago?: IPago[];
-  plan_comunidad?: any[];
+  plan_comunidad?: IPlanComunidad[];
 }
 
 export interface IPago {

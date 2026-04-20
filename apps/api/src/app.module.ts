@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { ComunidadModule } from './comunidad/comunidad.module';
+import { PlansModule } from './plans/plans.module';
 import { join } from 'path';
 
 @Module({
@@ -19,8 +20,10 @@ import { join } from 'path';
     AuthModule,
     UsuariosModule,
     ComunidadModule,
+    PlansModule,
   ],
+
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

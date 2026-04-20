@@ -4,7 +4,7 @@ import { Prisma, usuario } from '@prisma/client';
 
 /**
  * Servicio de Usuarios
- * Componente que interactúa de manera directa y exclusiva en la capa de persistencia 
+ * Componente que interactúa de manera directa y exclusiva en la capa de persistencia
  * (Prisma Client) para todo lo relacionado al manejo y búsqueda de usuarios.
  */
 @Injectable()

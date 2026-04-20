@@ -27,7 +27,7 @@ export interface IPlanComunidad {
 }
 
 export interface ISuscripcion {
-  suscripcion_id: string;
+  id_suscripcion: string;
   fecha_suscripcion: string | Date;
   fecha_inicio?: string | Date | null;
   fecha_fin?: string | Date | null;
@@ -45,3 +45,18 @@ export interface ISuscripcion {
   plan_comunidad?: IPlanComunidad;
   usuario?: IUsuario;
 }
+
+export interface ICreatePlanRequest {
+  titulo: string;
+  descripcion?: string;
+  precio: number;
+  frecuencia: number;
+  tipo_frecuencia: 'months' | 'days';
+  moneda: 'ARS' | 'USD';
+  id_comunidad: string;
+}
+
+export interface ICreatePlanResponse {
+  plan: IPlanComunidad;
+}
+

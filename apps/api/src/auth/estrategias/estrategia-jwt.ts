@@ -30,15 +30,17 @@ export class EstrategiaJwt extends PassportStrategy(Strategy) {
    * @param payload Contenido desencriptado de las tripas del Token.
    */
   public async validate(payload: IJwtPayload): Promise<IUsuario> {
-    const usuario = await this.usuariosService.buscarPorId(parseInt(payload.sub, 10));
-    
+    const usuario = await this.usuariosService.buscarPorId(
+      parseInt(payload.sub, 10),
+    );
+
     if (!usuario) {
       throw new UnauthorizedException('Usuario no encontrado');
     }
 
     // Convertimos password_hash a omitido y BigInt a string/number para el front
     const { password_hash, id_usuario, ...res } = usuario;
-    
+
     return {
       ...res,
       id_usuario: id_usuario.toString(),

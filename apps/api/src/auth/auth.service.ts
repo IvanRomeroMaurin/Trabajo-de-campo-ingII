@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -25,9 +29,12 @@ export class AuthService {
    * @param pass Contraseña plana insertada por el cliente de forma cruda.
    * @returns El archivo del usuario completo (sin el password_hash) en caso válido, o `null` si hay error.
    */
-  public async validarUsuario(email: string, pass: string): Promise<IUsuario | null> {
+  public async validarUsuario(
+    email: string,
+    pass: string,
+  ): Promise<IUsuario | null> {
     const usuario = await this.usuariosService.buscarPorCorreo(email);
-    if (usuario && await bcrypt.compare(pass, usuario.password_hash)) {
+    if (usuario && (await bcrypt.compare(pass, usuario.password_hash))) {
       const { password_hash, ...result } = usuario;
       return result as unknown as IUsuario;
     }
@@ -40,7 +47,10 @@ export class AuthService {
    * @returns Un token JWT con la expiración que haya sido configurada en la importación.
    */
   public async iniciarSesion(usuario: IUsuario): Promise<IRespuestaAuth> {
-    const payload = { email: usuario.email, sub: usuario.id_usuario.toString() };
+    const payload = {
+      email: usuario.email,
+      sub: usuario.id_usuario.toString(),
+    };
     return {
       access_token: this.jwtService.sign(payload),
       usuario,
@@ -48,14 +58,16 @@ export class AuthService {
   }
 
   /**
-   * Transacciona el registro de usuario: se encarga de cifrar la contraseña con bcrypt 
+   * Transacciona el registro de usuario: se encarga de cifrar la contraseña con bcrypt
    * antes de contactar a Prisma. Verificará de antemano que el correo no esté ocupado.
    * @param dto Los datos recolectados del request (nombre, email, pass).
    * @throws {ConflictException} Si el correo electrónico ya existía en la DB.
    */
   public async registrarUsuario(dto: RegistrarUsuarioDto): Promise<IUsuario> {
-    const usuarioExistente = await this.usuariosService.buscarPorCorreo(dto.email);
-    
+    const usuarioExistente = await this.usuariosService.buscarPorCorreo(
+      dto.email,
+    );
+
     if (usuarioExistente) {
       throw new ConflictException('El correo electrónico ya está en uso');
     }
