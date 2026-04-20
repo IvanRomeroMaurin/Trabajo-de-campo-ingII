@@ -179,6 +179,25 @@ export class ComunidadService {
   }
 
   /**
+   * Obtiene una comunidad por su slug (endpoint público).
+   * Nombre según documentación: getComunidadPorSlug(slug)
+   *
+   * @param slug Slug de la comunidad
+   */
+  public async getComunidadPorSlug(slug: string): Promise<IComunidad> {
+    const comunidad = await this.prisma.comunidad.findUnique({
+      where: { slug: slug },
+      include: { categoria_comunidad: true },
+    });
+
+    if (!comunidad) {
+      throw new NotFoundException(`La comunidad con slug '${slug}' no fue encontrada`);
+    }
+
+    return this.serializarComunidad(comunidad);
+  }
+
+  /**
    * Modifica los datos de una comunidad. Solo el creador puede hacerlo.
    * Si se cambia el nombre, regenera el slug.
    *
