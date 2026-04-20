@@ -7,26 +7,33 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { MercadoPagoService } from '../mercadopago/mercadopago.service';
-import { CreatePlanDto } from './dto/create-plan.dto';
+import { ComunidadService } from '../comunidad/comunidad.service';
+import { CrearPlanDto } from './dto/crear-plan.dto';
 import { ICreatePlanResponse, IPlanComunidad } from '@repo/types';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
-export class PlansService {
-  private readonly logger = new Logger(PlansService.name);
+export class PlanesService {
+  private readonly logger = new Logger(PlanesService.name);
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly configService: ConfigService,
-  ) {}
+    private readonly comunidadService: ComunidadService,
+  ) { }
 
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
    * Implementa el contrato de operación crearPlan del documento de diseño.
    * Sincroniza con Mercado Pago y activa la comunidad si es el primer plan.
+   *
+   * @param dto - Objeto con los datos necesarios para crear el plan (titulo, precio, frecuencia, etc.)
+   * @returns Una promesa que resuelve con el plan creado mapeado a ICreatePlanResponse.
+   * @throws BadRequestException si los datos del plan no son válidos.
+   * @throws InternalServerErrorException si hay problemas con la configuración o la persistencia.
    */
-  async crearPlan(dto: CreatePlanDto): Promise<ICreatePlanResponse> {
+  async crearPlan(dto: CrearPlanDto): Promise<ICreatePlanResponse> {
     // PASO 1 — validatePlanData
     this.validatePlanData(dto.titulo, dto.precio, dto.frecuencia);
 
@@ -42,17 +49,14 @@ export class PlansService {
     // PASO 4 — createPreapprovalPlan
     const frontendUrl = this.configService.get<string>('FRONTEND_URL');
     if (!frontendUrl) {
-      this.logger.error('FRONTEND_URL no está definida en las variables de entorno');
       throw new InternalServerErrorException(
-        'Configuración de servidor incompleta (FRONTEND_URL)',
+        'No se configuro el FRONTEND_URL',
       );
     }
 
     // Limpiamos la URL de posibles barras al final y construimos la back_url
     const sanitizedFrontendUrl = frontendUrl.replace(/\/$/, '');
     const back_url = `${sanitizedFrontendUrl}/comunidades/${dto.id_comunidad}`;
-
-    this.logger.log(`Enviando back_url a Mercado Pago: ${back_url}`);
 
     const { mp_preapproval_plan_id } =
       await this.mercadoPagoService.createPreapprovalPlan({
@@ -80,10 +84,6 @@ export class PlansService {
       });
       return { plan };
     } catch (error) {
-      this.logger.error(
-        'Error al guardar el plan en BD, procediendo a cancelar en MP',
-        error,
-      );
       await this.mercadoPagoService.cancelPreapprovalPlan(
         mp_preapproval_plan_id,
       );
@@ -96,6 +96,12 @@ export class PlansService {
   /**
    * Valida los datos de negocio del plan antes de procesar.
    * Corresponde al paso validatePlanData del diagrama de secuencia.
+   *
+   * @param titulo - El nombre del plan.
+   * @param precio - El costo de la suscripción (debe ser > 0).
+   * @param frecuencia - El intervalo de tiempo del ciclo (debe ser > 0).
+   * @returns void
+   * @throws BadRequestException si alguna validación falla.
    */
   private validatePlanData(
     titulo: string,
@@ -116,6 +122,11 @@ export class PlansService {
   /**
    * Busca el ciclo de pago por frecuencia y tipo.
    * Corresponde al paso getCicloPago del diagrama de secuencia.
+   *
+   * @param frecuencia - Ejemplo: 1, 3, 6.
+   * @param tipo_frecuencia - Ejemplo: 'months', 'days'.
+   * @returns El registro del ciclo de pago encontrado en la base de datos.
+   * @throws BadRequestException si el ciclo solicitado no existe.
    */
   private async getCicloPago(frecuencia: number, tipo_frecuencia: string) {
     const cicloPago = await this.prisma.ciclo_pago.findFirst({
@@ -132,6 +143,10 @@ export class PlansService {
   /**
    * Busca la moneda por su código.
    * Corresponde al paso getMoneda del diagrama de secuencia.
+   *
+   * @param moneda - Código de la moneda (ej: 'ARS', 'USD').
+   * @returns El registro de la moneda encontrado en la base de datos.
+   * @throws BadRequestException si la moneda no existe.
    */
   private async getMoneda(moneda: string) {
     const registroMoneda = await this.prisma.moneda.findFirst({
@@ -147,6 +162,10 @@ export class PlansService {
    * Persiste el plan en BD dentro de una transacción.
    * Si es el primer plan activo de la comunidad, activa la comunidad.
    * Corresponde al paso guardarPlanComunidad del diagrama de secuencia.
+   *
+   * @param tx - Cliente transaccional de Prisma.
+   * @param data - Objeto con los datos a persistir, incluyendo IDs ya procesados.
+   * @returns El objeto del plan creado y serializado.
    */
   private async guardarPlanComunidad(
     tx: Prisma.TransactionClient,
@@ -160,6 +179,7 @@ export class PlansService {
       id_comunidad: string;
     },
   ): Promise<IPlanComunidad> {
+
     // a. Crear el registro
     const plan = await tx.plan_comunidad.create({
       data: {
@@ -182,7 +202,7 @@ export class PlansService {
 
     // c. Si count === 1 → activar comunidad
     if (count === 1) {
-      await this.activarComunidad(tx, data.id_comunidad);
+      await this.comunidadService.activarComunidad(tx, data.id_comunidad);
     }
 
     // d. Retornar el plan creado mapeado a IPlanComunidad
@@ -196,22 +216,5 @@ export class PlansService {
       descripcion: plan.descripcion ?? undefined,
       mp_preapproval_plan_id: plan.mp_preapproval_plan_id ?? undefined,
     } as IPlanComunidad;
-  }
-
-  /**
-   * Setea activa = true en la comunidad cuando se crea su primer plan.
-   * Corresponde al paso activarComunidad del diagrama de secuencia.
-   */
-  private async activarComunidad(
-    tx: Prisma.TransactionClient,
-    id_comunidad: string,
-  ): Promise<void> {
-    await tx.comunidad.update({
-      where: { id_comunidad: BigInt(id_comunidad) },
-      data: { activa: true },
-    });
-    this.logger.log(
-      `Comunidad ${id_comunidad} activada por primer plan creado`,
-    );
   }
 }
