@@ -32,7 +32,7 @@ export function Hero() {
             </h1>
 
             <p className="text-xl text-slate-600 max-w-lg mb-14 leading-relaxed font-medium">
-              KomuLearn es el ecosistema donde expertos y aprendices convergen. 
+              Komu es el ecosistema donde expertos y aprendices convergen. 
               Suscripciones directas a nodos de conocimiento de alto impacto.
             </p>
 

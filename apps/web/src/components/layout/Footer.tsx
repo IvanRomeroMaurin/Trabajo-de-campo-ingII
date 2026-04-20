@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import { KomuLogo } from "./KomuLogo";
 
 export function Footer() {
   return (
@@ -10,12 +11,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-6">
-              <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center">
-                <Sparkles size={18} className="text-slate-950" />
-              </div>
-              <span className="font-display text-xl font-black tracking-tight">
-                Komu<span className="text-slate-400 font-bold">Learn</span>
-              </span>
+              <KomuLogo size={36} light={true} />
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-xs font-medium">
               El ecosistema de suscripciones educativas donde el conocimiento técnico se comparte, valida y escala.
@@ -65,7 +61,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-slate-600 text-xs font-medium">
-            © {new Date().getFullYear()} KomuLearn. Todos los derechos reservados.
+            © {new Date().getFullYear()} Komu. Todos los derechos reservados.
           </span>
           <span className="text-slate-700 text-xs font-medium">
             Ingeniería de Software II · Universidad Privada

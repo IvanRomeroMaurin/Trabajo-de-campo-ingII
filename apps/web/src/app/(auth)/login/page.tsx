@@ -4,8 +4,8 @@ import type { Metadata } from 'next';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 
 export const metadata: Metadata = {
-  title: 'Iniciar Sesión – KomuLearn',
-  description: 'Accedé a tu cuenta en KomuLearn y continuá aprendiendo.',
+  title: 'Iniciar Sesión – Komu',
+  description: 'Accedé a tu cuenta en Komu y continuá aprendiendo.',
 };
 
 export default function LoginPage() {

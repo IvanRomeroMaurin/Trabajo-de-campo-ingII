@@ -4,7 +4,7 @@ import { comunidadService } from '@/features/comunidades/services/comunidadServi
 import { IComunidad, ICategoriaComunidad } from '@repo/types';
 
 export const metadata = {
-  title: 'Explorar – KomuLearn',
+  title: 'Explorar – Komu',
   description: 'Descubrí comunidades de expertos y aprendé junto a otros profesionales.',
 };
 

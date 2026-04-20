@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { UserPlus, Sparkles, LogOut } from 'lucide-react';
+import { KomuLogo } from '@/components/layout/KomuLogo';
 import { cookies } from 'next/headers';
 import { authService } from '@/features/auth/services/authService';
 import { logoutAction } from '@/features/auth/actions/logoutAction';
@@ -31,13 +32,8 @@ export async function Navbar() {
         <div className="flex items-center justify-between h-18">
 
           {/* === LOGO === */}
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
-            <div className="w-9 h-9 rounded-xl bg-slate-950 flex items-center justify-center shadow-lg shadow-slate-900/10">
-              <Sparkles size={18} className="text-sky-400 fill-sky-400" />
-            </div>
-            <span className="text-[1.15rem] font-black tracking-tight text-slate-950">
-              Komu<span className="text-slate-500 font-bold">Learn</span>
-            </span>
+          <Link href="/" className="hover:opacity-90 transition-opacity">
+            <KomuLogo size={36} />
           </Link>
 
           {/* === LINKS CENTRALES === */}

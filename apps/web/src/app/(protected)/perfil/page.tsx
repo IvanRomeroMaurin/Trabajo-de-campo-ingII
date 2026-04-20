@@ -7,8 +7,8 @@ import { redirect } from 'next/navigation';
 import { logoutAction } from '@/features/auth/actions/logoutAction';
 
 export const metadata: Metadata = {
-  title: 'Mi Perfil – KomuLearn',
-  description: 'Tu perfil de usuario en KomuLearn.',
+  title: 'Mi Perfil – Komu',
+  description: 'Tu perfil de usuario en Komu.',
 };
 
 export default async function PerfilPage() {

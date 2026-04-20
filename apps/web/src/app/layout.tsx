@@ -17,10 +17,13 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "KomuLearn – Aprende, crea y crece con comunidades",
+  title: "Komu – Aprende, crea y crece con comunidades",
   description:
     "Plataforma de suscripción a comunidades educativas. Aprendé con expertos, creá tu propia comunidad y compartí conocimiento con el mundo.",
   keywords: ["comunidades educativas", "suscripciones", "aprendizaje online", "cursos"],
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({

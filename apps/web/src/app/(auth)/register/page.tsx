@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { RegisterForm } from '@/features/auth/components/RegisterForm';
 
 export const metadata: Metadata = {
-  title: 'Crear Cuenta – KomuLearn',
+  title: 'Crear Cuenta – Komu',
   description: 'Creá tu cuenta gratuita y empezá a explorar comunidades educativas.',
 };
 

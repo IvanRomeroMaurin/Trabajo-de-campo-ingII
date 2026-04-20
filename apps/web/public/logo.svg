@@ -1,0 +1,8 @@
+<svg width="140" height="40" viewBox="0 0 140 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="10" fill="#0f172a" />
+  <path d="M14 12V28" stroke="white" stroke-width="3" stroke-linecap="round" />
+  <path d="M14 20L26 12" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+  <path d="M14 20L26 28" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+  <circle cx="14" cy="20" r="2.5" fill="#38bdf8" />
+  <text x="50" y="28" fill="#0f172a" font-family="sans-serif" font-weight="900" font-size="24" letter-spacing="-0.05em">Komu</text>
+</svg>
