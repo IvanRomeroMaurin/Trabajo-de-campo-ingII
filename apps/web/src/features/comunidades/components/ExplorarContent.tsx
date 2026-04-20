@@ -23,10 +23,10 @@ export function ExplorarContent({ comunidadesIniciales, categorias }: ExplorarCo
     // Si no es 'Todas', buscamos si el nombre de la categoría de la comunidad coincide con la seleccionada
     const categoriaDeComunidad = categorias.find(cat => cat.id_categoria_comunidad === c.id_categoria_comunidad);
     const matchesCategory = selectedCategory === 'Todas' || categoriaDeComunidad?.descripcion === selectedCategory;
-    
-    const matchesSearch = c.nombre.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          (c.descripcion?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
-    
+
+    const matchesSearch = c.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (c.descripcion?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
+
     return matchesCategory && matchesSearch;
   });
 
@@ -47,10 +47,10 @@ export function ExplorarContent({ comunidadesIniciales, categorias }: ExplorarCo
           />
         </div>
 
-        <CategoryFilter 
-          categories={categoryNames} 
-          selectedCategory={selectedCategory} 
-          onSelectCategory={setSelectedCategory} 
+        <CategoryFilter
+          categories={categoryNames}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
         />
       </div>
 
@@ -66,8 +66,8 @@ export function ExplorarContent({ comunidadesIniciales, categorias }: ExplorarCo
           <p className="text-slate-500 text-lg font-medium">
             No encontramos comunidades que coincidan con tu búsqueda.
           </p>
-          <button 
-            onClick={() => {setSelectedCategory('Todas'); setSearchQuery('');}}
+          <button
+            onClick={() => { setSelectedCategory('Todas'); setSearchQuery(''); }}
             className="mt-6 text-sky-600 font-black hover:text-sky-700 transition-colors uppercase text-xs tracking-widest"
           >
             Ver todas las comunidades

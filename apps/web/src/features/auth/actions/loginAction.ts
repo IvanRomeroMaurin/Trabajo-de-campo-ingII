@@ -31,7 +31,7 @@ export async function loginAction(
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 365,
     });
   } catch {
     return { success: false, message: 'Credenciales inválidas o cuenta inactiva' };

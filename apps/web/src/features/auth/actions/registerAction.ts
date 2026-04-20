@@ -47,7 +47,7 @@ export async function registerAction(
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 días
+      maxAge: 60 * 60 * 24 * 365,
     });
   } catch {
     return { success: false, message: 'El correo ya está en uso o hubo un error. Intentá de nuevo.' };

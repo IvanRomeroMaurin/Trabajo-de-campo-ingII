@@ -28,7 +28,7 @@ export default async function ExplorarPage() {
   return (
     <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Cabecera de la página */}
         <header className="mb-20 text-left">
           <div className="mb-6">
@@ -47,9 +47,9 @@ export default async function ExplorarPage() {
         </header>
 
         {/* Contenido interactivo (Búsqueda, Filtros y Grilla) */}
-        <ExplorarContent 
-          comunidadesIniciales={comunidades} 
-          categorias={categorias} 
+        <ExplorarContent
+          comunidadesIniciales={comunidades}
+          categorias={categorias}
         />
 
       </div>
