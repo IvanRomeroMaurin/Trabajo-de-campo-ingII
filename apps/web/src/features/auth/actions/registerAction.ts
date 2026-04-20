@@ -1,6 +1,6 @@
 'use server';
 
-import { registerApi, loginApi } from '@/shared/lib/api/auth/authApi';
+import { authService } from '../services/authService';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { IUsuario } from '@repo/types';
@@ -35,10 +35,10 @@ export async function registerAction(
 
   try {
     // 1. Registrar el usuario en NestJS
-    await registerApi({ nombre, apellido, email, password });
+    await authService.registro({ nombre, apellido, email, password });
 
     // 2. Loguearlo automáticamente obteniendo el token
-    const authResponse = await loginApi({ email, password });
+    const authResponse = await authService.login({ email, password });
 
     // 3. Guardar el token en cookie HttpOnly (igual que el loginAction)
     const cookieStore = await cookies();

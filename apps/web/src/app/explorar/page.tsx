@@ -1,66 +1,29 @@
-'use client';
+import { Sparkles } from 'lucide-react';
+import { ExplorarContent } from '@/features/comunidades/components/ExplorarContent';
+import { comunidadService } from '@/features/comunidades/services/comunidadService';
+import { IComunidad, ICategoriaComunidad } from '@repo/types';
 
-import { useState } from 'react';
-import { Search, Sparkles } from 'lucide-react';
-import { CommunityCard } from '@/features/comunidades/components/CommunityCard';
-import { CategoryFilter } from '@/features/comunidades/components/CategoryFilter';
-import { IComunidad } from '@repo/types';
-
-// --- DATOS MOCKEADOS ---
-const MOCK_COMMUNITIES: IComunidad[] = [
-  {
-    id_comunidad: '1',
-    nombre: 'React Masterminds',
-    descripcion: 'Aprende patrones avanzados de React, Next.js y ecosistema moderno con proyectos reales.',
-    slug: 'react-masterminds',
-    activa: true,
-    fecha_creacion: new Date().toISOString(),
-    id_categoria_comunidad: '1',
-  },
-  {
-    id_comunidad: '2',
-    nombre: 'UI/UX Design Lab',
-    descripcion: 'Espacio para diseñadores que buscan dominar Figma, sistemas de diseño y psicología visual.',
-    slug: 'ui-ux-design-lab',
-    activa: true,
-    fecha_creacion: new Date().toISOString(),
-    id_categoria_comunidad: '2',
-  },
-  {
-    id_comunidad: '3',
-    nombre: 'Growth Marketing 101',
-    descripcion: 'Estrategias de adquisición, retención y experimentación para startups en crecimiento.',
-    slug: 'growth-marketing',
-    activa: true,
-    fecha_creacion: new Date().toISOString(),
-    id_categoria_comunidad: '3',
-  },
-];
-
-const CATEGORIES = ['Todas', 'Programación', 'Diseño', 'Marketing', 'Negocios', 'IA'];
-
-// Mapeo simple para el filtro del mock
-const CATEGORY_MAP: Record<string, string> = {
-  'Todas': 'Todas',
-  'Programación': '1',
-  'Diseño': '2',
-  'Marketing': '3',
-  'Negocios': '4',
-  'IA': '5'
+export const metadata = {
+  title: 'Explorar – KomuLearn',
+  description: 'Descubrí comunidades de expertos y aprendé junto a otros profesionales.',
 };
 
-export default function ExplorarPage() {
-  const [selectedCategory, setSelectedCategory] = useState('Todas');
-  const [searchQuery, setSearchQuery] = useState('');
+export default async function ExplorarPage() {
+  // Fetching de datos en el servidor
+  let comunidades: IComunidad[] = [];
+  let categorias: ICategoriaComunidad[] = [];
 
-  // Lógica de filtrado reactiva
-  const filteredCommunities = MOCK_COMMUNITIES.filter((c) => {
-    const categoryId = CATEGORY_MAP[selectedCategory];
-    const matchesCategory = selectedCategory === 'Todas' || c.id_categoria_comunidad === categoryId;
-    const matchesSearch = c.nombre.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          (c.descripcion?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
-    return matchesCategory && matchesSearch;
-  });
+  try {
+    const results = await Promise.all([
+      comunidadService.getComunidades(),
+      comunidadService.getCategorias(),
+    ]);
+    comunidades = results[0];
+    categorias = results[1];
+  } catch (error) {
+    console.error('Error al cargar datos de exploración:', error);
+    // En caso de error, mostramos listas vacías para no romper la UI
+  }
 
   return (
     <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">
@@ -83,48 +46,11 @@ export default function ExplorarPage() {
           </p>
         </header>
 
-        {/* Barra de búsqueda y Filtros */}
-        <div className="flex flex-col gap-8 mb-16">
-          <div className="relative max-w-xl group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 flex items-center group-focus-within:text-sky-500 transition-colors">
-              <Search size={20} />
-            </div>
-            <input
-              type="text"
-              placeholder="Buscar por nombre o descripción..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-base outline-none transition-all focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 placeholder:text-slate-400 font-medium"
-            />
-          </div>
-
-          <CategoryFilter 
-            categories={CATEGORIES} 
-            selectedCategory={selectedCategory} 
-            onSelectCategory={setSelectedCategory} 
-          />
-        </div>
-
-        {/* Grilla de comunidades */}
-        {filteredCommunities.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCommunities.map((community) => (
-              <CommunityCard key={community.id_comunidad} community={community} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-24 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
-            <p className="text-slate-500 text-lg font-medium">
-              No encontramos comunidades que coincidan con tu búsqueda.
-            </p>
-            <button 
-              onClick={() => {setSelectedCategory('Todas'); setSearchQuery('');}}
-              className="mt-6 text-sky-600 font-black hover:text-sky-700 transition-colors uppercase text-xs tracking-widest"
-            >
-              Ver todas las comunidades
-            </button>
-          </div>
-        )}
+        {/* Contenido interactivo (Búsqueda, Filtros y Grilla) */}
+        <ExplorarContent 
+          comunidadesIniciales={comunidades} 
+          categorias={categorias} 
+        />
 
       </div>
     </div>

@@ -17,6 +17,13 @@ export const comunidadService = {
   },
 
   /**
+   * Obtiene todas las comunidades activas (público)
+   */
+  async getComunidades(): Promise<IComunidad[]> {
+    return api.get<IComunidad[]>('/comunidades');
+  },
+
+  /**
    * Obtiene las comunidades del usuario autenticado
    */
   async getMisComunidades(): Promise<IComunidad[]> {

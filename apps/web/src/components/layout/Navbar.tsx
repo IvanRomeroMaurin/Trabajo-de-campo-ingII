@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { UserPlus, Sparkles, LogOut } from 'lucide-react';
 import { cookies } from 'next/headers';
-import { getProfileApi } from '@/shared/lib/api/auth/authApi';
+import { authService } from '@/features/auth/services/authService';
 import { logoutAction } from '@/features/auth/actions/logoutAction';
 
 /**
@@ -17,7 +17,7 @@ export async function Navbar() {
   let usuario = null;
   if (token) {
     try {
-      usuario = await getProfileApi();
+      usuario = await authService.getPerfil();
     } catch {
       // Token inválido o expirado — tratamos como no logueado
     }

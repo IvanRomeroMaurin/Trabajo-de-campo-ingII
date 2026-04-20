@@ -17,7 +17,7 @@ export function CommunityCard({ community }: CommunityCardProps) {
   const id = community.id_comunidad;
   const nombre = community.nombre;
   const descripcion = community.descripcion || 'Sin descripción';
-  const categoria = 'General'; // TODO: Vincular con la categoría real si viene incluida
+  const categoria = community.categoria_comunidad?.descripcion || 'General';
 
   return (
     <div className="group h-full">

@@ -1,6 +1,6 @@
 'use server';
 
-import { loginApi } from '@/shared/lib/api/auth/authApi';
+import { authService } from '../services/authService';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { IUsuario } from '@repo/types';
@@ -23,7 +23,7 @@ export async function loginAction(
   }
 
   try {
-    const response = await loginApi({ email, password });
+    const response = await authService.login({ email, password });
 
     const cookieStore = await cookies();
     cookieStore.set('access_token', response.access_token, {

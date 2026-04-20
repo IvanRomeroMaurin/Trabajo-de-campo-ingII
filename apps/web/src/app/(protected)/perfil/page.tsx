@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { User, BookOpen, Users, Settings, LogOut, Mail, Shield } from 'lucide-react';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { getProfileApi } from '@/shared/lib/api/auth/authApi';
+import { authService } from '@/features/auth/services/authService';
 import { redirect } from 'next/navigation';
 import { logoutAction } from '@/features/auth/actions/logoutAction';
 
@@ -23,7 +23,7 @@ export default async function PerfilPage() {
   // Obtener datos reales del perfil desde NestJS
   let usuario = null;
   try {
-    usuario = await getProfileApi();
+    usuario = await authService.getPerfil();
   } catch {
     // Si el token expiró o es inválido, redirigir al login
     redirect('/login');
