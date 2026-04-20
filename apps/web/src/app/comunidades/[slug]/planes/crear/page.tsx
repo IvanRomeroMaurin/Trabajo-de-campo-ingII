@@ -1,13 +1,22 @@
 import { CreatePlanForm } from '@/features/planes/components/CreatePlanForm';
 import { CreditCard, ArrowLeft, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { comunidadService } from '@/features/comunidades/services/comunidadService';
+import { notFound } from 'next/navigation';
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function CrearPlanPage({ params }: Props) {
-  const { id } = await params;
+  const { slug } = await params;
+
+  let comunidad;
+  try {
+    comunidad = await comunidadService.getComunidadBySlug(slug);
+  } catch (error) {
+    return notFound();
+  }
 
   return (
     <div className="min-h-screen bg-white py-24 px-4 sm:px-6 lg:px-8">
@@ -16,7 +25,7 @@ export default async function CrearPlanPage({ params }: Props) {
         {/* Navegación y Cabecera */}
         <header className="mb-12">
           <Link 
-            href={`/comunidades/${id}`} 
+            href={`/comunidades/${slug}`} 
             className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold text-sm transition-colors mb-8 group"
           >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -44,7 +53,7 @@ export default async function CrearPlanPage({ params }: Props) {
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-50 rounded-full blur-3xl -z-10 opacity-60" />
           <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-sky-50 rounded-full blur-3xl -z-10 opacity-60" />
           
-          <CreatePlanForm idComunidad={id} />
+          <CreatePlanForm idComunidad={comunidad.id_comunidad} />
         </div>
 
         {/* Nota informativa */}

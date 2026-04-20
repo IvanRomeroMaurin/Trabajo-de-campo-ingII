@@ -29,7 +29,7 @@ export async function createComunidadAction(formData: FormData) {
     revalidatePath('/explorar');
 
     // Redirigimos al panel de la nueva comunidad
-    return { success: true, id: comunidad.id_comunidad };
+    return { success: true, id: comunidad.id_comunidad, slug: comunidad.slug };
   } catch (error) {
     console.error('Error al crear comunidad:', error);
     return { success: false, error: 'Ocurrió un error al crear la comunidad' };

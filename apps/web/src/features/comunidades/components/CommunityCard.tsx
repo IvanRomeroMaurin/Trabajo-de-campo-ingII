@@ -59,7 +59,7 @@ export function CommunityCard({ community }: CommunityCardProps) {
             </span>
           </div>
           <Link
-            href={`/comunidades/${id}`}
+            href={`/comunidades/${community.slug}`}
             className="text-sky-500 font-black text-xs flex items-center gap-1 group-hover:gap-2 transition-all"
           >
             Entrar <ChevronRight size={16} />

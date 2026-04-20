@@ -31,6 +31,13 @@ export const comunidadService = {
   },
 
   /**
+   * Obtiene una comunidad por su slug
+   */
+  async getComunidadBySlug(slug: string): Promise<IComunidad> {
+    return api.get<IComunidad>(`/comunidades/s/${slug}`);
+  },
+
+  /**
    * Obtiene la lista de categorías disponibles
    */
   async getCategorias(): Promise<ICategoriaComunidad[]> {

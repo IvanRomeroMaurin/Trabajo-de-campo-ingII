@@ -35,8 +35,8 @@ export function CreateCommunityForm({ categorias }: CreateCommunityFormProps) {
     
     try {
       const result = await createComunidadAction(formData);
-      if (result.success && result.id) {
-        router.push(`/comunidades/${result.id}`);
+      if (result.success && result.slug) {
+        router.push(`/comunidades/${result.slug}`);
       } else {
         setError(result.error || 'Error desconocido');
       }

@@ -4,15 +4,15 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function ComunidadDetallePage({ params }: Props) {
-  const { id } = await params;
+  const { slug } = await params;
   
   let comunidad;
   try {
-    comunidad = await comunidadService.getComunidad(id);
+    comunidad = await comunidadService.getComunidadBySlug(slug);
   } catch (error) {
     return notFound();
   }
@@ -100,7 +100,7 @@ export default async function ComunidadDetallePage({ params }: Props) {
               <h2 className="text-2xl font-black text-slate-950 tracking-tight">Planes de Suscripción</h2>
             </div>
             <Link
-              href={`/comunidades/${id}/planes/crear`}
+              href={`/comunidades/${slug}/planes/crear`}
               className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-950 font-black rounded-xl hover:bg-slate-50 transition-all text-sm shadow-sm"
             >
               <Plus size={18} />

@@ -82,10 +82,11 @@ export class ComunidadController {
 
   /**
    * Obtiene una comunidad por su slug.
-   * @route GET /comunidades/:slug
+   * Usamos el prefijo 's/' para evitar colisiones con el ID y errores de path-to-regexp.
+   * @route GET /comunidades/s/:slug
    * @access Público
    */
-  @Get(':slug([a-zA-Z0-9\\-]+)')
+  @Get('s/:slug')
   public async getComunidadPorSlug(@Param('slug') slug: string): Promise<IComunidad> {
     return this.comunidadService.getComunidadPorSlug(slug);
   }
@@ -95,7 +96,7 @@ export class ComunidadController {
    * @route GET /comunidades/:id
    * @access Público
    */
-  @Get(':id(\\d+)')
+  @Get(':id')
   public async getComunidad(@Param('id') id: string): Promise<IComunidad> {
     return this.comunidadService.getComunidad(id);
   }
