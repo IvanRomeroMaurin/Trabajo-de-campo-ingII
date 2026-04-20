@@ -3,6 +3,7 @@ import { planService } from '@/features/planes/services/planService';
 import { Sparkles, Plus, Settings, Users, CreditCard, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { IComunidad, IPlanComunidad } from '@repo/types';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -11,8 +12,8 @@ interface Props {
 export default async function ComunidadDetallePage({ params }: Props) {
   const { slug } = await params;
   
-  let comunidad;
-  let planesComunidad = [];
+  let comunidad: IComunidad;
+  let planesComunidad: IPlanComunidad[] = [];
 
   try {
     comunidad = await comunidadService.getComunidadBySlug(slug);

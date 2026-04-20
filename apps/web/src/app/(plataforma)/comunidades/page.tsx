@@ -2,9 +2,10 @@ import { comunidadService } from '@/features/comunidades/services/comunidadServi
 import { CommunityCard } from '@/features/comunidades/components/CommunityCard';
 import { Sparkles, Plus, Layers, Search } from 'lucide-react';
 import Link from 'next/link';
+import { IComunidad } from '@repo/types';
 
 export default async function MisComunidadesPage() {
-  let comunidades = [];
+  let comunidades: IComunidad[] = [];
   try {
     comunidades = await comunidadService.getMisComunidades();
   } catch (error) {

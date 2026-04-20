@@ -17,6 +17,7 @@ export async function loginAction(
 ): Promise<FormState> {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+  const callbackUrl = (formData.get('callbackUrl') as string) || '/';
 
   if (!email || !password) {
     return { success: false, message: 'El correo y la contraseña son requeridos' };
@@ -37,6 +38,6 @@ export async function loginAction(
     return { success: false, message: 'Credenciales inválidas o cuenta inactiva' };
   }
 
-  // Redirigir al home (fuera del try/catch porque redirect lanza internamente)
-  redirect('/');
+  // Redirigir al destino original o al home
+  redirect(callbackUrl);
 }

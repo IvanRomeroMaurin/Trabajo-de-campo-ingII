@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { comunidadService } from '@/features/comunidades/services/comunidadService';
 import { planService } from '@/features/planes/services/planService';
 import { notFound } from 'next/navigation';
+import { IComunidad, ICicloPago } from '@repo/types';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -12,8 +13,8 @@ interface Props {
 export default async function CrearPlanPage({ params }: Props) {
   const { slug } = await params;
 
-  let comunidad;
-  let ciclos = [];
+  let comunidad: IComunidad;
+  let ciclos: ICicloPago[] = [];
   
   try {
     const [comunidadRes, ciclosRes] = await Promise.all([

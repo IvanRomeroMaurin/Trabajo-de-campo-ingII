@@ -9,11 +9,13 @@ import { AlertMessage } from '@/components/ui/AlertMessage';
 
 const initialState = { success: false, message: '' };
 
-export function LoginForm() {
+export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
   const [state, action, isPending] = useActionState(loginAction, initialState);
 
   return (
     <form action={action} className="flex flex-col gap-6">
+      {/* Redirección dinámica tras el login */}
+      <input type="hidden" name="callbackUrl" value={callbackUrl || ''} />
 
       <FormInput
         label="Correo electrónico"

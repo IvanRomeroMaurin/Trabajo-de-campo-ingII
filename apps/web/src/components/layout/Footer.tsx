@@ -33,10 +33,14 @@ export function Footer() {
           <div>
             <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-6">Producto</h4>
             <ul className="space-y-4">
-              {['Explorar', 'Comunidades', 'Crear Nodo', 'Para Equipos'].map(item => (
-                <li key={item}>
-                  <Link href="#" className="text-slate-400 text-sm font-medium hover:text-white transition-colors">
-                    {item}
+              {[
+                { label: 'Explorar', href: '/explorar' },
+                { label: 'Comunidades', href: '/comunidades' },
+                { label: 'Crear Nodo', href: '/comunidades/crear' }
+              ].map(item => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-slate-400 text-sm font-medium hover:text-white transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -46,10 +50,15 @@ export function Footer() {
           <div>
             <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 mb-6">Legal</h4>
             <ul className="space-y-4">
-              {['Privacidad', 'Términos de Uso', 'Cookies', 'Accesibilidad'].map(item => (
-                <li key={item}>
-                  <Link href="#" className="text-slate-400 text-sm font-medium hover:text-white transition-colors">
-                    {item}
+              {[
+                { label: 'Privacidad', href: '/legal/privacidad' },
+                { label: 'Términos de Uso', href: '/legal/terminos' },
+                { label: 'Cookies', href: '/legal/cookies' },
+                { label: 'Accesibilidad', href: '/legal/accesibilidad' }
+              ].map(item => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-slate-400 text-sm font-medium hover:text-white transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -62,9 +71,6 @@ export function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-slate-600 text-xs font-medium">
             © {new Date().getFullYear()} Komu. Todos los derechos reservados.
-          </span>
-          <span className="text-slate-700 text-xs font-medium">
-            Ingeniería de Software II · Universidad Privada
           </span>
         </div>
       </div>

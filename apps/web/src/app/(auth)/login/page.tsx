@@ -8,7 +8,13 @@ export const metadata: Metadata = {
   description: 'Accedé a tu cuenta en Komu y continuá aprendiendo.',
 };
 
-export default function LoginPage() {
+export default async function LoginPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ from?: string }> 
+}) {
+  const { from } = await searchParams;
+
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6">
       <div className="glass-card max-w-md w-full p-10 py-12 border border-slate-200 shadow-xl shadow-slate-200/20">
@@ -21,7 +27,7 @@ export default function LoginPage() {
           <p className="text-slate-500 text-sm font-medium">Ingresá tus credenciales para continuar</p>
         </div>
 
-        <LoginForm />
+        <LoginForm callbackUrl={from} />
 
         <p className="text-center mt-10 text-slate-500 text-sm font-medium">
           ¿No tenés cuenta?{' '}
