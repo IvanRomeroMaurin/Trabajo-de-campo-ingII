@@ -322,7 +322,12 @@ export class ComunidadService {
     if (miembroExistente) {
       // Si ya existe → actualizar fecha_actualizacion (doc: "actualiza fechas")
       await client.miembro_comunidad.update({
-        where: { id_miembro: miembroExistente.id_miembro },
+        where: {
+          id_usuario_id_comunidad: {
+            id_usuario: BigInt(id_usuario),
+            id_comunidad: BigInt(id_comunidad),
+          },
+        },
         data: { fecha_actualizacion: new Date() },
       });
     } else {
@@ -373,7 +378,12 @@ export class ComunidadService {
     }
 
     await this.prisma.miembro_comunidad.update({
-      where: { id_miembro: miembro.id_miembro },
+      where: {
+        id_usuario_id_comunidad: {
+          id_usuario: BigInt(id_usuario),
+          id_comunidad: BigInt(id_comunidad),
+        },
+      },
       data: {
         id_rol_comunidad: BigInt(id_rol_nuevo),
         fecha_actualizacion: new Date(),

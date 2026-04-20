@@ -8,7 +8,6 @@ export interface IRol {
 }
 
 export interface IMiembroComunidad {
-  id_miembro: string;
   id_usuario: string;
   id_comunidad: string;
   id_rol_comunidad: string;

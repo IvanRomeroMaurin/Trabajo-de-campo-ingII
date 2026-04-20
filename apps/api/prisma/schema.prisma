@@ -110,7 +110,6 @@ model curso {
 }
 
 model miembro_comunidad {
-  id_miembro          BigInt    @id @default(autoincrement())
   id_usuario          BigInt
   id_comunidad        BigInt
   id_rol_comunidad    BigInt
@@ -119,6 +118,8 @@ model miembro_comunidad {
   comunidad           comunidad @relation(fields: [id_comunidad], references: [id_comunidad], onDelete: NoAction, onUpdate: NoAction, map: "fk_miembro_comunidad")
   rol                 rol       @relation(fields: [id_rol_comunidad], references: [id_rol], onDelete: NoAction, onUpdate: NoAction, map: "fk_miembro_rol")
   usuario             usuario   @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_miembro_usuario")
+
+  @@id([id_usuario, id_comunidad])
 }
 
 model modulo {
