@@ -37,8 +37,9 @@ export function EditCommunityForm({ categorias, comunidad }: EditCommunityFormPr
     try {
       const result = await updateComunidadAction(comunidad.id_comunidad, formData);
       if (result.success) {
-        // Redirigimos al panel de la comunidad (podría haber cambiado el slug, pero por ahora volvemos)
-        router.push(`/comunidades`);
+        // Redirigimos al panel de la comunidad usando el slug (el nuevo si cambió, o el actual si no)
+        const nextSlug = result.slug || comunidad.slug;
+        router.push(`/comunidades/${nextSlug}`);
       } else {
         setError(result.error || 'Error desconocido');
       }

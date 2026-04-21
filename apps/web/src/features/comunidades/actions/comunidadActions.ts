@@ -69,7 +69,9 @@ export async function updateComunidadAction(id_comunidad: string, formData: Form
       try {
         const path = `portadas/${id_comunidad}/portada.jpg`;
         const publicUrl = await uploadFileToStorage(portadaFile, 'comunidades', path);
-        dto.portada_url = publicUrl;
+        // Supabase y los navegadores cachean fuertemente la misma URL de imagen.
+        // Agregamos un timestamp para forzar que el cliente descargue la nueva versión.
+        dto.portada_url = `${publicUrl}?t=${Date.now()}`;
       } catch (uploadError) {
         console.error('Error al subir la imagen de portada:', uploadError);
         return { success: false, error: 'Error al subir la imagen de portada' };
@@ -77,8 +79,10 @@ export async function updateComunidadAction(id_comunidad: string, formData: Form
     }
 
     // 2. Actualizar comunidad
+    let updatedSlug = '';
     if (Object.keys(dto).length > 0) {
-      await comunidadService.actualizarComunidad(id_comunidad, dto);
+      const updatedComunidad = await comunidadService.actualizarComunidad(id_comunidad, dto);
+      updatedSlug = updatedComunidad.slug;
     }
 
     // Revalidar
@@ -86,7 +90,7 @@ export async function updateComunidadAction(id_comunidad: string, formData: Form
     revalidatePath(`/comunidades/${id_comunidad}`);
     revalidatePath('/explorar');
 
-    return { success: true };
+    return { success: true, slug: updatedSlug };
   } catch (error) {
     console.error('Error al actualizar comunidad:', error);
     return { success: false, error: 'Ocurrió un error al actualizar la comunidad' };

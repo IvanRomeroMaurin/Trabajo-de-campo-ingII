@@ -30,8 +30,9 @@ export function DeactivateCommunityButton({ idComunidad, isActive }: DeactivateC
       }
 
       if (result.success) {
-        // La recarga de Next.js refrescará el estado en el padre.
-        router.push('/comunidades');
+        // Al dejar al usuario aquí y refrescar, los server actions ya revalidaron la caché (revalidatePath)
+        // por lo que el estado se actualizará en pantalla a Inactivo/Activo instantáneamente.
+        router.refresh();
       } else {
         alert(result.error);
       }
