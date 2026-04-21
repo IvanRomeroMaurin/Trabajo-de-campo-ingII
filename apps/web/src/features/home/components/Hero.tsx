@@ -9,10 +9,10 @@ export function Hero() {
       <div className="absolute inset-0 dot-grid opacity-25" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/5 blur-3xl rounded-full translate-y-1/3 -translate-x-1/4" />
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
+
           {/* Main Content Area */}
           <div className="lg:col-span-7 pr-0 lg:pr-10">
 
@@ -23,18 +23,18 @@ export function Hero() {
             </h1>
 
             <p className="text-xl text-slate-600 max-w-lg mb-14 leading-relaxed font-medium">
-              Komu es el ecosistema donde expertos y aprendices convergen. 
-              Suscripciones directas a nodos de conocimiento de alto impacto.
+              Komu es el ecosistema donde expertos y aprendices convergen.
+              Suscripciones directas a comunidades de conocimiento de alto impacto.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-6">
               <Link href="/explorar" className="btn-primary w-full sm:w-auto py-5 px-12 text-lg bg-slate-950 hover:bg-sky-600 transition-colors">
-                Unirme a un Nodo
+                Unirme a una Comunidad
                 <ArrowRight size={20} />
               </Link>
-              
-              <Link 
-                href="/comunidades/crear" 
+
+              <Link
+                href="/comunidades/crear"
                 className="btn-outline w-full sm:w-auto py-5 px-12 text-lg border-2 border-slate-200 block text-center"
               >
                 Crear un Nodo
@@ -46,8 +46,8 @@ export function Hero() {
           <div className="lg:col-span-5 relative mt-16 lg:mt-0">
             {/* The Main "Tech Hub" Card */}
             <div className="relative z-10 rounded-[2.5rem] border border-white/20 bg-white/5 p-3 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] backdrop-blur-3xl overflow-hidden transform rotate-2 hover:rotate-0 transition-all duration-700">
-              <Image 
-                src="/assets/hero_komu_main.png" 
+              <Image
+                src="/assets/hero_komu_main.png"
                 alt="Komu Hub Experience"
                 width={800}
                 height={600}
@@ -72,14 +72,14 @@ export function Hero() {
             <div className="absolute -left-12 -bottom-6 z-20 bg-white/80 backdrop-blur-xl border border-white p-5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] animate-float" style={{ animationDelay: '1.5s' }}>
               <div className="flex items-center gap-4">
                 <div className="flex -space-x-4">
-                  {[1,2,3].map(i => (
+                  {[1, 2, 3].map(i => (
                     <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-xs font-bold overflow-hidden shadow-sm">
-                       <Image src={`https://i.pravatar.cc/100?u=${i}`} alt="user" width={40} height={40} />
+                      <Image src={`https://i.pravatar.cc/100?u=${i}`} alt="user" width={40} height={40} />
                     </div>
                   ))}
                 </div>
                 <div>
-                  <div className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Nodos Activos</div>
+                  <div className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Comunidades Activas</div>
                   <div className="text-sm font-bold text-slate-900">+1.2k Usuarios</div>
                 </div>
               </div>

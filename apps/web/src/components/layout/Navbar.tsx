@@ -42,7 +42,7 @@ export async function Navbar() {
               Explorar
             </Link>
             <Link href="/comunidades" className="px-5 py-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all font-bold text-sm flex items-center gap-2">
-              Comunidades
+              Mis comunidades
             </Link>
             {isLoggedIn && (
               <Link href="/comunidades/crear" className="px-5 py-2 rounded-xl text-sky-600 hover:text-sky-700 hover:bg-sky-50 transition-all font-bold text-sm flex items-center gap-2">
