@@ -58,5 +58,11 @@ export const comunidadService = {
    */
   async getCategorias(): Promise<ICategoriaComunidad[]> {
     return api.get<ICategoriaComunidad[]>('/comunidades/categorias');
+  },
+  /**
+   * Da de baja una comunidad lógicamente
+   */
+  async desactivarComunidad(id: string): Promise<{ mensaje: string }> {
+    return api.delete<{ mensaje: string }>(`/comunidades/${id}`);
   }
 };

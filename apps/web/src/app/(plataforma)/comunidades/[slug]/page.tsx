@@ -1,9 +1,10 @@
 import { comunidadService } from '@/features/comunidades/services/comunidadService';
 import { planService } from '@/features/planes/services/planService';
-import { Sparkles, Plus, Settings, Users, CreditCard, ArrowLeft } from 'lucide-react';
+import { Sparkles, Plus, Settings, Users, CreditCard, ArrowLeft, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { IComunidad, IPlanComunidad } from '@repo/types';
+import { DeactivateCommunityButton } from '@/features/comunidades/components/DeactivateCommunityButton';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -14,11 +15,19 @@ export default async function ComunidadDetallePage({ params }: Props) {
   
   let comunidad: IComunidad;
   let planesComunidad: IPlanComunidad[] = [];
+  let isCreator = false;
 
   try {
     comunidad = await comunidadService.getComunidadBySlug(slug);
-    // Obtener los planes (activos e inactivos) de forma dinámica
     planesComunidad = await planService.getPlanesPorComunidad(comunidad.id_comunidad);
+    
+    // Validar si el usuario actual tiene en "mis-comunidades" a esta comunidad
+    try {
+      const misComunidades = await comunidadService.getMisComunidades();
+      isCreator = misComunidades.some((c: IComunidad) => String(c.id_comunidad) === String(comunidad.id_comunidad));
+    } catch (e) {
+      // Ignoramos si no está logeado u otro error
+    }
   } catch (error) {
     console.error('Error al cargar detalle de comunidad:', error);
     return notFound();
@@ -38,14 +47,29 @@ export default async function ComunidadDetallePage({ params }: Props) {
         
         {/* Navegación y Cabecera */}
         <header className="mb-12">
-          <Link 
-            href="/comunidades" 
-            className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold text-sm transition-colors mb-8 group"
-          >
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            Volver al panel
-          </Link>
-          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+            <Link 
+              href="/comunidades" 
+              className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold text-sm transition-colors group"
+            >
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+              Volver al panel
+            </Link>
+
+            {isCreator && (
+              <div className="flex items-center gap-3">
+                <DeactivateCommunityButton idComunidad={comunidad.id_comunidad} />
+                <Link
+                  href={`/comunidades/${slug}/editar`}
+                  className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-950 font-black rounded-xl hover:bg-slate-50 transition-all text-sm shadow-sm"
+                >
+                  <Pencil size={18} />
+                  Editar Comunidad
+                </Link>
+              </div>
+            )}
+          </div>
+
           <div className="bg-white rounded-[40px] p-10 border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col md:flex-row gap-10 items-center">
             <div 
               className="w-32 h-32 rounded-[32px] flex items-center justify-center text-white text-4xl font-black shadow-inner ring-8 ring-slate-50"
