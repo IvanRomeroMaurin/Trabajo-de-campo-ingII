@@ -58,7 +58,7 @@ export default async function ComunidadDetallePage({ params }: Props) {
 
             {isCreator && (
               <div className="flex items-center gap-3">
-                <DeactivateCommunityButton idComunidad={comunidad.id_comunidad} />
+                <DeactivateCommunityButton idComunidad={comunidad.id_comunidad} isActive={comunidad.activa} />
                 <Link
                   href={`/comunidades/${slug}/editar`}
                   className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-950 font-black rounded-xl hover:bg-slate-50 transition-all text-sm shadow-sm"

@@ -144,4 +144,22 @@ export class ComunidadController {
       req.user.id_usuario.toString(),
     );
   }
+
+  /**
+   * Alta lógica de la comunidad (activa = true). Solo el creador puede hacerlo.
+   * @route POST /comunidades/:id/reactivar
+   * @access Protegido (JWT)
+   */
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
+  @Post(':id/reactivar')
+  public async reactivarComunidad(
+    @Param('id') id: string,
+    @Request() req: { user: IUsuario },
+  ): Promise<{ mensaje: string }> {
+    return this.comunidadService.reactivarComunidad(
+      id,
+      req.user.id_usuario.toString(),
+    );
+  }
 }

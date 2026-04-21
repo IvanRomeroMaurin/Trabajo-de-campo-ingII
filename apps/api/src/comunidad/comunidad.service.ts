@@ -288,6 +288,27 @@ export class ComunidadService {
     };
   }
 
+  /**
+   * Alta lógica de la comunidad: setea activa = true. Solo el creador puede hacerlo.
+   * @param id ID de la comunidad a reactivar
+   * @param idUsuario ID del usuario autenticado
+   */
+  public async reactivarComunidad(
+    id: string,
+    idUsuario: string,
+  ): Promise<{ mensaje: string }> {
+    await this.verificarExistenciaYAutoria(id, idUsuario);
+
+    await this.prisma.comunidad.update({
+      where: { id_comunidad: BigInt(id) },
+      data: { activa: true },
+    });
+
+    return {
+      mensaje: `La comunidad con id ${id} fue reactivada correctamente`,
+    };
+  }
+
   // ─── Gestión de Miembros ──────────────────────────────────────────────────────
 
   /**

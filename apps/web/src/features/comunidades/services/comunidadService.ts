@@ -64,5 +64,11 @@ export const comunidadService = {
    */
   async desactivarComunidad(id: string): Promise<{ mensaje: string }> {
     return api.delete<{ mensaje: string }>(`/comunidades/${id}`);
+  },
+  /**
+   * Reactiva una comunidad (cambia su estado activa a true)
+   */
+  async reactivarComunidad(id: string): Promise<{ mensaje: string }> {
+    return api.post<{ mensaje: string }>(`/comunidades/${id}/reactivar`, {});
   }
 };
