@@ -8,12 +8,21 @@ export interface CreateCommunityDto {
   portada_url?: string;
 }
 
+export type UpdateCommunityDto = Partial<CreateCommunityDto>;
+
 export const comunidadService = {
   /**
    * Crea una nueva comunidad
    */
   async createComunidad(dto: CreateCommunityDto): Promise<IComunidad> {
     return api.post<IComunidad>('/comunidades', dto);
+  },
+
+  /**
+   * Actualiza una comunidad existente
+   */
+  async actualizarComunidad(id: string, dto: UpdateCommunityDto): Promise<IComunidad> {
+    return api.patch<IComunidad>(`/comunidades/${id}`, dto);
   },
 
   /**

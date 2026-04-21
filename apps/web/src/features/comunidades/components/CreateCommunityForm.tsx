@@ -136,9 +136,20 @@ export function CreateCommunityForm({ categorias }: CreateCommunityFormProps) {
                 <input
                   id="portada_url"
                   name="portada_url"
-                  type="url"
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 placeholder:text-slate-400 font-medium"
+                  type="file"
+                  accept="image/jpeg, image/png, image/webp"
+                  className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 font-medium file:cursor-pointer file:bg-sky-50 file:text-sky-700 file:font-bold file:border-0 file:rounded-xl file:px-4 file:py-2 file:mr-4 hover:file:bg-sky-100"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      if (file.size > 2 * 1024 * 1024) {
+                        setError('El tamaño de la imagen no puede superar los 2MB');
+                        e.target.value = '';
+                      } else {
+                        setError(null);
+                      }
+                    }
+                  }}
                 />
               </div>
             </div>

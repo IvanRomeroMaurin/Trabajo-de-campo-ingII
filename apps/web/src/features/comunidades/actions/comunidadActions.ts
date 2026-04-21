@@ -1,14 +1,14 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { comunidadService, CreateCommunityDto } from '../services/comunidadService';
+import { uploadFileToStorage } from '@/shared/utils/storage';
 
 export async function createComunidadAction(formData: FormData) {
   const nombre = formData.get('nombre') as string;
   const descripcion = formData.get('descripcion') as string;
   const id_categoria_comunidad = Number(formData.get('id_categoria_comunidad'));
-  const portada_url = formData.get('portada_url') as string;
+  const portadaFile = formData.get('portada_url') as File | null;
 
   if (!nombre || !id_categoria_comunidad) {
     throw new Error('Faltan campos obligatorios');
@@ -18,12 +18,28 @@ export async function createComunidadAction(formData: FormData) {
     nombre,
     descripcion,
     id_categoria_comunidad,
-    portada_url: portada_url || undefined,
   };
 
   try {
+    // 1. Crear la comunidad base
     const comunidad = await comunidadService.createComunidad(dto);
     
+    // 2. Si hay imagen de portada, subirla a Supabase y actualizar la comunidad
+    if (portadaFile && portadaFile.size > 0) {
+      try {
+        const path = `portadas/${comunidad.id_comunidad}/portada.jpg`;
+        const publicUrl = await uploadFileToStorage(portadaFile, 'comunidades', path);
+        
+        await comunidadService.actualizarComunidad(comunidad.id_comunidad, {
+          portada_url: publicUrl,
+        });
+      } catch (uploadError) {
+        console.error('Error al subir la imagen de portada:', uploadError);
+        // Opcional: Podríamos retornar un warning indicando que se creó pero falló la imagen,
+        // pero vamos a continuar el flujo para no perder la comunidad ya creada.
+      }
+    }
+
     // Revalidamos las rutas de comunidades
     revalidatePath('/comunidades');
     revalidatePath('/explorar');
