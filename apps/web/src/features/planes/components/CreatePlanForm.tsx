@@ -16,6 +16,7 @@ export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProp
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<{titulo?: string; precio?: string}>({});
   const [selectedCiclo, setSelectedCiclo] = useState<string>(
     ciclos.length > 0 ? ciclos[0].id_ciclo_pago : ''
   );
@@ -38,8 +39,29 @@ export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProp
     event.preventDefault();
     setIsPending(true);
     setError(null);
+    setFormErrors({});
 
     const formData = new FormData(event.currentTarget);
+    
+    // Validaciones del lado del cliente
+    const titulo = formData.get('titulo') as string;
+    const precio = Number(formData.get('precio'));
+    const newErrors: {titulo?: string; precio?: string} = {};
+
+    if (!titulo || !titulo.trim()) {
+      newErrors.titulo = 'El título es un campo obligatorio';
+    }
+    
+    if (!precio || precio <= 0) {
+      newErrors.precio = 'El precio debe ser mayor a cero';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setFormErrors(newErrors);
+      setIsPending(false);
+      return;
+    }
+
     formData.append('id_comunidad', idComunidad);
     
     try {
@@ -59,7 +81,7 @@ export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProp
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} noValidate className="space-y-8">
         
         <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-slate-200/50 space-y-6">
           <div className="flex items-center gap-3 mb-2">
@@ -75,13 +97,15 @@ export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProp
                 Título del plan
               </label>
               <input
-                required
                 id="titulo"
                 name="titulo"
                 type="text"
                 placeholder="Ej: Plan Premium Mensual"
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 placeholder:text-slate-400 font-medium"
+                className={`w-full px-5 py-4 bg-slate-50 border ${formErrors.titulo ? 'border-red-400' : 'border-slate-200'} rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 placeholder:text-slate-400 font-medium`}
               />
+              {formErrors.titulo && (
+                <p className="text-red-500 text-xs font-bold mt-1 ml-1">{formErrors.titulo}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -115,16 +139,17 @@ export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProp
               <div className="relative">
                 <span className="absolute left-5 top-1/2 -translate-y-1/2 font-black text-slate-400">$</span>
                 <input
-                  required
                   id="precio"
                   name="precio"
                   type="number"
-                  min="1"
                   step="0.01"
                   placeholder="0.00"
-                  className="w-full pl-10 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 font-black"
+                  className={`w-full pl-10 pr-5 py-4 bg-slate-50 border ${formErrors.precio ? 'border-red-400' : 'border-slate-200'} rounded-2xl text-slate-900 outline-none transition-all focus:bg-white focus:border-emerald-500 font-black`}
                 />
               </div>
+              {formErrors.precio && (
+                <p className="text-red-500 text-xs font-bold mt-1 ml-1">{formErrors.precio}</p>
+              )}
             </div>
 
             <div className="space-y-2">
