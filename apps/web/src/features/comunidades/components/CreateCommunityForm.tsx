@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sparkles, Image as ImageIcon, Layout, Type, ArrowRight, Loader2 } from 'lucide-react';
-import { createComunidadAction } from '../actions/comunidadActions';
+import { Image as ImageIcon, Layout, Type, ArrowRight, Loader2 } from 'lucide-react';
+import { crearComunidad } from '../actions/comunidadActions';
 import { ICategoriaComunidad } from '@repo/types';
 
 interface CreateCommunityFormProps {
@@ -34,7 +34,7 @@ export function CreateCommunityForm({ categorias }: CreateCommunityFormProps) {
     const formData = new FormData(event.currentTarget);
     
     try {
-      const result = await createComunidadAction(formData);
+      const result = await crearComunidad(formData);
       if (result.success && result.slug) {
         router.push(`/comunidades/${result.slug}`);
       } else {

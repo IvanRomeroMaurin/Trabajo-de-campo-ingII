@@ -14,7 +14,7 @@ export const comunidadService = {
   /**
    * Crea una nueva comunidad
    */
-  async createComunidad(dto: CreateCommunityDto): Promise<IComunidad> {
+  async crearComunidad(dto: CreateCommunityDto): Promise<IComunidad> {
     return api.post<IComunidad>('/comunidades', dto);
   },
 

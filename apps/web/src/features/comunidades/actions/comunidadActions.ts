@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { comunidadService, CreateCommunityDto } from '../services/comunidadService';
 import { uploadFileToStorage } from '@/shared/utils/storage';
 
-export async function createComunidadAction(formData: FormData) {
+export async function crearComunidad(formData: FormData) {
   const nombre = formData.get('nombre') as string;
   const descripcion = formData.get('descripcion') as string;
   const id_categoria_comunidad = Number(formData.get('id_categoria_comunidad'));
@@ -22,7 +22,7 @@ export async function createComunidadAction(formData: FormData) {
 
   try {
     // 1. Crear la comunidad base
-    const comunidad = await comunidadService.createComunidad(dto);
+    const comunidad = await comunidadService.crearComunidad(dto);
     
     // 2. Si hay imagen de portada, subirla a Supabase y actualizar la comunidad
     if (portadaFile && portadaFile.size > 0) {
