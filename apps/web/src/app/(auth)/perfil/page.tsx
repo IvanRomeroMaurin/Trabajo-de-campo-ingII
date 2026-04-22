@@ -63,7 +63,7 @@ export default async function PerfilPage() {
 
       {/* Tarjetas de secciones */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <Link href="/perfil/suscripciones" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-sky-500/10 transition-all duration-300">
+        <Link href="/proximamente" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-sky-500/10 transition-all duration-300">
           <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
             <BookOpen size={24} />
           </div>
@@ -71,7 +71,7 @@ export default async function PerfilPage() {
           <p className="text-slate-500 text-xs font-medium leading-relaxed">Comunidades a las que pertenecés</p>
         </Link>
 
-        <Link href="/perfil/comunidades" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300">
+        <Link href="/comunidades" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300">
           <div className="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
             <Users size={24} />
           </div>
@@ -79,7 +79,7 @@ export default async function PerfilPage() {
           <p className="text-slate-500 text-xs font-medium leading-relaxed">Comunidades que administrás</p>
         </Link>
 
-        <Link href="/perfil/ajustes" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300">
+        <Link href="/proximamente" className="glass-card p-8 group border border-slate-100 hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300">
           <div className="w-12 h-12 rounded-xl bg-violet-50 text-violet-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
             <Settings size={24} />
           </div>

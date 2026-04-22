@@ -6,9 +6,10 @@ import { IComunidad } from '@repo/types';
 
 interface CommunityCardProps {
   community: IComunidad;
+  href?: string;
 }
 
-export function CommunityCard({ community }: CommunityCardProps) {
+export function CommunityCard({ community, href }: CommunityCardProps) {
   // Datos mockeados para campos que podrían no venir de la API aún
   const miembros = 0;
   const estrellas = 4.8;
@@ -82,7 +83,7 @@ export function CommunityCard({ community }: CommunityCardProps) {
           </div>
 
           <Link
-            href={`/comunidades/${community.slug}`}
+            href={href || `/comunidades/${community.slug}`}
             className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center hover:bg-sky-600 transition-all shadow-lg shadow-slate-900/10 group-hover:shadow-sky-500/20"
           >
             <ChevronRight size={20} />
