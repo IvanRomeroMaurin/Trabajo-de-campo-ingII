@@ -16,7 +16,7 @@ import { Prisma } from '@prisma/client';
 export class PlanesService {
   private readonly logger = new Logger(PlanesService.name);
 
-  constructor(
+  public constructor(
     private readonly prisma: PrismaService,
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly configService: ConfigService,
@@ -33,7 +33,7 @@ export class PlanesService {
    * @throws BadRequestException si los datos del plan no son válidos.
    * @throws InternalServerErrorException si hay problemas con la configuración o la persistencia.
    */
-  async crearPlan(dto: CrearPlanDto): Promise<ICreatePlanResponse> {
+  public async crearPlan(dto: CrearPlanDto): Promise<ICreatePlanResponse> {
     // PASO 1 — validatePlanData
     this.validatePlanData(dto.titulo, dto.precio, dto.frecuencia);
 
@@ -221,7 +221,7 @@ export class PlanesService {
    *
    * @returns Lista de ciclos de pago (frecuencia y tipo).
    */
-  async getValidCiclosPago(): Promise<ICicloPago[]> {
+  public async getValidCiclosPago(): Promise<ICicloPago[]> {
     const ciclos = await this.prisma.ciclo_pago.findMany({
       orderBy: [{ tipo_frecuencia: 'asc' }, { frecuencia: 'asc' }],
     });
@@ -239,7 +239,7 @@ export class PlanesService {
    * @param id_comunidad - ID de la comunidad a consultar.
    * @returns Lista de planes con detalles de ciclo y moneda.
    */
-  async getPlanesPorComunidad(id_comunidad: string): Promise<IPlanComunidad[]> {
+  public async getPlanesPorComunidad(id_comunidad: string): Promise<IPlanComunidad[]> {
     const planes = await this.prisma.plan_comunidad.findMany({
       where: { id_comunidad: BigInt(id_comunidad) },
       include: {
@@ -261,15 +261,15 @@ export class PlanesService {
       // Serializar relaciones anidadas que también tienen BigInt
       ciclo_pago: p.ciclo_pago
         ? {
-            ...p.ciclo_pago,
-            id_ciclo_pago: p.ciclo_pago.id_ciclo_pago.toString(),
-          }
+          ...p.ciclo_pago,
+          id_ciclo_pago: p.ciclo_pago.id_ciclo_pago.toString(),
+        }
         : undefined,
       moneda: p.moneda
         ? {
-            ...p.moneda,
-            id_moneda: p.moneda.id_moneda.toString(),
-          }
+          ...p.moneda,
+          id_moneda: p.moneda.id_moneda.toString(),
+        }
         : undefined,
     })) as IPlanComunidad[];
   }

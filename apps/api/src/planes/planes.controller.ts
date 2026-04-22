@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @Controller('planes')
 @UseGuards(JwtAuthGuard)
 export class PlanesController {
-  constructor(private readonly planesService: PlanesService) {}
+  public constructor(private readonly planesService: PlanesService) {}
 
   /**
    * Endpoint para crear un nuevo plan de suscripción.
@@ -27,7 +27,7 @@ export class PlanesController {
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async crearPlan(@Body() dto: CrearPlanDto): Promise<ICreatePlanResponse> {
+  public async crearPlan(@Body() dto: CrearPlanDto): Promise<ICreatePlanResponse> {
     return this.planesService.crearPlan(dto);
   }
 
@@ -38,7 +38,7 @@ export class PlanesController {
    * Se usa para poblar los selectores del formulario de creación de planes.
    */
   @Get('config/ciclos-pago')
-  async getCiclosPago() {
+  public async getCiclosPago() {
     return this.planesService.getValidCiclosPago();
   }
 
@@ -49,7 +49,7 @@ export class PlanesController {
    * @param id_comunidad ID numérico de la comunidad
    */
   @Get('comunidad/:id_comunidad')
-  async getPlanesPorComunidad(@Param('id_comunidad') id_comunidad: string) {
+  public async getPlanesPorComunidad(@Param('id_comunidad') id_comunidad: string) {
     return this.planesService.getPlanesPorComunidad(id_comunidad);
   }
 }
