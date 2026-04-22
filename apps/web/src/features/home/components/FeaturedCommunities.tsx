@@ -1,40 +1,19 @@
-'use client';
-
 import Link from 'next/link';
 import { Star, ArrowRight } from 'lucide-react';
-import { CommunityCard, type Community } from '@/features/comunidades/components/CommunityCard';
+import { CommunityCard } from '@/features/comunidades/components/CommunityCard';
+import { comunidadService } from '@/features/comunidades/services/comunidadService';
 
-const communidades: Community[] = [
-  {
-    id: '1',
-    nombre: 'Frontend Engineering',
-    descripcion: 'Domina Next.js 14, TypeScript y arquitecturas escalables con estándares de la industria.',
-    categoria: 'Development',
-    miembros: 1240,
-    estrellas: 4.9,
-    color: 'linear-gradient(135deg, #0ea5e9, #2563eb)',
-  },
-  {
-    id: '2',
-    nombre: 'SaaS Design System',
-    descripcion: 'Crea sistemas de diseño profesionales. Tokens, componentes y documentación técnica.',
-    categoria: 'Design',
-    miembros: 873,
-    estrellas: 4.8,
-    color: 'linear-gradient(135deg, #06b6d4, #0ea5e9)',
-  },
-  {
-    id: '3',
-    nombre: 'AI & Data Ops',
-    descripcion: 'Modelos de lenguaje, pipelines de datos y automatización avanzada para desarrolladores.',
-    categoria: 'Intelligence',
-    miembros: 2100,
-    estrellas: 5.0,
-    color: 'linear-gradient(135deg, #8b5cf6, #0ea5e9)',
-  },
-];
+export async function FeaturedCommunities() {
+  // Obtener comunidades reales desde el servidor
+  let comunidades = [];
+  try {
+    comunidades = await comunidadService.getComunidades();
+    // Tomar solo las primeras 3 para el home
+    comunidades = comunidades.slice(0, 3);
+  } catch (error) {
+    console.error('Error cargando comunidades destacadas:', error);
+  }
 
-export function FeaturedCommunities() {
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-32 bg-slate-50 relative border-y border-slate-100">
       <div className="max-w-7xl mx-auto">
@@ -52,14 +31,24 @@ export function FeaturedCommunities() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {communidades.map((community) => (
-            <CommunityCard key={community.id} community={community} />
-          ))}
-        </div>
+        {comunidades.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {comunidades.map((community) => (
+              <CommunityCard 
+                key={community.id_comunidad} 
+                community={community} 
+                href="/proximamente"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 italic text-slate-400">
+            Cargando comunidades destacadas...
+          </div>
+        )}
 
         <div className="text-center mt-24">
-          <Link href="/comunidades" className="btn-outline px-10 py-4 group border-slate-300">
+          <Link href="/explorar" className="btn-outline px-10 py-4 group border-slate-300">
             Explorar todo el ecosistema 
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
