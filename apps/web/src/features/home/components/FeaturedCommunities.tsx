@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { Star, ArrowRight } from 'lucide-react';
 import { CommunityCard } from '@/features/comunidades/components/CommunityCard';
 import { comunidadService } from '@/features/comunidades/services/comunidadService';
+import { IComunidad } from '@repo/types';
 
 export async function FeaturedCommunities() {
   // Obtener comunidades reales desde el servidor
-  let comunidades = [];
+  let comunidades: IComunidad[] = [];
   try {
     comunidades = await comunidadService.getComunidades();
     // Tomar solo las primeras 3 para el home
@@ -21,22 +22,22 @@ export async function FeaturedCommunities() {
         <div className="text-center mb-24 relative">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-500 text-xs font-bold mb-8 shadow-sm uppercase tracking-widest">
             <Star size={12} className="text-amber-400 fill-amber-400" />
-            Nodos Seleccionados
+            Comunidades Destacadas
           </div>
           <h2 className="font-display text-4xl md:text-6xl font-black text-slate-950 tracking-tight mb-6">
             Comunidades de <span className="text-sky-600">Alto Impacto</span>
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
-            Seleccionamos ecosistemas con mentores activos y contenido curado para acelerar tu crecimiento técnico.
+            Seleccionamos ecosistemas con mentores activos y contenido exclusivo para acelerar tu crecimiento técnico.
           </p>
         </div>
 
         {comunidades.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {comunidades.map((community) => (
-              <CommunityCard 
-                key={community.id_comunidad} 
-                community={community} 
+              <CommunityCard
+                key={community.id_comunidad}
+                community={community}
                 href="/proximamente"
               />
             ))}
@@ -49,7 +50,7 @@ export async function FeaturedCommunities() {
 
         <div className="text-center mt-24">
           <Link href="/explorar" className="btn-outline px-10 py-4 group border-slate-300">
-            Explorar todo el ecosistema 
+            Explorar todo el ecosistema
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
