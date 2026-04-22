@@ -37,8 +37,15 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      // Para un manejo robusto, tiramos un error que el Action Server debe atrapar
-      throw new Error(`API request failed with status: ${response.status}`);
+      // Intentamos extraer el mensaje de error del cuerpo de la respuesta (NestJS suele enviar {message: "..."})
+      let errorMessage = `API request failed with status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        // Si no es JSON, mantenemos el mensaje por defecto
+      }
+      throw new Error(errorMessage);
     }
 
     // A veces una petición puede ser exitosa pero no devolver un JSON (como un HTTP 204 No Content)

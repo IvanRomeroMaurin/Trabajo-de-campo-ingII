@@ -194,9 +194,7 @@ export class ComunidadService {
     });
 
     if (!comunidad) {
-      throw new NotFoundException(
-        `La comunidad con id ${id} no fue encontrada`,
-      );
+      throw new NotFoundException(`La comunidad no fue encontrada`);
     }
 
     return this.serializarComunidad(comunidad);
@@ -215,9 +213,7 @@ export class ComunidadService {
     });
 
     if (!comunidad) {
-      throw new NotFoundException(
-        `La comunidad con slug '${slug}' no fue encontrada`,
-      );
+      throw new NotFoundException(`La comunidad no fue encontrada`);
     }
 
     return this.serializarComunidad(comunidad);
@@ -446,9 +442,7 @@ export class ComunidadService {
     });
 
     if (!comunidad) {
-      throw new NotFoundException(
-        `La comunidad con id ${idComunidad} no fue encontrada`,
-      );
+      throw new NotFoundException(`La comunidad no fue encontrada`);
     }
 
     const esCreador = await this.prisma.miembro_comunidad.findFirst({

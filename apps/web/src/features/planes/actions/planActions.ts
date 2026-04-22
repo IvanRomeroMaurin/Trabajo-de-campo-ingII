@@ -34,8 +34,9 @@ export async function crearPlan(formData: FormData) {
     revalidatePath(`/comunidades/${id_comunidad}`);
 
     return { success: true, plan: result.plan };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error al crear plan:', error);
-    return { success: false, error: 'Ocurrió un error al registrar el plan en Mercado Pago' };
+    const message = error.response?.data?.message || error.message || 'Ocurrió un error al registrar el plan';
+    return { success: false, error: message };
   }
 }
