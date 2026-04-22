@@ -6,7 +6,7 @@ const featuresData = [
   {
     number: '01',
     icon: <Users size={22} />,
-    title: 'Nodos de Aprendizaje',
+    title: 'Comunidades de Aprendizaje',
     desc: 'Conexión directa con expertos y pares. Resolución de dudas en tiempo real y mentoría continua semana a semana.',
     tag: 'Community',
     color: 'sky',
@@ -38,16 +38,16 @@ const featuresData = [
 ];
 
 const colorMap: Record<string, string> = {
-  sky:     'bg-sky-50 text-sky-600 border border-sky-100',
-  cyan:    'bg-cyan-50 text-cyan-600 border border-cyan-100',
-  violet:  'bg-violet-50 text-violet-600 border border-violet-100',
+  sky: 'bg-sky-50 text-sky-600 border border-sky-100',
+  cyan: 'bg-cyan-50 text-cyan-600 border border-cyan-100',
+  violet: 'bg-violet-50 text-violet-600 border border-violet-100',
   emerald: 'bg-emerald-50 text-emerald-600 border border-emerald-100',
 };
 
 const tagColorMap: Record<string, string> = {
-  sky:     'bg-sky-100 text-sky-700',
-  cyan:    'bg-cyan-100 text-cyan-700',
-  violet:  'bg-violet-100 text-violet-700',
+  sky: 'bg-sky-100 text-sky-700',
+  cyan: 'bg-cyan-100 text-cyan-700',
+  violet: 'bg-violet-100 text-violet-700',
   emerald: 'bg-emerald-100 text-emerald-700',
 };
 

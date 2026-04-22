@@ -23,13 +23,13 @@ import { IComunidad } from '@repo/types';
 export class ComunidadService {
   private readonly logger = new Logger(ComunidadService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   // ─── Helpers ─────────────────────────────────────────────────────────────────
 
   /**
    * Convierte un nombre en un slug URL-friendly.
-   * Ej: "SpaceX Academy!" → "spacex-academy"
+   * Ej: "SpaceX Academy!!!" → "spacex-academy"
    */
   private generarSlug(nombre: string): string {
     return nombre
@@ -264,7 +264,7 @@ export class ComunidadService {
   }
 
   /**
-   * Baja lógica de la comunidad: setea activa = false. Solo el creador puede hacerlo.
+   * Baja lógica de la comunidad: se cambia activa = false. Solo el creador puede hacerlo.
    * @param id ID de la comunidad a desactivar
    * @param idUsuario ID del usuario autenticado
    */
@@ -285,7 +285,7 @@ export class ComunidadService {
   }
 
   /**
-   * Alta lógica de la comunidad: setea activa = true. Solo el creador puede hacerlo.
+   * Alta lógica de la comunidad: se cambia activa = true. Solo el creador puede hacerlo.
    * @param id ID de la comunidad a reactivar
    * @param idUsuario ID del usuario autenticado
    */
@@ -356,7 +356,7 @@ export class ComunidadService {
     });
 
     if (miembroExistente) {
-      // Si ya existe → actualizar fecha_actualizacion (doc: "actualiza fechas")
+      // Si ya existe → actualizar fecha_actualizacion 
       await client.miembro_comunidad.update({
         where: {
           id_usuario_id_comunidad: {
@@ -367,7 +367,7 @@ export class ComunidadService {
         data: { fecha_actualizacion: new Date() },
       });
     } else {
-      // Crear nuevo registro de miembro
+      // Si no existe -> crear nuevo registro de miembro
       await client.miembro_comunidad.create({
         data: {
           id_usuario: BigInt(id_usuario),

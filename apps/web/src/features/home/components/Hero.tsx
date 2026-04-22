@@ -29,7 +29,7 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row items-center gap-6">
               <Link href="/explorar" className="btn-primary w-full sm:w-auto py-5 px-12 text-lg bg-slate-950 hover:bg-sky-600 transition-colors">
-                Unirme a una Comunidad
+                Unirme Comunidad
                 <ArrowRight size={20} />
               </Link>
 
@@ -37,7 +37,7 @@ export function Hero() {
                 href="/comunidades/crear"
                 className="btn-outline w-full sm:w-auto py-5 px-12 text-lg border-2 border-slate-200 block text-center"
               >
-                Crear un Nodo
+                Crear Comunidad
               </Link>
             </div>
           </div>
