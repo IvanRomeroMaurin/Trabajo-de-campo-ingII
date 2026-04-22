@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { ICreatePlanRequest } from '@repo/types';
 import { planService } from '../services/planService';
 
-export async function createPlanAction(formData: FormData) {
+export async function crearPlan(formData: FormData) {
   const titulo = formData.get('titulo') as string;
   const descripcion = formData.get('descripcion') as string;
   const precio = Number(formData.get('precio'));
@@ -28,7 +28,7 @@ export async function createPlanAction(formData: FormData) {
   };
 
   try {
-    const result = await planService.createPlan(dto);
+    const result = await planService.crearPlan(dto);
     
     // Revalidamos la ruta del detalle de la comunidad para mostrar el nuevo plan
     revalidatePath(`/comunidades/${id_comunidad}`);

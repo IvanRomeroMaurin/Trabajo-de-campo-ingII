@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { useRouter } from 'next/navigation';
-import { CreditCard, Calendar, Tag, ArrowRight, Loader2, DollarSign, CheckCircle2 } from 'lucide-react';
-import { createPlanAction } from '../actions/planActions';
+import { Calendar, Tag, ArrowRight, Loader2, DollarSign, CheckCircle2 } from 'lucide-react';
+import { crearPlan } from '../actions/planActions';
 import { ICicloPago } from '@repo/types';
 
 interface CreatePlanFormProps {
@@ -43,7 +43,7 @@ export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProp
     formData.append('id_comunidad', idComunidad);
     
     try {
-      const result = await createPlanAction(formData);
+      const result = await crearPlan(formData);
       if (result.success) {
         // Redirigir usando el SLUG de la comunidad, no el ID numérico
         router.push(`/comunidades/${slug}`);

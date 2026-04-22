@@ -5,7 +5,7 @@ export const planService = {
   /**
    * Crea un nuevo plan de suscripción en la comunidad y en Mercado Pago
    */
-  async createPlan(dto: ICreatePlanRequest): Promise<ICreatePlanResponse> {
+  async crearPlan(dto: ICreatePlanRequest): Promise<ICreatePlanResponse> {
     return api.post<ICreatePlanResponse>('/planes', dto);
   },
 
