@@ -10,12 +10,14 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ComunidadService } from './services/comunidad.service.interface';
 import { CrearComunidadDto } from './dto/crear-comunidad.dto';
 import { ActualizarComunidadDto } from './dto/actualizar-comunidad.dto';
-import { IComunidad, IUsuario } from '@repo/types';
+import { IUsuario } from '@repo/types';
+import { Comunidad } from './models/comunidad.entity';
 import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
 
 /**
@@ -42,8 +44,8 @@ export class ComunidadController {
   @Post()
   public async crearComunidad(
     @Body() dto: CrearComunidadDto,
-    @Request() req: { user: IUsuario },
-  ): Promise<IComunidad> {
+    @Req() req: any,
+  ): Promise<Comunidad> {
     return this.comunidadService.crearComunidad(
       {
         nombre: dto.nombre,
@@ -61,7 +63,7 @@ export class ComunidadController {
    * @returns Un arreglo con todas las comunidades activas.
    */
   @Get()
-  public async getComunidades(): Promise<IComunidad[]> {
+  public async getComunidades(): Promise<Comunidad[]> {
     return this.comunidadService.getComunidades();
   }
 
@@ -75,7 +77,7 @@ export class ComunidadController {
   @Get('mis-comunidades')
   public async getMisComunidades(
     @Request() req: { user: IUsuario },
-  ): Promise<IComunidad[]> {
+  ): Promise<Comunidad[]> {
     return this.comunidadService.getMisComunidades(
       req.user.id_usuario.toString(),
     );
@@ -91,7 +93,7 @@ export class ComunidadController {
   @Get('s/:slug')
   public async getComunidadPorSlug(
     @Param('slug') slug: string,
-  ): Promise<IComunidad> {
+  ): Promise<Comunidad> {
     return this.comunidadService.getComunidadPorSlug(slug);
   }
 
@@ -103,7 +105,7 @@ export class ComunidadController {
    * @throws {NotFoundException} Si la comunidad no existe.
    */
   @Get(':id')
-  public async getComunidad(@Param('id') id: string): Promise<IComunidad> {
+  public async getComunidad(@Param('id') id: string): Promise<Comunidad> {
     return this.comunidadService.getComunidad(id);
   }
 
@@ -122,7 +124,7 @@ export class ComunidadController {
   public async actualizarComunidad(
     @Param('id') id: string,
     @Body() dto: ActualizarComunidadDto,
-  ): Promise<IComunidad> {
+  ): Promise<Comunidad> {
     return this.comunidadService.actualizarComunidad(id, {
       nombre: dto.nombre,
       descripcion: dto.descripcion,

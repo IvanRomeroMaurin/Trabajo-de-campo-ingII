@@ -1,4 +1,6 @@
 import { IPlanComunidad, ICicloPago } from '@repo/types';
+import { PlanComunidad } from '../models/plan.entity';
+import { CicloPago } from '../models/ciclo-pago.entity';
 
 /**
  * Mapper para transformar entidades de Prisma a interfaces de dominio (IPlanComunidad, ICicloPago).
@@ -12,7 +14,7 @@ export class PlanesMapper {
    * @returns El plan formateado según la interfaz de dominio.
    */
   public static toIPlanComunidad(p: any): IPlanComunidad {
-    return {
+    return new PlanComunidad({
       ...p,
       id_plan_comunidad: p.id_plan_comunidad,
       id_comunidad: p.id_comunidad,
@@ -23,10 +25,10 @@ export class PlanesMapper {
       mp_preapproval_plan_id: p.mp_preapproval_plan_id ?? undefined,
       // Mapear relaciones anidadas si existen
       ciclo_pago: p.ciclo_pago
-        ? {
+        ? new CicloPago({
             ...p.ciclo_pago,
             id_ciclo_pago: p.ciclo_pago.id_ciclo_pago,
-          }
+          })
         : undefined,
       moneda: p.moneda
         ? {
@@ -34,7 +36,7 @@ export class PlanesMapper {
             id_moneda: p.moneda.id_moneda,
           }
         : undefined,
-    } as IPlanComunidad;
+    });
   }
 
   /**
@@ -44,9 +46,9 @@ export class PlanesMapper {
    * @returns El ciclo de pago formateado.
    */
   public static toICicloPago(c: any): ICicloPago {
-    return {
+    return new CicloPago({
       ...c,
       id_ciclo_pago: c.id_ciclo_pago,
-    };
+    });
   }
 }

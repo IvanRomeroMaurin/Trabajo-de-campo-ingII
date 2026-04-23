@@ -1,4 +1,5 @@
 import { IComunidad } from '@repo/types';
+import { Comunidad } from '../models/comunidad.entity';
 import {
   CrearComunidadCommand,
   ActualizarComunidadCommand,
@@ -18,14 +19,14 @@ export abstract class ComunidadService {
   abstract crearComunidad(
     command: CrearComunidadCommand,
     idCreador: string,
-  ): Promise<IComunidad>;
+  ): Promise<Comunidad>;
 
   /**
    * Obtiene la lista de todas las comunidades que se encuentran actualmente activas.
    *
    * @returns Una promesa que resuelve con un arreglo de comunidades.
    */
-  abstract getComunidades(): Promise<IComunidad[]>;
+  abstract getComunidades(): Promise<Comunidad[]>;
 
   /**
    * Obtiene las comunidades que han sido creadas por un usuario específico.
@@ -33,7 +34,7 @@ export abstract class ComunidadService {
    * @param idCreador - Identificador único del usuario creador.
    * @returns Una promesa que resuelve con un arreglo de comunidades asociadas al creador.
    */
-  abstract getMisComunidades(idCreador: string): Promise<IComunidad[]>;
+  abstract getMisComunidades(idCreador: string): Promise<Comunidad[]>;
 
   /**
    * Busca y retorna la información de una comunidad específica utilizando su ID.
@@ -41,7 +42,7 @@ export abstract class ComunidadService {
    * @param id - Identificador único de la comunidad.
    * @returns Una promesa que resuelve con los datos de la comunidad encontrada.
    */
-  abstract getComunidad(id: string): Promise<IComunidad>;
+  abstract getComunidad(id: string): Promise<Comunidad>;
 
   /**
    * Busca y retorna la información de una comunidad específica utilizando su slug.
@@ -49,7 +50,7 @@ export abstract class ComunidadService {
    * @param slug - El slug de la comunidad a buscar.
    * @returns Una promesa que resuelve con los datos de la comunidad encontrada.
    */
-  abstract getComunidadPorSlug(slug: string): Promise<IComunidad>;
+  abstract getComunidadPorSlug(slug: string): Promise<Comunidad>;
 
   /**
    * Actualiza los datos de una comunidad existente.
@@ -61,7 +62,7 @@ export abstract class ComunidadService {
   abstract actualizarComunidad(
     id: string,
     command: ActualizarComunidadCommand,
-  ): Promise<IComunidad>;
+  ): Promise<Comunidad>;
 
   /**
    * Desactiva una comunidad realizando una baja lógica.

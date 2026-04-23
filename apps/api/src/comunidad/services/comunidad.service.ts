@@ -9,6 +9,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { MiembroService } from '../../miembro/services/miembro.service.interface';
 import { stringToSlug } from '../../common/utils/slug.utils';
 import { IComunidad } from '@repo/types';
+import { Comunidad } from '../models/comunidad.entity';
 import { ROLES } from '../../common/constants/roles';
 import { ComunidadRepository } from '../repositories/comunidad.repository.interface';
 import {
@@ -44,7 +45,7 @@ export class ComunidadService implements IComunidadService {
   public async crearComunidad(
     command: CrearComunidadCommand,
     idCreador: string,
-  ): Promise<IComunidad> {
+  ): Promise<Comunidad> {
     const slug = await this.generarSlugUnico(command.nombre);
 
     const existeCategoria = await this.comunidadRepository.existeCategoria(
@@ -86,7 +87,7 @@ export class ComunidadService implements IComunidadService {
    *
    * @returns Una promesa que resuelve con un arreglo de objetos IComunidad.
    */
-  public async getComunidades(): Promise<IComunidad[]> {
+  public async getComunidades(): Promise<Comunidad[]> {
     return this.comunidadRepository.buscarTodasActivas();
   }
 
@@ -97,7 +98,7 @@ export class ComunidadService implements IComunidadService {
    * @param idCreador - Identificador único del usuario creador.
    * @returns Una promesa que resuelve con un arreglo de comunidades asociadas al creador.
    */
-  public async getMisComunidades(idCreador: string): Promise<IComunidad[]> {
+  public async getMisComunidades(idCreador: string): Promise<Comunidad[]> {
     return this.comunidadRepository.buscarPorCreador(idCreador, ROLES.CREADOR);
   }
 
@@ -108,7 +109,7 @@ export class ComunidadService implements IComunidadService {
    * @returns Una promesa que resuelve con los datos de la comunidad encontrada.
    * @throws {NotFoundException} Si no se encuentra ninguna comunidad con el ID proporcionado.
    */
-  public async getComunidad(id: string): Promise<IComunidad> {
+  public async getComunidad(id: string): Promise<Comunidad> {
     const comunidad = await this.comunidadRepository.buscarPorId(id);
     if (!comunidad) {
       throw new NotFoundException(`La comunidad no fue encontrada`);
@@ -124,7 +125,7 @@ export class ComunidadService implements IComunidadService {
    * @returns Una promesa que resuelve con los datos de la comunidad encontrada.
    * @throws {NotFoundException} Si no se encuentra ninguna comunidad con el slug proporcionado.
    */
-  public async getComunidadPorSlug(slug: string): Promise<IComunidad> {
+  public async getComunidadPorSlug(slug: string): Promise<Comunidad> {
     const comunidad = await this.comunidadRepository.buscarPorSlug(slug);
     if (!comunidad) {
       throw new NotFoundException(`La comunidad no fue encontrada`);
@@ -148,7 +149,7 @@ export class ComunidadService implements IComunidadService {
   public async actualizarComunidad(
     id: string,
     command: ActualizarComunidadCommand,
-  ): Promise<IComunidad> {
+  ): Promise<Comunidad> {
 
     const updateData: any = { ...command };
 

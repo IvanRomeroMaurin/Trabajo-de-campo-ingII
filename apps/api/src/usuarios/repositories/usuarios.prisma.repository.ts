@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UsuariosRepository } from './usuarios.repository.interface';
-import { IUsuario } from '@repo/types';
 import { CrearUsuarioCommand } from '../services/usuarios.commands';
 import { UsuariosMapper } from './usuarios.mapper';
+import { Usuario } from '../models/usuario.entity';
 
 /**
  * Implementación del repositorio de usuarios utilizando Prisma como ORM.
@@ -18,7 +18,7 @@ export class PrismaUsuariosRepository implements UsuariosRepository {
    * @param email - Email del usuario a buscar.
    * @returns El usuario mapeado al dominio o null.
    */
-  public async buscarPorEmail(email: string): Promise<IUsuario | null> {
+  public async buscarPorEmail(email: string): Promise<Usuario | null> {
     const user = await this.prisma.usuario.findUnique({
       where: { email },
     });
@@ -31,7 +31,7 @@ export class PrismaUsuariosRepository implements UsuariosRepository {
    * @param data - Comandos con la información del usuario.
    * @returns El usuario creado y mapeado.
    */
-  public async guardar(data: CrearUsuarioCommand): Promise<IUsuario> {
+  public async guardar(data: CrearUsuarioCommand): Promise<Usuario> {
     const user = await this.prisma.usuario.create({
       data: {
         nombre: data.nombre,
@@ -50,7 +50,7 @@ export class PrismaUsuariosRepository implements UsuariosRepository {
    * @param id - Identificador único.
    * @returns El usuario mapeado o null.
    */
-  public async buscarPorId(id: string): Promise<IUsuario | null> {
+  public async buscarPorId(id: string): Promise<Usuario | null> {
     const user = await this.prisma.usuario.findUnique({
       where: { id_usuario: id },
     });

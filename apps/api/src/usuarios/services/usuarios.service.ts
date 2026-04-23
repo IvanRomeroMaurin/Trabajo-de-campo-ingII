@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsuariosRepository } from '../repositories/usuarios.repository.interface';
 import { UsuariosService as IUsuariosService } from './usuarios.service.interface';
-import { IUsuario } from '@repo/types';
+import { Usuario } from '../models/usuario.entity';
 import { CrearUsuarioCommand } from './usuarios.commands';
 
 /**
@@ -18,7 +18,7 @@ export class UsuariosService implements IUsuariosService {
    * @param email - Email del usuario.
    * @returns El usuario encontrado o null.
    */
-  public async buscarPorCorreo(email: string): Promise<IUsuario | null> {
+  public async buscarPorCorreo(email: string): Promise<Usuario | null> {
     return this.repository.buscarPorEmail(email);
   }
 
@@ -28,7 +28,7 @@ export class UsuariosService implements IUsuariosService {
    * @param data - Datos del comando para crear el usuario.
    * @returns El usuario creado.
    */
-  public async crearUsuario(data: CrearUsuarioCommand): Promise<IUsuario> {
+  public async crearUsuario(data: CrearUsuarioCommand): Promise<Usuario> {
     return this.repository.guardar(data);
   }
 
@@ -38,7 +38,7 @@ export class UsuariosService implements IUsuariosService {
    * @param id - ID único (UUID) del usuario.
    * @returns El usuario encontrado o null.
    */
-  public async buscarPorId(id: string): Promise<IUsuario | null> {
+  public async buscarPorId(id: string): Promise<Usuario | null> {
     return this.repository.buscarPorId(id);
   }
 }

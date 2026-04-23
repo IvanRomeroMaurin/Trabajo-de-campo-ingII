@@ -9,6 +9,8 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { MercadoPagoService } from '../../mercadopago/services/mercadopago.service.interface';
 import { CrearPlanCommand } from './planes.commands';
 import { ICreatePlanResponse, IPlanComunidad, ICicloPago } from '@repo/types';
+import { PlanComunidad } from '../models/plan.entity';
+import { CicloPago } from '../models/ciclo-pago.entity';
 import { MONEDAS, MAP_CICLOS_PAGO } from '../../common/constants/planes';
 import { PlanesRepository } from '../repositories/planes.repository.interface';
 import { PlanesService as IPlanesService } from './planes.service.interface';
@@ -88,7 +90,7 @@ export class PlanesService implements IPlanesService {
    *
    * @returns Una promesa que resuelve con un arreglo de ciclos de pago (mensual, anual, etc.).
    */
-  public async getValidCiclosPago(): Promise<ICicloPago[]> {
+  public async getValidCiclosPago(): Promise<CicloPago[]> {
     return this.planesRepository.buscarCiclosPago();
   }
 
@@ -100,7 +102,7 @@ export class PlanesService implements IPlanesService {
    */
   public async getPlanesPorComunidad(
     id_comunidad: string,
-  ): Promise<IPlanComunidad[]> {
+  ): Promise<PlanComunidad[]> {
     return this.planesRepository.buscarPorComunidad(id_comunidad);
   }
 

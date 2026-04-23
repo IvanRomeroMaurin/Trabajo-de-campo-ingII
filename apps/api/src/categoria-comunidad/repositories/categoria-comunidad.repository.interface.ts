@@ -1,4 +1,4 @@
-import { categoria_comunidad } from '@prisma/client';
+import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 
 /**
  * Interfaz que define el contrato para el acceso a datos de categorías de comunidades.
@@ -9,7 +9,7 @@ export abstract class CategoriaComunidadRepository {
    *
    * @returns Una promesa con el listado de categorías.
    */
-  abstract buscarTodasActivas(): Promise<categoria_comunidad[]>;
+  public abstract buscarTodasActivas(): Promise<CategoriaComunidad[]>;
 
   /**
    * Verifica la existencia de una categoría específica en la base de datos.

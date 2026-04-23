@@ -1,5 +1,7 @@
 import { comunidad, categoria_comunidad } from '@prisma/client';
 import { IComunidad, ICategoriaComunidad } from '@repo/types';
+import { Comunidad } from '../models/comunidad.entity';
+import { CategoriaComunidad } from '../../categoria-comunidad/models/categoria-comunidad.entity';
 
 /**
  * Mapper para transformar modelos de Prisma de Comunidad a interfaces de dominio.
@@ -17,7 +19,7 @@ export class ComunidadMapper {
       categoria_comunidad?: categoria_comunidad;
     },
   ): IComunidad {
-    return {
+    return new Comunidad({
       id_comunidad: comunidad.id_comunidad,
       nombre: comunidad.nombre,
       slug: comunidad.slug,
@@ -30,7 +32,7 @@ export class ComunidadMapper {
       categoria_comunidad: comunidad.categoria_comunidad
         ? ComunidadMapper.toICategoriaComunidad(comunidad.categoria_comunidad)
         : undefined,
-    } as IComunidad;
+    });
   }
 
   /**
@@ -42,10 +44,10 @@ export class ComunidadMapper {
   public static toICategoriaComunidad(
     categoria: categoria_comunidad,
   ): ICategoriaComunidad {
-    return {
+    return new CategoriaComunidad({
       id_categoria_comunidad: categoria.id_categoria_comunidad,
       descripcion: categoria.descripcion,
       activa: categoria.activa,
-    };
+    });
   }
 }

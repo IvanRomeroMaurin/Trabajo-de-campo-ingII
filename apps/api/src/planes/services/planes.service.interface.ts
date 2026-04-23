@@ -1,5 +1,7 @@
 import { CrearPlanCommand } from './planes.commands';
 import { ICreatePlanResponse, IPlanComunidad, ICicloPago } from '@repo/types';
+import { PlanComunidad } from '../models/plan.entity';
+import { CicloPago } from '../models/ciclo-pago.entity';
 
 /**
  * Interfaz que define el contrato para el servicio de Planes.
@@ -18,7 +20,7 @@ export abstract class PlanesService {
    *
    * @returns Una promesa con el arreglo de ciclos de pago.
    */
-  public abstract getValidCiclosPago(): Promise<ICicloPago[]>;
+  public abstract getValidCiclosPago(): Promise<CicloPago[]>;
 
   /**
    * Obtiene todos los planes de suscripción asociados a una comunidad.
@@ -26,5 +28,5 @@ export abstract class PlanesService {
    * @param id_comunidad - ID de la comunidad.
    * @returns Una promesa con el arreglo de planes encontrados.
    */
-  public abstract getPlanesPorComunidad(id_comunidad: string): Promise<IPlanComunidad[]>;
+  public abstract getPlanesPorComunidad(id_comunidad: string): Promise<PlanComunidad[]>;
 }

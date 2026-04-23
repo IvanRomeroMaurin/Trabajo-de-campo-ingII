@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { IComunidad } from '@repo/types';
+import { Comunidad } from '../models/comunidad.entity';
 import { ComunidadRepository } from './comunidad.repository.interface';
 import { ComunidadMapper } from './comunidad.mapper';
 
@@ -30,7 +31,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
       id_categoria_comunidad: string;
       activa: boolean;
     }
-  ): Promise<IComunidad> {
+  ): Promise<Comunidad> {
     const comunidad = await this.txHost.tx.comunidad.create({
       data: {
         ...data,
@@ -59,7 +60,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
       id_categoria_comunidad: string;
       activa: boolean;
     }>
-  ): Promise<IComunidad> {
+  ): Promise<Comunidad> {
     const comunidad = await this.txHost.tx.comunidad.update({
       where: { id_comunidad },
       data,
@@ -75,7 +76,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
    * @param id_comunidad - UUID de la comunidad.
    * @returns IComunidad o null si no se encuentra.
    */
-  public async buscarPorId(id_comunidad: string): Promise<IComunidad | null> {
+  public async buscarPorId(id_comunidad: string): Promise<Comunidad | null> {
     const comunidad = await this.txHost.tx.comunidad.findUnique({
       where: { id_comunidad },
       include: { categoria_comunidad: true },
@@ -91,7 +92,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
    * @param slug - Slug único de la comunidad.
    * @returns IComunidad o null si no se encuentra.
    */
-  public async buscarPorSlug(slug: string): Promise<IComunidad | null> {
+  public async buscarPorSlug(slug: string): Promise<Comunidad | null> {
     const comunidad = await this.txHost.tx.comunidad.findUnique({
       where: { slug },
       include: { categoria_comunidad: true },
@@ -106,7 +107,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
    * 
    * @returns Lista de comunidades activas.
    */
-  public async buscarTodasActivas(): Promise<IComunidad[]> {
+  public async buscarTodasActivas(): Promise<Comunidad[]> {
     const comunidades = await this.txHost.tx.comunidad.findMany({
       where: { activa: true },
       include: { categoria_comunidad: true },
@@ -126,7 +127,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
   public async buscarPorCreador(
     id_usuario: string,
     id_rol_creador: string
-  ): Promise<IComunidad[]> {
+  ): Promise<Comunidad[]> {
     const miembros = await this.txHost.tx.miembro_comunidad.findMany({
       where: {
         id_usuario,

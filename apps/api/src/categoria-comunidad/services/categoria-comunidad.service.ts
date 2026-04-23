@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { categoria_comunidad } from '@prisma/client';
 import { CategoriaComunidadRepository } from '../repositories/categoria-comunidad.repository.interface';
 import { CategoriaComunidadService as ICategoriaComunidadService } from './categoria-comunidad.service.interface';
+import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 
 /**
  * Implementación del servicio de categorías de comunidad.
@@ -15,7 +16,7 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
    *
    * @returns Listado de categorías.
    */
-  public async getCategorias(): Promise<categoria_comunidad[]> {
+  public async getCategorias(): Promise<CategoriaComunidad[]> {
     return this.repository.buscarTodasActivas();
   }
 }

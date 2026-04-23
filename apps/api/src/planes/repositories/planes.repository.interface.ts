@@ -1,4 +1,6 @@
 import { IPlanComunidad, ICicloPago } from '@repo/types';
+import { PlanComunidad } from '../models/plan.entity';
+import { CicloPago } from '../models/ciclo-pago.entity';
 
 /**
  * Interfaz que define el contrato para el acceso a datos de Planes.
@@ -28,7 +30,7 @@ export abstract class PlanesRepository {
     mp_preapproval_plan_id: string;
     id_comunidad: string;
     activa: boolean;
-  }): Promise<IPlanComunidad>;
+  }): Promise<PlanComunidad>;
 
   /**
    * Obtiene todos los planes de suscripción asociados a una comunidad específica.
@@ -37,12 +39,12 @@ export abstract class PlanesRepository {
    * @param id_comunidad - Identificador único de la comunidad.
    * @returns Una promesa con el listado de planes encontrados.
    */
-  abstract buscarPorComunidad(id_comunidad: string): Promise<IPlanComunidad[]>;
+  public abstract buscarPorComunidad(id_comunidad: string): Promise<PlanComunidad[]>;
 
   /**
    * Obtiene la lista completa de ciclos de pago (frecuencias) disponibles en el sistema.
    *
    * @returns Una promesa con el listado de ciclos de pago.
    */
-  abstract buscarCiclosPago(): Promise<ICicloPago[]>;
+  public abstract buscarCiclosPago(): Promise<CicloPago[]>;
 }

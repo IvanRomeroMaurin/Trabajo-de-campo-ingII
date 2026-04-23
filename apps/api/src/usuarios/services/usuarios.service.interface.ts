@@ -1,5 +1,6 @@
 import { IUsuario } from '@repo/types';
 import { CrearUsuarioCommand } from './usuarios.commands';
+import { Usuario } from '../models/usuario.entity';
 
 /**
  * Interfaz que define el contrato para el servicio de Usuarios.
@@ -12,7 +13,7 @@ export abstract class UsuariosService {
    * @param email - Correo electrónico del usuario a buscar.
    * @returns Una promesa que resuelve con el usuario encontrado o null si no existe.
    */
-  public abstract buscarPorCorreo(email: string): Promise<IUsuario | null>;
+  public abstract buscarPorCorreo(email: string): Promise<Usuario | null>;
 
   /**
    * Registra un nuevo usuario en el sistema.
@@ -20,7 +21,7 @@ export abstract class UsuariosService {
    * @param data - Datos necesarios para la creación del usuario (comandos).
    * @returns Una promesa que resuelve con los datos del usuario recién creado.
    */
-  public abstract crearUsuario(data: CrearUsuarioCommand): Promise<IUsuario>;
+  public abstract crearUsuario(data: CrearUsuarioCommand): Promise<Usuario>;
 
   /**
    * Busca un usuario registrado utilizando su identificador único (UUID).
@@ -28,5 +29,5 @@ export abstract class UsuariosService {
    * @param id - Identificador único del usuario.
    * @returns Una promesa que resuelve con el usuario encontrado o null si no existe.
    */
-  public abstract buscarPorId(id: string): Promise<IUsuario | null>;
+  public abstract buscarPorId(id: string): Promise<Usuario | null>;
 }

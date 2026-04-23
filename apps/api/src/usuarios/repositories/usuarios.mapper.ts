@@ -1,5 +1,6 @@
 import { usuario } from '@prisma/client';
 import { IUsuario } from '@repo/types';
+import { Usuario } from '../models/usuario.entity';
 
 /**
  * Mapeador para transformar entidades de base de datos (Prisma)
@@ -18,14 +19,14 @@ export class UsuariosMapper {
    * @returns El objeto formateado según la interfaz IUsuario.
    */
   public static toIUsuario(user: usuario): IUsuario {
-    return {
+    return new Usuario({
       id_usuario: user.id_usuario,
       nombre: user.nombre,
       apellido: user.apellido,
       email: user.email,
       fecha_alta: user.fecha_alta,
       activa: user.activa,
-      password_hash: user.password_hash, // Se incluye para procesos de autenticación en la capa de aplicación
-    };
+      password_hash: user.password_hash ?? undefined, // Se incluye para procesos de autenticación en la capa de aplicación
+    });
   }
 }

@@ -1,4 +1,5 @@
 import { IComunidad } from '@repo/types';
+import { Comunidad } from '../models/comunidad.entity';
 
 /**
  * Puerto (Interfaz) para la persistencia de Comunidades.
@@ -27,7 +28,7 @@ export abstract class ComunidadRepository {
       id_categoria_comunidad: string;
       activa: boolean;
     }
-  ): Promise<IComunidad>;
+  ): Promise<Comunidad>;
 
   /**
    * Actualiza los datos de una comunidad existente.
@@ -46,7 +47,7 @@ export abstract class ComunidadRepository {
       id_categoria_comunidad: string;
       activa: boolean;
     }>
-  ): Promise<IComunidad>;
+  ): Promise<Comunidad>;
 
   /**
    * Busca una comunidad por su identificador único primario.
@@ -54,7 +55,7 @@ export abstract class ComunidadRepository {
    * @param id_comunidad - UUID de la comunidad.
    * @returns La comunidad encontrada o null si no existe.
    */
-  public abstract buscarPorId(id_comunidad: string): Promise<IComunidad | null>;
+  public abstract buscarPorId(id_comunidad: string): Promise<Comunidad | null>;
 
   /**
    * Busca una comunidad por su slug (URL friendly name).
@@ -62,14 +63,14 @@ export abstract class ComunidadRepository {
    * @param slug - El slug único de la comunidad.
    * @returns La comunidad encontrada con su categoría o null.
    */
-  public abstract buscarPorSlug(slug: string): Promise<IComunidad | null>;
+  public abstract buscarPorSlug(slug: string): Promise<Comunidad | null>;
 
   /**
    * Recupera todas las comunidades que están marcadas como activas.
    * 
    * @returns Lista de comunidades activas ordenadas por fecha de creación descendente.
    */
-  public abstract buscarTodasActivas(): Promise<IComunidad[]>;
+  public abstract buscarTodasActivas(): Promise<Comunidad[]>;
 
   /**
    * Obtiene la lista de comunidades donde un usuario específico tiene el rol de creador.
@@ -81,7 +82,7 @@ export abstract class ComunidadRepository {
   public abstract buscarPorCreador(
     id_usuario: string,
     id_rol_creador: string
-  ): Promise<IComunidad[]>;
+  ): Promise<Comunidad[]>;
 
   /**
    * Verifica si una categoría de comunidad existe en la base de datos.

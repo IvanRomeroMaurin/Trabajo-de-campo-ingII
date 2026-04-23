@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { MiembroRepository } from './miembro.repository.interface';
+import { Miembro } from '../models/miembro.entity';
 import { ROLES } from '../../common/constants/roles';
 
 /**
@@ -21,7 +22,10 @@ export class PrismaMiembroRepository implements MiembroRepository {
    * @param id_comunidad - ID de la comunidad.
    * @returns El registro de la tabla miembro_comunidad o null.
    */
-  public async buscarMiembro(id_usuario: string, id_comunidad: string): Promise<any> {
+  public async buscarMiembro(
+    id_usuario: string,
+    id_comunidad: string,
+  ): Promise<Miembro | null> {
     return this.txHost.tx.miembro_comunidad.findUnique({
       where: {
         id_usuario_id_comunidad: {

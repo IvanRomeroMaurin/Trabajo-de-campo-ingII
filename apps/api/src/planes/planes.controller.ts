@@ -11,6 +11,8 @@ import {
 import { PlanesService } from './services/planes.service.interface';
 import { CrearPlanDto } from './dto/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
+import { PlanComunidad } from './models/plan.entity';
+import { CicloPago } from './models/ciclo-pago.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
 
@@ -49,7 +51,7 @@ export class PlanesController {
    * Se usa para poblar los selectores del formulario de creación de planes.
    */
   @Get('config/ciclos-pago')
-  public async getCiclosPago() {
+  public async getCiclosPago(): Promise<CicloPago[]> {
     return this.planesService.getValidCiclosPago();
   }
 
@@ -62,7 +64,7 @@ export class PlanesController {
   @Get('comunidad/:id_comunidad')
   public async getPlanesPorComunidad(
     @Param('id_comunidad') id_comunidad: string,
-  ) {
+  ): Promise<PlanComunidad[]> {
     return this.planesService.getPlanesPorComunidad(id_comunidad);
   }
 }

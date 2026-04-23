@@ -1,4 +1,4 @@
-import { categoria_comunidad } from '@prisma/client';
+import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 
 /**
  * Interfaz que define las operaciones para la gestión de categorías de comunidad.
@@ -10,5 +10,5 @@ export abstract class CategoriaComunidadService {
    *
    * @returns Una promesa que resuelve con un arreglo de categorías.
    */
-  abstract getCategorias(): Promise<categoria_comunidad[]>;
+  public abstract getCategorias(): Promise<CategoriaComunidad[]>;
 }

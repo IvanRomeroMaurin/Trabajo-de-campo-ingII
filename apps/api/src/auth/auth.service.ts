@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { RegistrarUsuarioDto } from './dto/registrar-usuario.dto';
 import { IUsuario, IRespuestaAuth } from '@repo/types';
+import { Usuario } from '../usuarios/models/usuario.entity';
 /**
  * Servicio de Autenticación
  * Contiene la lógica de negocio responsable del encriptado de claves, generación
@@ -28,7 +29,7 @@ export class AuthService {
   public async validarUsuario(
     email: string,
     pass: string,
-  ): Promise<IUsuario | null> {
+  ): Promise<Usuario | null> {
     const usuario = await this.usuariosService.buscarPorCorreo(email);
     if (
       usuario &&
@@ -47,7 +48,7 @@ export class AuthService {
    * @param usuario El objeto usuario validado por la Estrategia Local anteriormente.
    * @returns Un token JWT con la expiración que haya sido configurada en la importación.
    */
-  public iniciarSesion(usuario: IUsuario): IRespuestaAuth {
+  public iniciarSesion(usuario: Usuario): IRespuestaAuth {
     const payload = {
       email: usuario.email,
       sub: usuario.id_usuario,
@@ -64,7 +65,7 @@ export class AuthService {
    * @param dto Los datos recolectados del request (nombre, email, pass).
    * @throws {ConflictException} Si el correo electrónico ya existía en la DB.
    */
-  public async registrarUsuario(dto: RegistrarUsuarioDto): Promise<IUsuario> {
+  public async registrarUsuario(dto: RegistrarUsuarioDto): Promise<Usuario> {
     const usuarioExistente = await this.usuariosService.buscarPorCorreo(
       dto.email,
     );

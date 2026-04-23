@@ -1,4 +1,5 @@
 import { categoria_comunidad } from '@prisma/client';
+import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 
 /**
  * Mapper para la entidad CategoriaComunidad.
@@ -12,10 +13,10 @@ export class CategoriaComunidadMapper {
    * @returns Objeto mapeado con los campos esenciales de la categoría.
    */
   public static toDomain(cat: categoria_comunidad) {
-    return {
+    return new CategoriaComunidad({
       id_categoria_comunidad: cat.id_categoria_comunidad,
       descripcion: cat.descripcion,
       activa: cat.activa,
-    };
+    });
   }
 }

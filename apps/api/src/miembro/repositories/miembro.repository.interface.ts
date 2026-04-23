@@ -1,3 +1,5 @@
+import { Miembro } from '../models/miembro.entity';
+
 /**
  * Interfaz que define el contrato para el acceso a datos relacionados con miembros de comunidades.
  * Centraliza las consultas de persistencia y validaciones de existencia para el módulo Miembro.
@@ -10,7 +12,7 @@ export abstract class MiembroRepository {
    * @param id_comunidad - ID de la comunidad.
    * @returns Una promesa con el registro de membresía o null.
    */
-  abstract buscarMiembro(id_usuario: string, id_comunidad: string): Promise<any>;
+  public abstract buscarMiembro(id_usuario: string, id_comunidad: string): Promise<Miembro | null>;
 
   /**
    * Registra una nueva unión de un usuario a una comunidad.

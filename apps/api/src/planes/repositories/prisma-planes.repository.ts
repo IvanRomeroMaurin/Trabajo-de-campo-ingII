@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { IPlanComunidad, ICicloPago } from '@repo/types';
+import { PlanComunidad } from '../models/plan.entity';
+import { CicloPago } from '../models/ciclo-pago.entity';
 import { PlanesRepository } from './planes.repository.interface';
 import { PlanesMapper } from './planes.mapper';
 
@@ -31,7 +33,7 @@ export class PrismaPlanesRepository implements PlanesRepository {
     mp_preapproval_plan_id: string;
     id_comunidad: string;
     activa: boolean;
-  }): Promise<IPlanComunidad> {
+  }): Promise<PlanComunidad> {
     const plan = await this.txHost.tx.plan_comunidad.create({
       data: {
         ...data,
@@ -51,7 +53,7 @@ export class PrismaPlanesRepository implements PlanesRepository {
    */
   public async buscarPorComunidad(
     id_comunidad: string,
-  ): Promise<IPlanComunidad[]> {
+  ): Promise<PlanComunidad[]> {
     const planes = await this.txHost.tx.plan_comunidad.findMany({
       where: { id_comunidad },
       include: {
@@ -69,7 +71,7 @@ export class PrismaPlanesRepository implements PlanesRepository {
    *
    * @returns Lista de ciclos de pago mapeados.
    */
-  public async buscarCiclosPago(): Promise<ICicloPago[]> {
+  public async buscarCiclosPago(): Promise<CicloPago[]> {
     const ciclos = await this.txHost.tx.ciclo_pago.findMany({
       orderBy: [{ tipo_frecuencia: 'asc' }, { frecuencia: 'asc' }],
     });
