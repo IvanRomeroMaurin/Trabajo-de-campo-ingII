@@ -56,36 +56,26 @@ export abstract class ComunidadService {
    *
    * @param id - Identificador único de la comunidad a actualizar.
    * @param command - Objeto con los campos parciales a actualizar.
-   * @param idUsuario - Identificador del usuario que intenta realizar la actualización.
    * @returns Una promesa que resuelve con los datos de la comunidad actualizada.
    */
   abstract actualizarComunidad(
     id: string,
     command: ActualizarComunidadCommand,
-    idUsuario: string,
   ): Promise<IComunidad>;
 
   /**
    * Desactiva una comunidad realizando una baja lógica.
    *
    * @param id - Identificador único de la comunidad a desactivar.
-   * @param idUsuario - Identificador del usuario que solicita la desactivación.
    * @returns Una promesa que resuelve con un mensaje de éxito.
    */
-  abstract desactivarComunidad(
-    id: string,
-    idUsuario: string,
-  ): Promise<{ mensaje: string }>;
+  abstract desactivarComunidad(id: string): Promise<{ mensaje: string }>;
 
   /**
    * Reactiva una comunidad que fue previamente desactivada.
    *
    * @param id - Identificador único de la comunidad a reactivar.
-   * @param idUsuario - Identificador del usuario que solicita la reactivación.
    * @returns Una promesa que resuelve con un mensaje de éxito.
    */
-  abstract reactivarComunidad(
-    id: string,
-    idUsuario: string,
-  ): Promise<{ mensaje: string }>;
+  abstract reactivarComunidad(id: string): Promise<{ mensaje: string }>;
 }

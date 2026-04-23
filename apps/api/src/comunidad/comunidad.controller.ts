@@ -16,6 +16,7 @@ import { ComunidadService } from './services/comunidad.service.interface';
 import { CrearComunidadDto } from './dto/crear-comunidad.dto';
 import { ActualizarComunidadDto } from './dto/actualizar-comunidad.dto';
 import { IComunidad, IUsuario } from '@repo/types';
+import { ComunidadOwnerGuard } from './guards/comunidad-owner.guard';
 
 /**
  * Controlador de Comunidades.
@@ -89,54 +90,41 @@ export class ComunidadController {
    * Modifica los datos de una comunidad. Solo el creador puede hacerlo.
    * Mapea el DTO de la petición al comando de actualización.
    */
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @Patch(':id')
   public async actualizarComunidad(
     @Param('id') id: string,
     @Body() dto: ActualizarComunidadDto,
-    @Request() req: { user: IUsuario },
   ): Promise<IComunidad> {
-    return this.comunidadService.actualizarComunidad(
-      id,
-      {
-        nombre: dto.nombre,
-        descripcion: dto.descripcion,
-        portada_url: dto.portada_url,
-        id_categoria_comunidad: dto.id_categoria_comunidad,
-      },
-      req.user.id_usuario.toString(),
-    );
+    return this.comunidadService.actualizarComunidad(id, {
+      nombre: dto.nombre,
+      descripcion: dto.descripcion,
+      portada_url: dto.portada_url,
+      id_categoria_comunidad: dto.id_categoria_comunidad,
+    });
   }
 
   /**
    * Baja lógica de la comunidad (activa = false).
    */
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   public async desactivarComunidad(
     @Param('id') id: string,
-    @Request() req: { user: IUsuario },
   ): Promise<{ mensaje: string }> {
-    return this.comunidadService.desactivarComunidad(
-      id,
-      req.user.id_usuario.toString(),
-    );
+    return this.comunidadService.desactivarComunidad(id);
   }
 
   /**
    * Alta lógica de la comunidad (activa = true).
    */
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)
   @Post(':id/reactivar')
   public async reactivarComunidad(
     @Param('id') id: string,
-    @Request() req: { user: IUsuario },
   ): Promise<{ mensaje: string }> {
-    return this.comunidadService.reactivarComunidad(
-      id,
-      req.user.id_usuario.toString(),
-    );
+    return this.comunidadService.reactivarComunidad(id);
   }
 }

@@ -6,6 +6,7 @@ import { MiembroModule } from '../miembro/miembro.module';
 import { CategoriaComunidadModule } from '../categoria-comunidad/categoria-comunidad.module';
 import { ComunidadRepository } from './repositories/comunidad.repository.interface';
 import { PrismaComunidadRepository } from './repositories/comunidad.prisma.repository';
+import { ComunidadOwnerGuard } from './guards/comunidad-owner.guard';
 
 @Module({
   imports: [MiembroModule, CategoriaComunidadModule],
@@ -19,6 +20,7 @@ import { PrismaComunidadRepository } from './repositories/comunidad.prisma.repos
       provide: ComunidadRepository,
       useClass: PrismaComunidadRepository,
     },
+    ComunidadOwnerGuard,
   ],
   exports: [ComunidadService, ComunidadRepository],
 })

@@ -148,9 +148,7 @@ export class ComunidadService implements IComunidadService {
   public async actualizarComunidad(
     id: string,
     command: ActualizarComunidadCommand,
-    idUsuario: string,
   ): Promise<IComunidad> {
-    await this.verificarExistenciaYAutoria(id, idUsuario);
 
     const updateData: any = { ...command };
 
@@ -173,35 +171,24 @@ export class ComunidadService implements IComunidadService {
    * Requiere que el usuario sea el creador de la comunidad.
    *
    * @param id - Identificador único de la comunidad a desactivar.
-   * @param idUsuario - Identificador del usuario que solicita la desactivación.
    * @returns Una promesa que resuelve con un mensaje de éxito.
    * @throws {NotFoundException} Si la comunidad no existe.
-   * @throws {ForbiddenException} Si el usuario no es el creador de la comunidad.
    */
-  public async desactivarComunidad(
-    id: string,
-    idUsuario: string,
-  ): Promise<{ mensaje: string }> {
-    await this.verificarExistenciaYAutoria(id, idUsuario);
+  @Transactional()
+  public async desactivarComunidad(id: string): Promise<{ mensaje: string }> {
     await this.comunidadRepository.actualizar(id, { activa: false });
     return { mensaje: `La comunidad con id ${id} fue desactivada correctamente` };
   }
 
   /**
    * Reactiva una comunidad que fue previamente desactivada (activa: true).
-   * Requiere que el usuario sea el creador de la comunidad.
    *
    * @param id - Identificador único de la comunidad a reactivar.
-   * @param idUsuario - Identificador del usuario que solicita la reactivación.
    * @returns Una promesa que resuelve con un mensaje de éxito.
    * @throws {NotFoundException} Si la comunidad no existe.
-   * @throws {ForbiddenException} Si el usuario no es el creador de la comunidad.
    */
-  public async reactivarComunidad(
-    id: string,
-    idUsuario: string,
-  ): Promise<{ mensaje: string }> {
-    await this.verificarExistenciaYAutoria(id, idUsuario);
+  @Transactional()
+  public async reactivarComunidad(id: string): Promise<{ mensaje: string }> {
     await this.comunidadRepository.actualizar(id, { activa: true });
     return { mensaje: `La comunidad con id ${id} fue reactivada correctamente` };
   }
@@ -225,32 +212,5 @@ export class ComunidadService implements IComunidadService {
     }
 
     return slug;
-  }
-
-  /**
-   * Método de utilidad para validar la existencia de una comunidad y los permisos del usuario.
-   * Se asegura de que la comunidad exista en la base de datos y que el usuario tenga el rol de creador.
-   *
-   * @param idComunidad - Identificador de la comunidad a verificar.
-   * @param idUsuario - Identificador del usuario cuya autoría se va a validar.
-   * @throws {NotFoundException} Si la comunidad no existe.
-   * @throws {ForbiddenException} Si el usuario no es el creador de la comunidad.
-   * @private
-   */
-  private async verificarExistenciaYAutoria(
-    idComunidad: string,
-    idUsuario: string,
-  ): Promise<void> {
-    const comunidad = await this.comunidadRepository.buscarPorId(idComunidad);
-    if (!comunidad) {
-      throw new NotFoundException(`La comunidad no fue encontrada`);
-    }
-
-    const esCreador = await this.miembroService.esCreador(idUsuario, idComunidad);
-    if (!esCreador) {
-      throw new ForbiddenException(
-        'No tenés permisos para modificar esta comunidad',
-      );
-    }
   }
 }
