@@ -12,7 +12,7 @@ export abstract class UsuariosRepository {
    * @param email - Correo electrónico del usuario.
    * @returns Una promesa con el usuario o null si no se encuentra.
    */
-  abstract buscarPorEmail(email: string): Promise<IUsuario | null>;
+  public abstract buscarPorEmail(email: string): Promise<IUsuario | null>;
 
   /**
    * Persiste un nuevo registro de usuario en la base de datos.
@@ -20,7 +20,7 @@ export abstract class UsuariosRepository {
    * @param data - Datos para la creación del usuario.
    * @returns Una promesa con el usuario creado y mapeado.
    */
-  abstract guardar(data: CrearUsuarioCommand): Promise<IUsuario>;
+  public abstract guardar(data: CrearUsuarioCommand): Promise<IUsuario>;
 
   /**
    * Busca un usuario en la persistencia utilizando su ID único.
@@ -28,5 +28,5 @@ export abstract class UsuariosRepository {
    * @param id - Identificador único (UUID) del usuario.
    * @returns Una promesa con el usuario o null si no se encuentra.
    */
-  abstract buscarPorId(id: string): Promise<IUsuario | null>;
+  public abstract buscarPorId(id: string): Promise<IUsuario | null>;
 }

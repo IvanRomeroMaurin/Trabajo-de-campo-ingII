@@ -10,7 +10,7 @@ import { CrearUsuarioCommand } from './usuarios.commands';
  */
 @Injectable()
 export class UsuariosService implements IUsuariosService {
-  constructor(private readonly repository: UsuariosRepository) {}
+  public constructor(private readonly repository: UsuariosRepository) {}
 
   /**
    * Busca un usuario por su correo electrónico delegando la consulta al repositorio.

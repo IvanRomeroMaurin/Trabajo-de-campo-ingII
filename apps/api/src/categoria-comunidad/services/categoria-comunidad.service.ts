@@ -8,7 +8,7 @@ import { CategoriaComunidadService as ICategoriaComunidadService } from './categ
  */
 @Injectable()
 export class CategoriaComunidadService implements ICategoriaComunidadService {
-  constructor(private readonly repository: CategoriaComunidadRepository) {}
+  public constructor(private readonly repository: CategoriaComunidadRepository) {}
 
   /**
    * Obtiene todas las categorías activas a través del repositorio.

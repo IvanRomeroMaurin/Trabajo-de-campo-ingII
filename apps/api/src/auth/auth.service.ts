@@ -14,7 +14,7 @@ export class AuthService {
   private readonly usuariosService: UsuariosService;
   private readonly jwtService: JwtService;
 
-  constructor(usuariosService: UsuariosService, jwtService: JwtService) {
+  public constructor(usuariosService: UsuariosService, jwtService: JwtService) {
     this.usuariosService = usuariosService;
     this.jwtService = jwtService;
   }

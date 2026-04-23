@@ -8,14 +8,14 @@ export class MercadoPagoService implements IMercadoPagoService {
   private readonly logger = new Logger(MercadoPagoService.name);
   private readonly preApprovalPlan: PreApprovalPlan;
 
-  constructor(private readonly configService: ConfigService) {
+  public constructor(private readonly configService: ConfigService) {
     const client = new MercadoPagoConfig({
       accessToken: this.configService.getOrThrow<string>('MP_ACCESS_TOKEN'),
     });
     this.preApprovalPlan = new PreApprovalPlan(client);
   }
 
-  async createPreapprovalPlan(data: {
+  public async createPreapprovalPlan(data: {
     titulo: string;
     descripcion?: string;
     precio: number;
@@ -55,7 +55,7 @@ export class MercadoPagoService implements IMercadoPagoService {
     }
   }
 
-  async cancelPreapprovalPlan(mp_preapproval_plan_id: string): Promise<void> {
+  public async cancelPreapprovalPlan(mp_preapproval_plan_id: string): Promise<void> {
     try {
       await this.preApprovalPlan.update({
         id: mp_preapproval_plan_id,

@@ -21,7 +21,7 @@ import { IUsuario, IRespuestaAuth } from '@repo/types';
 export class AuthController {
   private readonly authService: AuthService;
 
-  constructor(authService: AuthService) {
+  public constructor(authService: AuthService) {
     this.authService = authService;
   }
 

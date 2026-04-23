@@ -17,7 +17,7 @@ export class UsuariosMapper {
    * @param user - El registro crudo obtenido de la base de datos a través de Prisma.
    * @returns El objeto formateado según la interfaz IUsuario.
    */
-  static toIUsuario(user: usuario): IUsuario {
+  public static toIUsuario(user: usuario): IUsuario {
     return {
       id_usuario: user.id_usuario,
       nombre: user.nombre,

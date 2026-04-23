@@ -11,7 +11,7 @@ export class PlanesMapper {
    * @param p - El objeto crudo de la base de datos.
    * @returns El plan formateado según la interfaz de dominio.
    */
-  static toIPlanComunidad(p: any): IPlanComunidad {
+  public static toIPlanComunidad(p: any): IPlanComunidad {
     return {
       ...p,
       id_plan_comunidad: p.id_plan_comunidad,
@@ -43,7 +43,7 @@ export class PlanesMapper {
    * @param c - El objeto de ciclo de pago de la base de datos.
    * @returns El ciclo de pago formateado.
    */
-  static toICicloPago(c: any): ICicloPago {
+  public static toICicloPago(c: any): ICicloPago {
     return {
       ...c,
       id_ciclo_pago: c.id_ciclo_pago,

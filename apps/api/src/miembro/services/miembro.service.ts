@@ -9,7 +9,7 @@ import { AgregarMiembroCommand, CambiarRolMiembroCommand } from './miembro.comma
  */
 @Injectable()
 export class MiembroService implements IMiembroService {
-  constructor(private readonly repository: MiembroRepository) {}
+  public constructor(private readonly repository: MiembroRepository) {}
 
   /**
    * Une a un usuario a una comunidad.

@@ -4,7 +4,7 @@ import { categoria_comunidad } from '@prisma/client';
 
 @Controller('categorias-comunidad')
 export class CategoriaComunidadController {
-  constructor(private readonly service: CategoriaComunidadService) {}
+  public constructor(private readonly service: CategoriaComunidadService) {}
 
   @Get()
   public async getCategorias(): Promise<categoria_comunidad[]> {

@@ -15,18 +15,18 @@ export class PrismaService
 {
   private readonly pool: Pool;
 
-  constructor() {
+  public constructor() {
     const pool = new Pool({ connectionString: process.env.DATABASE_URL });
     const adapter = new PrismaPg(pool);
     super({ adapter });
     this.pool = pool;
   }
 
-  async onModuleInit() {
+  public async onModuleInit() {
     await this.$connect();
   }
 
-  async onModuleDestroy() {
+  public async onModuleDestroy() {
     await this.$disconnect();
     await this.pool.end();
   }

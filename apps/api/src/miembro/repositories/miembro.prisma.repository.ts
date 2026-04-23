@@ -10,7 +10,7 @@ import { ROLES } from '../../common/constants/roles';
  */
 @Injectable()
 export class PrismaMiembroRepository implements MiembroRepository {
-  constructor(
+  public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
   ) {}
 
@@ -21,7 +21,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    * @param id_comunidad - ID de la comunidad.
    * @returns El registro de la tabla miembro_comunidad o null.
    */
-  async buscarMiembro(id_usuario: string, id_comunidad: string): Promise<any> {
+  public async buscarMiembro(id_usuario: string, id_comunidad: string): Promise<any> {
     return this.txHost.tx.miembro_comunidad.findUnique({
       where: {
         id_usuario_id_comunidad: {
@@ -37,7 +37,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    *
    * @param data - Datos de la membresía.
    */
-  async crearMiembro(data: any): Promise<void> {
+  public async crearMiembro(data: any): Promise<void> {
     await this.txHost.tx.miembro_comunidad.create({ data });
   }
 
@@ -48,7 +48,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    * @param id_comunidad - ID de la comunidad.
    * @param data - Datos a actualizar.
    */
-  async actualizarMiembro(id_usuario: string, id_comunidad: string, data: any): Promise<void> {
+  public async actualizarMiembro(id_usuario: string, id_comunidad: string, data: any): Promise<void> {
     await this.txHost.tx.miembro_comunidad.update({
       where: {
         id_usuario_id_comunidad: {
@@ -67,7 +67,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    * @param id_comunidad - ID de la comunidad.
    * @returns True si el usuario tiene el rol de creador en esa comunidad.
    */
-  async esCreador(id_usuario: string, id_comunidad: string): Promise<boolean> {
+  public async esCreador(id_usuario: string, id_comunidad: string): Promise<boolean> {
     const miembro = await this.txHost.tx.miembro_comunidad.findFirst({
       where: {
         id_usuario,
@@ -84,7 +84,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    * @param id_usuario - ID a buscar.
    * @returns True si el conteo es mayor a cero.
    */
-  async existeUsuario(id_usuario: string): Promise<boolean> {
+  public async existeUsuario(id_usuario: string): Promise<boolean> {
     const count = await this.txHost.tx.usuario.count({ where: { id_usuario } });
     return count > 0;
   }
@@ -95,7 +95,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    * @param id_comunidad - ID a buscar.
    * @returns True si la comunidad existe.
    */
-  async existeComunidad(id_comunidad: string): Promise<boolean> {
+  public async existeComunidad(id_comunidad: string): Promise<boolean> {
     const count = await this.txHost.tx.comunidad.count({ where: { id_comunidad } });
     return count > 0;
   }
@@ -106,7 +106,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    * @param id_rol - ID del rol.
    * @returns True si el rol existe.
    */
-  async existeRol(id_rol: string): Promise<boolean> {
+  public async existeRol(id_rol: string): Promise<boolean> {
     const count = await this.txHost.tx.rol.count({ where: { id_rol } });
     return count > 0;
   }

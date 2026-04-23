@@ -12,7 +12,7 @@ export abstract class UsuariosService {
    * @param email - Correo electrónico del usuario a buscar.
    * @returns Una promesa que resuelve con el usuario encontrado o null si no existe.
    */
-  abstract buscarPorCorreo(email: string): Promise<IUsuario | null>;
+  public abstract buscarPorCorreo(email: string): Promise<IUsuario | null>;
 
   /**
    * Registra un nuevo usuario en el sistema.
@@ -20,7 +20,7 @@ export abstract class UsuariosService {
    * @param data - Datos necesarios para la creación del usuario (comandos).
    * @returns Una promesa que resuelve con los datos del usuario recién creado.
    */
-  abstract crearUsuario(data: CrearUsuarioCommand): Promise<IUsuario>;
+  public abstract crearUsuario(data: CrearUsuarioCommand): Promise<IUsuario>;
 
   /**
    * Busca un usuario registrado utilizando su identificador único (UUID).
@@ -28,5 +28,5 @@ export abstract class UsuariosService {
    * @param id - Identificador único del usuario.
    * @returns Una promesa que resuelve con el usuario encontrado o null si no existe.
    */
-  abstract buscarPorId(id: string): Promise<IUsuario | null>;
+  public abstract buscarPorId(id: string): Promise<IUsuario | null>;
 }

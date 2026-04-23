@@ -16,13 +16,13 @@ import { IUsuario } from '@repo/types';
  */
 @Injectable()
 export class ComunidadOwnerGuard implements CanActivate {
-  constructor(
+  public constructor(
     @Inject(ComunidadRepository)
     private readonly comunidadRepository: ComunidadRepository,
     private readonly miembroService: MiembroService,
   ) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const user = request.user as IUsuario;
     

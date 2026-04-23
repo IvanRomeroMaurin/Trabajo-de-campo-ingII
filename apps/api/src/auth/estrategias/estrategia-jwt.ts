@@ -13,7 +13,7 @@ import { UsuariosService } from '../../usuarios/services/usuarios.service.interf
  */
 @Injectable()
 export class EstrategiaJwt extends PassportStrategy(Strategy) {
-  constructor(
+  public constructor(
     configService: ConfigService,
     private readonly usuariosService: UsuariosService,
   ) {

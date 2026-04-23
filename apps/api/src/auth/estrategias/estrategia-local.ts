@@ -13,7 +13,7 @@ import { IUsuario } from '@repo/types';
 export class EstrategiaLocal extends PassportStrategy(Strategy) {
   private readonly authService: AuthService;
 
-  constructor(authService: AuthService) {
+  public constructor(authService: AuthService) {
     super({ usernameField: 'email', passwordField: 'password' });
     this.authService = authService;
   }
