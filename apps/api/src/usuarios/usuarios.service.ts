@@ -37,12 +37,12 @@ export class UsuariosService {
   }
 
   /**
-   * Busca un usuario por su ID (BigInt).
+   * Busca un usuario por su ID (UUID).
    * @param id El ID del usuario.
    */
-  public async buscarPorId(id: number): Promise<usuario | null> {
+  public async buscarPorId(id: string): Promise<usuario | null> {
     return this.prisma.usuario.findUnique({
-      where: { id_usuario: BigInt(id) },
+      where: { id_usuario: id },
     });
   }
 }

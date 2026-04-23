@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Rocket, ArrowLeft, Sparkles, Clock, Globe } from 'lucide-react';
+import { Rocket, ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

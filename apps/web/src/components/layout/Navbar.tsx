@@ -86,7 +86,7 @@ export async function Navbar() {
               )}
             </div>
 
-            <MobileMenu isLoggedIn={isLoggedIn} usuario={usuario} />
+            <MobileMenu isLoggedIn={isLoggedIn} usuario={usuario || undefined} />
           </div>
 
         </div>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
 import { KomuLogo } from "./KomuLogo";
 
 export function Footer() {

@@ -72,7 +72,7 @@ export function CreatePlanForm({ idComunidad, slug, ciclos }: CreatePlanFormProp
       } else {
         setError(result.error || 'Error al crear el plan');
       }
-    } catch (e) {
+    } catch {
       setError('Error de conexión');
     } finally {
       setIsPending(false);

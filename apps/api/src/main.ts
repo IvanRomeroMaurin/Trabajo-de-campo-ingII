@@ -2,11 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
-// Parche global para que NestJS pueda devolver BigInts (IDs) en JSON sin error
-(BigInt.prototype as any).toJSON = function () {
-  return this.toString();
-};
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -20,4 +15,6 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3001);
 }
-bootstrap();
+bootstrap().catch((err) => {
+  console.error('Error starting the application:', err);
+});

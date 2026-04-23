@@ -23,3 +23,12 @@ export interface IComunidad {
   miembro_comunidad?: IMiembroComunidad[];
   plan_comunidad?: IPlanComunidad[];
 }
+
+export interface ICreateCommunityRequest {
+  nombre: string;
+  descripcion?: string;
+  id_categoria_comunidad: string;
+  portada_url?: string;
+}
+
+export type IUpdateCommunityRequest = Partial<ICreateCommunityRequest>;

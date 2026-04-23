@@ -34,9 +34,10 @@ export async function crearPlan(formData: FormData) {
     revalidatePath(`/comunidades/${id_comunidad}`);
 
     return { success: true, plan: result.plan };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error al crear plan:', error);
-    const message = error.response?.data?.message || error.message || 'Ocurrió un error al registrar el plan';
+    const err = error as { response?: { data?: { message?: string } }; message?: string };
+    const message = err.response?.data?.message || err.message || 'Ocurrió un error al registrar el plan';
     return { success: false, error: message };
   }
 }

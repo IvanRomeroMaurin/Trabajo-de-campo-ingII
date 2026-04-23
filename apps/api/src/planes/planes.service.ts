@@ -10,6 +10,7 @@ import { MercadoPagoService } from '../mercadopago/mercadopago.service';
 import { ComunidadService } from '../comunidad/comunidad.service';
 import { CrearPlanDto } from './dto/crear-plan.dto';
 import { ICreatePlanResponse, IPlanComunidad, ICicloPago } from '@repo/types';
+import { MONEDAS, CICLOS_PAGO, MAP_CICLOS_PAGO } from '../common/constants/planes';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -37,14 +38,21 @@ export class PlanesService {
     // PASO 1 — validatePlanData
     this.validatePlanData(dto.titulo, dto.precio, dto.frecuencia);
 
-    // PASO 2 — getCicloPago
-    const cicloPago = await this.getCicloPago(
-      dto.frecuencia,
-      dto.tipo_frecuencia,
-    );
+    // PASO 2 — getCicloPago (Usando constantes)
+    const key = `${dto.tipo_frecuencia}:${dto.frecuencia}`;
+    const id_ciclo_pago = MAP_CICLOS_PAGO[key];
 
-    // PASO 3 — getMoneda
-    const moneda = await this.getMoneda(dto.moneda);
+    if (!id_ciclo_pago) {
+      throw new BadRequestException(
+        'La combinación de frecuencia y tipo no es válida',
+      );
+    }
+
+    // PASO 3 — getMoneda (Usando constantes)
+    const id_moneda = MONEDAS[dto.moneda];
+    if (!id_moneda) {
+      throw new BadRequestException('Moneda no válida');
+    }
 
     // PASO 4 — createPreapprovalPlan
     const frontendUrl = this.configService.get<string>('FRONTEND_URL');
@@ -74,14 +82,14 @@ export class PlanesService {
           titulo: dto.titulo,
           descripcion: dto.descripcion,
           precio: dto.precio,
-          id_ciclo_pago: cicloPago.id_ciclo_pago.toString(),
-          id_moneda: moneda.id_moneda.toString(),
+          id_ciclo_pago,
+          id_moneda,
           mp_preapproval_plan_id,
           id_comunidad: dto.id_comunidad,
         });
       });
       return { plan };
-    } catch (error) {
+    } catch {
       await this.mercadoPagoService.cancelPreapprovalPlan(
         mp_preapproval_plan_id,
       );
@@ -117,44 +125,7 @@ export class PlanesService {
     }
   }
 
-  /**
-   * Busca el ciclo de pago por frecuencia y tipo.
-   * Corresponde al paso getCicloPago del diagrama de secuencia.
-   *
-   * @param frecuencia - Ejemplo: 1, 3, 6.
-   * @param tipo_frecuencia - Ejemplo: 'months', 'days'.
-   * @returns El registro del ciclo de pago encontrado en la base de datos.
-   * @throws BadRequestException si el ciclo solicitado no existe.
-   */
-  private async getCicloPago(frecuencia: number, tipo_frecuencia: string) {
-    const cicloPago = await this.prisma.ciclo_pago.findFirst({
-      where: { frecuencia, tipo_frecuencia },
-    });
-    if (!cicloPago) {
-      throw new BadRequestException(
-        'Frecuencia o tipo de frecuencia de pago no válida',
-      );
-    }
-    return cicloPago;
-  }
 
-  /**
-   * Busca la moneda por su código.
-   * Corresponde al paso getMoneda del diagrama de secuencia.
-   *
-   * @param moneda - Código de la moneda (ej: 'ARS', 'USD').
-   * @returns El registro de la moneda encontrado en la base de datos.
-   * @throws BadRequestException si la moneda no existe.
-   */
-  private async getMoneda(moneda: string) {
-    const registroMoneda = await this.prisma.moneda.findFirst({
-      where: { moneda },
-    });
-    if (!registroMoneda) {
-      throw new BadRequestException('Moneda no válida');
-    }
-    return registroMoneda;
-  }
 
   /**
    * Persiste el plan en BD dentro de una transacción.
@@ -183,10 +154,10 @@ export class PlanesService {
         titulo: data.titulo,
         descripcion: data.descripcion,
         precio: data.precio,
-        id_ciclo_pago: BigInt(data.id_ciclo_pago),
-        id_moneda: BigInt(data.id_moneda),
+        id_ciclo_pago: data.id_ciclo_pago,
+        id_moneda: data.id_moneda,
         mp_preapproval_plan_id: data.mp_preapproval_plan_id,
-        id_comunidad: BigInt(data.id_comunidad),
+        id_comunidad: data.id_comunidad,
         activa: true,
         fecha_creacion: new Date(),
       },
@@ -194,7 +165,7 @@ export class PlanesService {
 
     // b. Contar planes activos
     const count = await tx.plan_comunidad.count({
-      where: { id_comunidad: BigInt(data.id_comunidad), activa: true },
+      where: { id_comunidad: data.id_comunidad, activa: true },
     });
 
     // c. Si count === 1 → activar comunidad
@@ -205,10 +176,10 @@ export class PlanesService {
     // d. Retornar el plan creado mapeado a IPlanComunidad
     return {
       ...plan,
-      id_plan_comunidad: plan.id_plan_comunidad.toString(),
-      id_comunidad: plan.id_comunidad.toString(),
-      id_ciclo_pago: plan.id_ciclo_pago.toString(),
-      id_moneda: plan.id_moneda.toString(),
+      id_plan_comunidad: plan.id_plan_comunidad,
+      id_comunidad: plan.id_comunidad,
+      id_ciclo_pago: plan.id_ciclo_pago,
+      id_moneda: plan.id_moneda,
       precio: Number(plan.precio),
       descripcion: plan.descripcion ?? undefined,
       mp_preapproval_plan_id: plan.mp_preapproval_plan_id ?? undefined,
@@ -228,7 +199,7 @@ export class PlanesService {
 
     return ciclos.map((c) => ({
       ...c,
-      id_ciclo_pago: c.id_ciclo_pago.toString(),
+      id_ciclo_pago: c.id_ciclo_pago,
     }));
   }
 
@@ -239,9 +210,11 @@ export class PlanesService {
    * @param id_comunidad - ID de la comunidad a consultar.
    * @returns Lista de planes con detalles de ciclo y moneda.
    */
-  public async getPlanesPorComunidad(id_comunidad: string): Promise<IPlanComunidad[]> {
+  public async getPlanesPorComunidad(
+    id_comunidad: string,
+  ): Promise<IPlanComunidad[]> {
     const planes = await this.prisma.plan_comunidad.findMany({
-      where: { id_comunidad: BigInt(id_comunidad) },
+      where: { id_comunidad: id_comunidad },
       include: {
         ciclo_pago: true,
         moneda: true,
@@ -251,25 +224,25 @@ export class PlanesService {
 
     return planes.map((p) => ({
       ...p,
-      id_plan_comunidad: p.id_plan_comunidad.toString(),
-      id_comunidad: p.id_comunidad.toString(),
-      id_ciclo_pago: p.id_ciclo_pago.toString(),
-      id_moneda: p.id_moneda.toString(),
+      id_plan_comunidad: p.id_plan_comunidad,
+      id_comunidad: p.id_comunidad,
+      id_ciclo_pago: p.id_ciclo_pago,
+      id_moneda: p.id_moneda,
       precio: Number(p.precio),
       descripcion: p.descripcion ?? undefined,
       mp_preapproval_plan_id: p.mp_preapproval_plan_id ?? undefined,
-      // Serializar relaciones anidadas que también tienen BigInt
+      // Serializar relaciones anidadas
       ciclo_pago: p.ciclo_pago
         ? {
-          ...p.ciclo_pago,
-          id_ciclo_pago: p.ciclo_pago.id_ciclo_pago.toString(),
-        }
+            ...p.ciclo_pago,
+            id_ciclo_pago: p.ciclo_pago.id_ciclo_pago,
+          }
         : undefined,
       moneda: p.moneda
         ? {
-          ...p.moneda,
-          id_moneda: p.moneda.id_moneda.toString(),
-        }
+            ...p.moneda,
+            id_moneda: p.moneda.id_moneda,
+          }
         : undefined,
     })) as IPlanComunidad[];
   }

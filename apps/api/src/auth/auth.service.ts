@@ -31,6 +31,7 @@ export class AuthService {
   ): Promise<IUsuario | null> {
     const usuario = await this.usuariosService.buscarPorCorreo(email);
     if (usuario && (await bcrypt.compare(pass, usuario.password_hash))) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password_hash, ...result } = usuario;
       return result as unknown as IUsuario;
     }
@@ -45,7 +46,7 @@ export class AuthService {
   public iniciarSesion(usuario: IUsuario): IRespuestaAuth {
     const payload = {
       email: usuario.email,
-      sub: usuario.id_usuario.toString(),
+      sub: usuario.id_usuario,
     };
     return {
       access_token: this.jwtService.sign(payload),
@@ -79,6 +80,7 @@ export class AuthService {
       activa: true,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password_hash, ...usuarioRestante } = nuevoUsuario;
     return usuarioRestante as unknown as IUsuario;
   }

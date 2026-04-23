@@ -25,7 +25,7 @@ export default async function ComunidadDetallePage({ params }: Props) {
     try {
       const misComunidades = await comunidadService.getMisComunidades();
       isCreator = misComunidades.some((c: IComunidad) => String(c.id_comunidad) === String(comunidad.id_comunidad));
-    } catch (e) {
+    } catch {
       // Ignoramos si no está logeado u otro error
     }
   } catch (error) {
@@ -33,7 +33,7 @@ export default async function ComunidadDetallePage({ params }: Props) {
     return notFound();
   }
 
-  const formatFrecuencia = (ciclo: any) => {
+  const formatFrecuencia = (ciclo: IPlanComunidad['ciclo_pago']) => {
     if (!ciclo) return 'Mensual';
     const unidad = ciclo.tipo_frecuencia === 'months' ? 'meses' : 'días';
     if (ciclo.frecuencia === 1 && ciclo.tipo_frecuencia === 'months') return 'Mensual';
@@ -152,7 +152,7 @@ export default async function ComunidadDetallePage({ params }: Props) {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {planesComunidad.map((plan: any) => (
+            {planesComunidad.map((plan: IPlanComunidad) => (
               <div key={plan.id_plan_comunidad} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-md relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-4">
                   <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${

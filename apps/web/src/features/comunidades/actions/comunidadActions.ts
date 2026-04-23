@@ -1,20 +1,22 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { comunidadService, CreateCommunityDto } from '../services/comunidadService';
+import { comunidadService } from '../services/comunidadService';
 import { uploadFileToStorage } from '@/shared/utils/storage';
+import { ICreateCommunityRequest, IUpdateCommunityRequest } from '@repo/types';
+
 
 export async function crearComunidad(formData: FormData) {
   const nombre = formData.get('nombre') as string;
   const descripcion = formData.get('descripcion') as string;
-  const id_categoria_comunidad = Number(formData.get('id_categoria_comunidad'));
+  const id_categoria_comunidad = formData.get('id_categoria_comunidad') as string;
   const portadaFile = formData.get('portada_url') as File | null;
 
   if (!nombre || !id_categoria_comunidad) {
     throw new Error('Faltan campos obligatorios');
   }
 
-  const dto: CreateCommunityDto = {
+  const dto: ICreateCommunityRequest = {
     nombre,
     descripcion,
     id_categoria_comunidad,
@@ -55,10 +57,10 @@ export async function crearComunidad(formData: FormData) {
 export async function updateComunidadAction(id_comunidad: string, formData: FormData) {
   const nombre = formData.get('nombre') as string;
   const descripcion = formData.get('descripcion') as string;
-  const id_categoria_comunidad = formData.get('id_categoria_comunidad') ? Number(formData.get('id_categoria_comunidad')) : undefined;
+  const id_categoria_comunidad = formData.get('id_categoria_comunidad') ? formData.get('id_categoria_comunidad') as string : undefined;
   const portadaFile = formData.get('portada_url') as File | null;
 
-  const dto: any = {};
+  const dto: IUpdateCommunityRequest = {};
   if (nombre) dto.nombre = nombre;
   if (descripcion) dto.descripcion = descripcion;
   if (id_categoria_comunidad) dto.id_categoria_comunidad = id_categoria_comunidad;

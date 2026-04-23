@@ -36,7 +36,7 @@ export function DeactivateCommunityButton({ idComunidad, isActive }: DeactivateC
       } else {
         alert(result.error);
       }
-    } catch (error) {
+    } catch {
       alert('Error de conectividad al cambiar el estado.');
     } finally {
       setIsPending(false);

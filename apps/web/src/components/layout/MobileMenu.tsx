@@ -4,10 +4,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Menu, X, Sparkles, UserPlus, LogOut, User } from 'lucide-react';
 import { logoutAction } from '@/features/auth/actions/logoutAction';
+import { IUsuario } from '@repo/types';
 
 interface MobileMenuProps {
   isLoggedIn: boolean;
-  usuario?: any;
+  usuario?: Partial<IUsuario>;
 }
 
 export function MobileMenu({ isLoggedIn, usuario }: MobileMenuProps) {

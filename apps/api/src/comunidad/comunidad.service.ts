@@ -5,11 +5,12 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, categoria_comunidad } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CrearComunidadDto } from './dto/crear-comunidad.dto';
 import { ActualizarComunidadDto } from './dto/actualizar-comunidad.dto';
 import { IComunidad } from '@repo/types';
+import { ROLES } from '../common/constants/roles';
 
 /**
  * Servicio de Comunidades
@@ -58,17 +59,6 @@ export class ComunidadService {
     return slug;
   }
 
-  /**
-   * Serializa los BigInt del modelo comunidad a string para que sea serializable a JSON.
-   */
-  private serializarComunidad(comunidad: any): IComunidad {
-    return {
-      ...comunidad,
-      id_comunidad: comunidad.id_comunidad.toString(),
-      id_categoria_comunidad: comunidad.id_categoria_comunidad.toString(),
-    } as IComunidad;
-  }
-
   // ─── CRUD Comunidad ───────────────────────────────────────────────────────────
 
   /**
@@ -84,8 +74,8 @@ export class ComunidadService {
     idCreador: string,
   ): Promise<IComunidad> {
     const slug = await this.generarSlugUnico(dto.nombre);
-    const idCategoria = BigInt(dto.id_categoria_comunidad);
-    const idUsuario = BigInt(idCreador);
+    const idCategoria = dto.id_categoria_comunidad;
+    const idUsuario = idCreador;
 
     // Verificar que la categoría existe
     const categoria = await this.prisma.categoria_comunidad.findUnique({
@@ -110,17 +100,16 @@ export class ComunidadService {
         },
       });
 
-      // Se pasa el cliente transaccional `tx` para que la inserción del miembro
-      // sea parte de la misma transacción y se revierta automáticamente si falla
+      // Usar la constante de rol "Creador"
       try {
         await this.agregarMiembro(
-          Number(idUsuario),
-          Number(nuevaComunidad.id_comunidad),
-          1, // id_rol = 1 → Creador
+          idUsuario,
+          nuevaComunidad.id_comunidad,
+          ROLES.CREADOR,
           tx,
         );
       } catch {
-        // Al lanzar aquí, Prisma revierte el create de la comunidad
+
         throw new InternalServerErrorException(
           'Error al configurar permisos, intentá de nuevo',
         );
@@ -129,7 +118,7 @@ export class ComunidadService {
       return nuevaComunidad;
     });
 
-    return this.serializarComunidad(comunidad);
+    return comunidad as IComunidad;
   }
 
   /**
@@ -143,22 +132,19 @@ export class ComunidadService {
       orderBy: { fecha_creacion: 'desc' },
     });
 
-    return comunidades.map((c) => this.serializarComunidad(c));
+    return comunidades.map((c) => c as IComunidad);
   }
 
   /**
    * Obtiene todas las categorías de comunidades disponibles.
    * @route GET /comunidades/categorias
    */
-  public async getCategorias(): Promise<any[]> {
+  public async getCategorias(): Promise<categoria_comunidad[]> {
     const categorias = await this.prisma.categoria_comunidad.findMany({
       where: { activa: true },
     });
 
-    return categorias.map((cat) => ({
-      ...cat,
-      id_categoria_comunidad: cat.id_categoria_comunidad.toString(),
-    }));
+    return categorias;
   }
 
   /**
@@ -168,8 +154,8 @@ export class ComunidadService {
   public async getMisComunidades(idCreador: string): Promise<IComunidad[]> {
     const miembros = await this.prisma.miembro_comunidad.findMany({
       where: {
-        id_usuario: BigInt(idCreador),
-        id_rol_comunidad: BigInt(1), // solo las que creó
+        id_usuario: idCreador,
+        id_rol_comunidad: ROLES.CREADOR, // solo las que creó
       },
       include: {
         comunidad: {
@@ -178,7 +164,7 @@ export class ComunidadService {
       },
     });
 
-    return miembros.map((m) => this.serializarComunidad(m.comunidad));
+    return miembros.map((m) => m.comunidad as IComunidad);
   }
 
   /**
@@ -189,7 +175,7 @@ export class ComunidadService {
    */
   public async getComunidad(id: string): Promise<IComunidad> {
     const comunidad = await this.prisma.comunidad.findUnique({
-      where: { id_comunidad: BigInt(id) },
+      where: { id_comunidad: id },
       include: { categoria_comunidad: true },
     });
 
@@ -197,7 +183,7 @@ export class ComunidadService {
       throw new NotFoundException(`La comunidad no fue encontrada`);
     }
 
-    return this.serializarComunidad(comunidad);
+    return comunidad as IComunidad;
   }
 
   /**
@@ -216,7 +202,7 @@ export class ComunidadService {
       throw new NotFoundException(`La comunidad no fue encontrada`);
     }
 
-    return this.serializarComunidad(comunidad);
+    return comunidad as IComunidad;
   }
 
   /**
@@ -234,7 +220,7 @@ export class ComunidadService {
   ): Promise<IComunidad> {
     await this.verificarExistenciaYAutoria(id, idUsuario);
 
-    const data: any = {};
+    const data: Prisma.comunidadUpdateInput = {};
 
     if (dto.nombre !== undefined) {
       data.nombre = dto.nombre;
@@ -243,7 +229,7 @@ export class ComunidadService {
     if (dto.descripcion !== undefined) data.descripcion = dto.descripcion;
     if (dto.portada_url !== undefined) data.portada_url = dto.portada_url;
     if (dto.id_categoria_comunidad !== undefined) {
-      const idCategoria = BigInt(dto.id_categoria_comunidad);
+      const idCategoria = dto.id_categoria_comunidad;
       const categoria = await this.prisma.categoria_comunidad.findUnique({
         where: { id_categoria_comunidad: idCategoria },
       });
@@ -252,15 +238,17 @@ export class ComunidadService {
           `La categoría con id ${dto.id_categoria_comunidad} no existe`,
         );
       }
-      data.id_categoria_comunidad = idCategoria;
+      data.categoria_comunidad = {
+        connect: { id_categoria_comunidad: idCategoria },
+      };
     }
 
     const comunidad = await this.prisma.comunidad.update({
-      where: { id_comunidad: BigInt(id) },
+      where: { id_comunidad: id },
       data,
     });
 
-    return this.serializarComunidad(comunidad);
+    return comunidad as IComunidad;
   }
 
   /**
@@ -275,7 +263,7 @@ export class ComunidadService {
     await this.verificarExistenciaYAutoria(id, idUsuario);
 
     await this.prisma.comunidad.update({
-      where: { id_comunidad: BigInt(id) },
+      where: { id_comunidad: id },
       data: { activa: false },
     });
 
@@ -296,7 +284,7 @@ export class ComunidadService {
     await this.verificarExistenciaYAutoria(id, idUsuario);
 
     await this.prisma.comunidad.update({
-      where: { id_comunidad: BigInt(id) },
+      where: { id_comunidad: id },
       data: { activa: true },
     });
 
@@ -324,16 +312,16 @@ export class ComunidadService {
    * @param tx           Cliente transaccional de Prisma (opcional)
    */
   public async agregarMiembro(
-    id_usuario: number,
-    id_comunidad: number,
-    id_rol: number,
+    id_usuario: string,
+    id_comunidad: string,
+    id_rol: string,
     tx?: Prisma.TransactionClient,
   ): Promise<void> {
     const client = tx ?? this.prisma;
 
     // Validar que el usuario existe
     const usuario = await client.usuario.findUnique({
-      where: { id_usuario: BigInt(id_usuario) },
+      where: { id_usuario: id_usuario },
     });
     if (!usuario) {
       throw new NotFoundException(`Usuario no encontrado`);
@@ -341,7 +329,7 @@ export class ComunidadService {
 
     // Validar que la comunidad existe
     const comunidad = await client.comunidad.findUnique({
-      where: { id_comunidad: BigInt(id_comunidad) },
+      where: { id_comunidad: id_comunidad },
     });
     if (!comunidad) {
       throw new NotFoundException(`Comunidad no encontrada`);
@@ -350,18 +338,18 @@ export class ComunidadService {
     // Verificar si ya es miembro
     const miembroExistente = await client.miembro_comunidad.findFirst({
       where: {
-        id_usuario: BigInt(id_usuario),
-        id_comunidad: BigInt(id_comunidad),
+        id_usuario: id_usuario,
+        id_comunidad: id_comunidad,
       },
     });
 
     if (miembroExistente) {
-      // Si ya existe → actualizar fecha_actualizacion 
+      // Si ya existe → actualizar fecha_actualizacion
       await client.miembro_comunidad.update({
         where: {
           id_usuario_id_comunidad: {
-            id_usuario: BigInt(id_usuario),
-            id_comunidad: BigInt(id_comunidad),
+            id_usuario: id_usuario,
+            id_comunidad: id_comunidad,
           },
         },
         data: { fecha_actualizacion: new Date() },
@@ -370,9 +358,9 @@ export class ComunidadService {
       // Si no existe -> crear nuevo registro de miembro
       await client.miembro_comunidad.create({
         data: {
-          id_usuario: BigInt(id_usuario),
-          id_comunidad: BigInt(id_comunidad),
-          id_rol_comunidad: BigInt(id_rol),
+          id_usuario: id_usuario,
+          id_comunidad: id_comunidad,
+          id_rol_comunidad: id_rol,
           fecha_ingreso: new Date(),
         },
       });
@@ -387,15 +375,15 @@ export class ComunidadService {
    * @param id_rol_nuevo  ID del nuevo rol a asignar
    */
   public async cambiarRolMiembro(
-    id_usuario: number,
-    id_comunidad: number,
-    id_rol_nuevo: number,
+    id_usuario: string,
+    id_comunidad: string,
+    id_rol_nuevo: string,
   ): Promise<void> {
     // Verificar que el miembro existe en la comunidad
     const miembro = await this.prisma.miembro_comunidad.findFirst({
       where: {
-        id_usuario: BigInt(id_usuario),
-        id_comunidad: BigInt(id_comunidad),
+        id_usuario: id_usuario,
+        id_comunidad: id_comunidad,
       },
     });
 
@@ -407,7 +395,7 @@ export class ComunidadService {
 
     // Verificar que el nuevo rol existe
     const rol = await this.prisma.rol.findUnique({
-      where: { id_rol: BigInt(id_rol_nuevo) },
+      where: { id_rol: id_rol_nuevo },
     });
     if (!rol) {
       throw new NotFoundException(`El rol con id ${id_rol_nuevo} no existe`);
@@ -416,12 +404,12 @@ export class ComunidadService {
     await this.prisma.miembro_comunidad.update({
       where: {
         id_usuario_id_comunidad: {
-          id_usuario: BigInt(id_usuario),
-          id_comunidad: BigInt(id_comunidad),
+          id_usuario: id_usuario,
+          id_comunidad: id_comunidad,
         },
       },
       data: {
-        id_rol_comunidad: BigInt(id_rol_nuevo),
+        id_rol_comunidad: id_rol_nuevo,
         fecha_actualizacion: new Date(),
       },
     });
@@ -438,7 +426,7 @@ export class ComunidadService {
     idUsuario: string,
   ): Promise<void> {
     const comunidad = await this.prisma.comunidad.findUnique({
-      where: { id_comunidad: BigInt(idComunidad) },
+      where: { id_comunidad: idComunidad },
     });
 
     if (!comunidad) {
@@ -447,9 +435,9 @@ export class ComunidadService {
 
     const esCreador = await this.prisma.miembro_comunidad.findFirst({
       where: {
-        id_comunidad: BigInt(idComunidad),
-        id_usuario: BigInt(idUsuario),
-        id_rol_comunidad: BigInt(1), // Creador
+        id_comunidad: idComunidad,
+        id_usuario: idUsuario,
+        id_rol_comunidad: ROLES.CREADOR, // Creador
       },
     });
 
@@ -470,10 +458,10 @@ export class ComunidadService {
   ): Promise<void> {
     try {
       await tx.comunidad.update({
-        where: { id_comunidad: BigInt(id_comunidad) },
+        where: { id_comunidad: id_comunidad },
         data: { activa: true },
       });
-    } catch (error) {
+    } catch {
       throw new InternalServerErrorException(
         'No se pudo activar la comunidad correctamente, intentá de nuevo',
       );

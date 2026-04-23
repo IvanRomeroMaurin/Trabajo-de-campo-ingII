@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sparkles, Image as ImageIcon, Layout, Type, ArrowRight, Loader2, Save } from 'lucide-react';
+import NextImage from 'next/image';
+import { Image as ImageIcon, Layout, Type, Loader2, Save } from 'lucide-react';
 import { updateComunidadAction } from '../actions/comunidadActions';
 import { ICategoriaComunidad, IComunidad } from '@repo/types';
 
@@ -43,7 +44,7 @@ export function EditCommunityForm({ categorias, comunidad }: EditCommunityFormPr
       } else {
         setError(result.error || 'Error desconocido');
       }
-    } catch (e) {
+    } catch {
       setError('Error al conectar con el servidor');
     } finally {
       setIsPending(false);
@@ -138,7 +139,15 @@ export function EditCommunityForm({ categorias, comunidad }: EditCommunityFormPr
               {comunidad.portada_url && (
                 <div className="mb-4">
                   <p className="text-xs text-slate-500 mb-2 ml-1">Portada actual:</p>
-                  <img src={comunidad.portada_url} alt="Portada actual" className="w-full h-32 object-cover rounded-xl border border-slate-200" />
+                  <div className="relative w-full h-32 border border-slate-200 rounded-xl overflow-hidden">
+                    <NextImage 
+                      src={comunidad.portada_url} 
+                      alt="Portada actual" 
+                      fill 
+                      className="object-cover" 
+                      unoptimized
+                    />
+                  </div>
                 </div>
               )}
               <div className="relative group">

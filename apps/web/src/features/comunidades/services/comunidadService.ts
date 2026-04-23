@@ -1,27 +1,18 @@
 import { api } from '@/shared/lib/api/client';
-import { IComunidad, ICategoriaComunidad } from '@repo/types';
-
-export interface CreateCommunityDto {
-  nombre: string;
-  descripcion?: string;
-  id_categoria_comunidad: number;
-  portada_url?: string;
-}
-
-export type UpdateCommunityDto = Partial<CreateCommunityDto>;
+import { IComunidad, ICategoriaComunidad, ICreateCommunityRequest, IUpdateCommunityRequest } from '@repo/types';
 
 export const comunidadService = {
   /**
    * Crea una nueva comunidad
    */
-  async crearComunidad(dto: CreateCommunityDto): Promise<IComunidad> {
+  async crearComunidad(dto: ICreateCommunityRequest): Promise<IComunidad> {
     return api.post<IComunidad>('/comunidades', dto);
   },
 
   /**
    * Actualiza una comunidad existente
    */
-  async actualizarComunidad(id: string, dto: UpdateCommunityDto): Promise<IComunidad> {
+  async actualizarComunidad(id: string, dto: IUpdateCommunityRequest): Promise<IComunidad> {
     return api.patch<IComunidad>(`/comunidades/${id}`, dto);
   },
 

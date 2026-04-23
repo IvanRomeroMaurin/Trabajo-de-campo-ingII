@@ -40,7 +40,7 @@ export function CreateCommunityForm({ categorias }: CreateCommunityFormProps) {
       } else {
         setError(result.error || 'Error desconocido');
       }
-    } catch (e) {
+    } catch {
       setError('Error al conectar con el servidor');
     } finally {
       setIsPending(false);

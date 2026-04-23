@@ -27,7 +27,9 @@ export class PlanesController {
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public async crearPlan(@Body() dto: CrearPlanDto): Promise<ICreatePlanResponse> {
+  public async crearPlan(
+    @Body() dto: CrearPlanDto,
+  ): Promise<ICreatePlanResponse> {
     return this.planesService.crearPlan(dto);
   }
 
@@ -49,7 +51,9 @@ export class PlanesController {
    * @param id_comunidad ID numérico de la comunidad
    */
   @Get('comunidad/:id_comunidad')
-  public async getPlanesPorComunidad(@Param('id_comunidad') id_comunidad: string) {
+  public async getPlanesPorComunidad(
+    @Param('id_comunidad') id_comunidad: string,
+  ) {
     return this.planesService.getPlanesPorComunidad(id_comunidad);
   }
 }

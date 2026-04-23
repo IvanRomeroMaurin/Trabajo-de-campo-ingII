@@ -7,11 +7,10 @@ import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { ComunidadModule } from './comunidad/comunidad.module';
 import { PlanesModule } from './planes/planes.module';
-import { join } from 'path';
+
 
 @Module({
   imports: [
-    // ConfigModule DEBE ser el primero: garantiza que JWT_SECRET esté disponible
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -26,4 +25,4 @@ import { join } from 'path';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

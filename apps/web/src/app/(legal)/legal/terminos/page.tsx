@@ -46,7 +46,7 @@ export default function TermsPage() {
 
       <h2>6. Limitación de Responsabilidad</h2>
       <p>
-        Komu proporciona la plataforma "tal cual". No garantizamos la exactitud del contenido educativo compartido 
+        Komu proporciona la plataforma &quot;tal cual&quot;. No garantizamos la exactitud del contenido educativo compartido 
         por terceros ni nos hacemos responsables de disputas entre creadores y suscriptores.
       </p>
     </>

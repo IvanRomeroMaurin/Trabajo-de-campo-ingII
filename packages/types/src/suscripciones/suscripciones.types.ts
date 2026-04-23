@@ -60,3 +60,5 @@ export interface ICreatePlanResponse {
   plan: IPlanComunidad;
 }
 
+export type IUpdatePlanRequest = Partial<ICreatePlanRequest>;
+

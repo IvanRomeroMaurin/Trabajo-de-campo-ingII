@@ -1,4 +1,3 @@
-import { Sparkles } from 'lucide-react';
 import { ExplorarContent } from '@/features/comunidades/components/ExplorarContent';
 import { comunidadService } from '@/features/comunidades/services/comunidadService';
 import { IComunidad, ICategoriaComunidad } from '@repo/types';
@@ -20,8 +19,8 @@ export default async function ExplorarPage() {
     ]);
     comunidades = results[0];
     categorias = results[1];
-  } catch (error) {
-    console.error('Error al cargar datos de exploración:', error);
+  } catch {
+    console.error('Error al cargar datos de exploración');
     // En caso de error, mostramos listas vacías para no romper la UI
   }
 

@@ -1,10 +1,18 @@
-import { IsString, IsNumber, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+} from 'class-validator';
+
+import { ICreatePlanRequest } from '@repo/types';
 
 /**
  * DTO para la creación de un nuevo plan de suscripción.
  * Contiene los datos validados necesarios para registrar el plan en BD y MP.
  */
-export class CrearPlanDto {
+export class CrearPlanDto implements ICreatePlanRequest {
   @IsString({ message: 'El título debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El título es obligatorio' })
   titulo: string;
@@ -23,13 +31,13 @@ export class CrearPlanDto {
 
   @IsString({ message: 'El tipo de frecuencia debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El tipo de frecuencia es obligatorio' })
-  tipo_frecuencia: string;
+  tipo_frecuencia: 'months' | 'days';
 
   @IsString({ message: 'La moneda debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'La moneda es obligatoria' })
-  moneda: string;
+  moneda: 'ARS' | 'USD';
 
-  @IsString({ message: 'El ID de la comunidad debe ser una cadena de texto' })
+  @IsUUID('4', { message: 'El ID de la comunidad debe ser un UUID válido' })
   @IsNotEmpty({ message: 'El ID de la comunidad es obligatorio' })
   id_comunidad: string;
 }

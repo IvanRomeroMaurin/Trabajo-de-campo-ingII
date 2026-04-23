@@ -18,7 +18,7 @@ export default async function EditarComunidadPage({ params }: Props) {
   try {
     comunidad = await comunidadService.getComunidadBySlug(slug);
     categorias = await comunidadService.getCategorias();
-  } catch (error) {
+  } catch {
     return notFound();
   }
 
@@ -26,7 +26,7 @@ export default async function EditarComunidadPage({ params }: Props) {
   let misComunidades: IComunidad[] = [];
   try {
     misComunidades = await comunidadService.getMisComunidades();
-  } catch (error) {}
+  } catch {}
 
   const isCreator = misComunidades.some((c) => c.id_comunidad === comunidad.id_comunidad);
 
