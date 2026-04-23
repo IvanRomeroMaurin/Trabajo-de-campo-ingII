@@ -16,19 +16,27 @@ import { ComunidadService } from './services/comunidad.service.interface';
 import { CrearComunidadDto } from './dto/crear-comunidad.dto';
 import { ActualizarComunidadDto } from './dto/actualizar-comunidad.dto';
 import { IComunidad, IUsuario } from '@repo/types';
-import { ComunidadOwnerGuard } from './guards/comunidad-owner.guard';
+import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
 
 /**
  * Controlador de Comunidades.
- * Gestiona los endpoints REST y mapea los DTOs a Comandos de negocio.
+ *
+ * Expone los puntos de entrada (endpoints) para la gestión de comunidades,
+ * incluyendo la creación, consulta, actualización y reactivación de las mismas.
+ * Se encarga de validar la autenticación y los permisos de autoría mediante Guards.
  */
 @Controller('comunidades')
 export class ComunidadController {
-  public constructor(private readonly comunidadService: ComunidadService) {}
+  public constructor(private readonly comunidadService: ComunidadService) { }
 
   /**
    * Crea una nueva comunidad.
-   * Mapea el DTO de la petición al comando de creación del servicio.
+   * Requiere que el usuario esté autenticado. El usuario que crea la comunidad
+   * se asigna automáticamente como miembro con el rol de CREADOR.
+   *
+   * @param dto - Datos de la comunidad a crear (nombre, descripción, categoría, etc.).
+   * @param req - Objeto de petición que contiene el usuario autenticado.
+   * @returns Los datos de la comunidad recién creada.
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -48,7 +56,9 @@ export class ComunidadController {
   }
 
   /**
-   * Lista todas las comunidades activas.
+   * Obtiene la lista de todas las comunidades que están activas en el sistema.
+   *
+   * @returns Un arreglo con todas las comunidades activas.
    */
   @Get()
   public async getComunidades(): Promise<IComunidad[]> {
@@ -56,7 +66,10 @@ export class ComunidadController {
   }
 
   /**
-   * Lista las comunidades donde el usuario autenticado es el Creador.
+   * Obtiene las comunidades creadas por el usuario autenticado.
+   *
+   * @param req - Objeto de petición que contiene el usuario autenticado.
+   * @returns Un arreglo con las comunidades donde el usuario es el Creador.
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('mis-comunidades')
@@ -69,7 +82,11 @@ export class ComunidadController {
   }
 
   /**
-   * Obtiene una comunidad por su slug.
+   * Obtiene el detalle de una comunidad específica buscando por su slug.
+   *
+   * @param slug - El identificador amigable de la comunidad.
+   * @returns Los datos de la comunidad encontrada.
+   * @throws {NotFoundException} Si la comunidad no existe.
    */
   @Get('s/:slug')
   public async getComunidadPorSlug(
@@ -79,7 +96,11 @@ export class ComunidadController {
   }
 
   /**
-   * Obtiene una comunidad por su ID.
+   * Obtiene el detalle de una comunidad específica buscando por su ID único.
+   *
+   * @param id - Identificador único de la comunidad.
+   * @returns Los datos de la comunidad encontrada.
+   * @throws {NotFoundException} Si la comunidad no existe.
    */
   @Get(':id')
   public async getComunidad(@Param('id') id: string): Promise<IComunidad> {
@@ -87,8 +108,14 @@ export class ComunidadController {
   }
 
   /**
-   * Modifica los datos de una comunidad. Solo el creador puede hacerlo.
-   * Mapea el DTO de la petición al comando de actualización.
+   * Actualiza los datos de una comunidad existente.
+   * Solo el usuario que creó la comunidad (o con permisos suficientes) puede realizar esta acción.
+   *
+   * @param id - Identificador único de la comunidad a modificar.
+   * @param dto - Datos parciales o totales a actualizar.
+   * @returns Los datos de la comunidad actualizada.
+   * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
+   * @throws {NotFoundException} Si la comunidad no existe.
    */
   @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @Patch(':id')
@@ -105,7 +132,12 @@ export class ComunidadController {
   }
 
   /**
-   * Baja lógica de la comunidad (activa = false).
+   * Realiza una desactivación lógica de la comunidad (baja lógica).
+   * Solo el creador de la comunidad puede realizar esta acción.
+   *
+   * @param id - Identificador único de la comunidad a desactivar.
+   * @returns Un mensaje confirmando la desactivación.
+   * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
    */
   @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)
@@ -117,7 +149,12 @@ export class ComunidadController {
   }
 
   /**
-   * Alta lógica de la comunidad (activa = true).
+   * Reactiva una comunidad que fue previamente desactivada.
+   * Solo el creador de la comunidad puede realizar esta acción.
+   *
+   * @param id - Identificador único de la comunidad a reactivar.
+   * @returns Un mensaje confirmando la reactivación.
+   * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
    */
   @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)

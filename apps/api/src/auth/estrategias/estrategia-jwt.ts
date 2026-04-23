@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { IJwtPayload, IUsuario } from '@repo/types';
-import { UsuariosService } from '../../usuarios/usuarios.service';
+import { UsuariosService } from '../../usuarios/services/usuarios.service.interface';
 
 /**
  * Estrategia de Validación de Token JWT

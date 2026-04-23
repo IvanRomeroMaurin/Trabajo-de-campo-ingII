@@ -7,9 +7,10 @@ import { PlanesService } from './services/planes.service.interface';
 import { PlanesService as PlanesServiceImpl } from './services/planes.service';
 import { PlanesRepository } from './repositories/planes.repository.interface';
 import { PrismaPlanesRepository } from './repositories/prisma-planes.repository';
+import { ComunidadModule } from '../comunidad/comunidad.module';
 
 @Module({
-  imports: [PrismaModule, MercadoPagoModule, ConfigModule],
+  imports: [PrismaModule, MercadoPagoModule, ConfigModule, ComunidadModule],
   controllers: [PlanesController],
   providers: [
     {

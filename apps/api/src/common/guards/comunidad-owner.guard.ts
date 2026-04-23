@@ -6,13 +6,13 @@ import {
   NotFoundException,
   Inject,
 } from '@nestjs/common';
-import { ComunidadRepository } from '../repositories/comunidad.repository.interface';
-import { MiembroService } from '../../miembro/miembro.service';
+import { ComunidadRepository } from '../../comunidad/repositories/comunidad.repository.interface';
+import { MiembroService } from '../../miembro/services/miembro.service.interface';
 import { IUsuario } from '@repo/types';
 
 /**
  * Guardia que verifica que el usuario autenticado sea el creador de la comunidad.
- * Se asocia a rutas que tengan el parámetro :id (ID de la comunidad).
+ * Busca el ID de la comunidad en los parámetros (:id, :id_comunidad) o en el cuerpo de la petición.
  */
 @Injectable()
 export class ComunidadOwnerGuard implements CanActivate {
@@ -25,9 +25,14 @@ export class ComunidadOwnerGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const user = request.user as IUsuario;
-    const idComunidad = request.params.id;
+    
+    // Buscar el ID en params (:id o :id_comunidad) o en el body
+    const idComunidad = 
+      request.params.id || 
+      request.params.id_comunidad || 
+      request.body.id_comunidad;
 
-    // Si no hay usuario (AuthGuard no corrió) o no hay ID en la URL, denegar.
+    // Si no hay usuario (AuthGuard no corrió) o no hay ID, denegar.
     if (!user || !idComunidad) {
       return false;
     }

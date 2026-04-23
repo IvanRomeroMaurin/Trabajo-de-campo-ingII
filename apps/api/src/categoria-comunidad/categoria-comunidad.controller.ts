@@ -1,20 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { CategoriaComunidadService } from './categoria-comunidad.service';
+import { CategoriaComunidadService } from './services/categoria-comunidad.service.interface';
 import { categoria_comunidad } from '@prisma/client';
 
-@Controller('comunidades')
+@Controller('categorias-comunidad')
 export class CategoriaComunidadController {
-  constructor(
-    private readonly categoriaComunidadService: CategoriaComunidadService,
-  ) {}
+  constructor(private readonly service: CategoriaComunidadService) {}
 
-  /**
-   * Obtiene la lista de categorías para comunidades.
-   * @route GET /comunidades/categorias
-   * @access Público
-   */
-  @Get('categorias')
+  @Get()
   public async getCategorias(): Promise<categoria_comunidad[]> {
-    return this.categoriaComunidadService.getCategorias();
+    return this.service.getCategorias();
   }
 }

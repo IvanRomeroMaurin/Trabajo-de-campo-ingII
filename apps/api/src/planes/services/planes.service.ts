@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transactional } from '@nestjs-cls/transactional';
-import { MercadoPagoService } from '../../mercadopago/mercadopago.service';
+import { MercadoPagoService } from '../../mercadopago/services/mercadopago.service.interface';
 import { CrearPlanCommand } from './planes.commands';
 import { ICreatePlanResponse, IPlanComunidad, ICicloPago } from '@repo/types';
 import { MONEDAS, MAP_CICLOS_PAGO } from '../../common/constants/planes';
@@ -25,7 +25,7 @@ export class PlanesService implements IPlanesService {
     private readonly planesRepository: PlanesRepository,
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
@@ -39,16 +39,13 @@ export class PlanesService implements IPlanesService {
    */
   @Transactional()
   public async crearPlan(command: CrearPlanCommand): Promise<ICreatePlanResponse> {
-    // PASO 1 — validatePlanData
+
     this.validatePlanData(command.titulo, command.precio, command.frecuencia);
 
-    // PASO 2 — getCicloPago (Usando constantes)
     const id_ciclo_pago = this.getCicloPago(command.tipo_frecuencia, command.frecuencia);
 
-    // PASO 3 — getMoneda (Usando constantes)
     const id_moneda = this.getMoneda(command.moneda);
 
-    // PASO 4 — createPreapprovalPlan
     const back_url = this.getBackUrl(command.id_comunidad);
 
     const { mp_preapproval_plan_id } =
@@ -62,7 +59,6 @@ export class PlanesService implements IPlanesService {
         back_url,
       });
 
-    // PASO 5 — guardarPlanComunidad
     try {
       const plan = await this.planesRepository.guardar({
         titulo: command.titulo,

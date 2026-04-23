@@ -16,7 +16,11 @@ export class PrismaPlanesRepository implements PlanesRepository {
   ) {}
 
   /**
-   * Guarda un nuevo plan en la base de datos.
+   * Registra un nuevo plan de suscripción utilizando Prisma.
+   * Asigna automáticamente la fecha de creación actual.
+   *
+   * @param data - Datos para la creación del plan.
+   * @returns El plan mapeado al dominio de la aplicación.
    */
   public async guardar(data: {
     titulo: string;
@@ -39,7 +43,11 @@ export class PrismaPlanesRepository implements PlanesRepository {
   }
 
   /**
-   * Busca todos los planes de una comunidad.
+   * Recupera todos los planes de una comunidad desde la base de datos.
+   * Realiza un join con las tablas de ciclo de pago y moneda.
+   *
+   * @param id_comunidad - ID de la comunidad propietaria de los planes.
+   * @returns Lista de planes ordenados por fecha de creación descendente.
    */
   public async buscarPorComunidad(
     id_comunidad: string,
@@ -57,7 +65,9 @@ export class PrismaPlanesRepository implements PlanesRepository {
   }
 
   /**
-   * Obtiene los ciclos de pago configurados.
+   * Obtiene todos los ciclos de pago disponibles ordenados por tipo y frecuencia.
+   *
+   * @returns Lista de ciclos de pago mapeados.
    */
   public async buscarCiclosPago(): Promise<ICicloPago[]> {
     const ciclos = await this.txHost.tx.ciclo_pago.findMany({

@@ -12,6 +12,7 @@ import { PlanesService } from './services/planes.service.interface';
 import { CrearPlanDto } from './dto/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
 
 @Controller('planes')
 @UseGuards(JwtAuthGuard)
@@ -25,6 +26,7 @@ export class PlanesController {
    * @param dto - Datos del plan enviados en el cuerpo de la solicitud.
    * @returns El plan creado y la información de integración con Mercado Pago.
    */
+  @UseGuards(JwtAuthGuard, ComunidadOwnerGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   public async crearPlan(
@@ -41,7 +43,6 @@ export class PlanesController {
     });
   }
 
-  // TODO: validar que req.user.id_usuario sea creador de la comunidad (ownership)
 
   /**
    * Obtiene las configuraciones de ciclos de pago válidos (frecuencia/tipo).

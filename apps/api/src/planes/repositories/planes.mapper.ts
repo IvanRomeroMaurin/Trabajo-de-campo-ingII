@@ -5,7 +5,11 @@ import { IPlanComunidad, ICicloPago } from '@repo/types';
  */
 export class PlanesMapper {
   /**
-   * Mapea un objeto de plan proveniente de Prisma a IPlanComunidad.
+   * Transforma una entidad de base de datos (Prisma) en una interfaz de dominio IPlanComunidad.
+   * Maneja la conversión de tipos (como Decimal a Number) y mapea relaciones anidadas.
+   *
+   * @param p - El objeto crudo de la base de datos.
+   * @returns El plan formateado según la interfaz de dominio.
    */
   static toIPlanComunidad(p: any): IPlanComunidad {
     return {
@@ -34,7 +38,10 @@ export class PlanesMapper {
   }
 
   /**
-   * Mapea un objeto de ciclo de pago de Prisma a ICicloPago.
+   * Transforma una entidad de ciclo de pago de Prisma a la interfaz ICicloPago.
+   *
+   * @param c - El objeto de ciclo de pago de la base de datos.
+   * @returns El ciclo de pago formateado.
    */
   static toICicloPago(c: any): ICicloPago {
     return {

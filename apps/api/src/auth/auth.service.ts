@@ -1,5 +1,5 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { UsuariosService } from '../usuarios/usuarios.service';
+import { UsuariosService } from '../usuarios/services/usuarios.service.interface';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { RegistrarUsuarioDto } from './dto/registrar-usuario.dto';
@@ -30,7 +30,11 @@ export class AuthService {
     pass: string,
   ): Promise<IUsuario | null> {
     const usuario = await this.usuariosService.buscarPorCorreo(email);
-    if (usuario && (await bcrypt.compare(pass, usuario.password_hash))) {
+    if (
+      usuario &&
+      usuario.password_hash &&
+      (await bcrypt.compare(pass, usuario.password_hash))
+    ) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password_hash, ...result } = usuario;
       return result as unknown as IUsuario;

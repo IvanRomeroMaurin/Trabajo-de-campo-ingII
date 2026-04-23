@@ -1,9 +1,10 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MercadoPagoConfig, PreApprovalPlan } from 'mercadopago';
+import { MercadoPagoService as IMercadoPagoService } from './mercadopago.service.interface';
 
 @Injectable()
-export class MercadoPagoService {
+export class MercadoPagoService implements IMercadoPagoService {
   private readonly logger = new Logger(MercadoPagoService.name);
   private readonly preApprovalPlan: PreApprovalPlan;
 
@@ -14,11 +15,6 @@ export class MercadoPagoService {
     this.preApprovalPlan = new PreApprovalPlan(client);
   }
 
-  /**
-   * Registra un plan de suscripción recurrente en Mercado Pago.
-   * Corresponde al paso createPreapprovalPlan del diagrama de secuencia.
-   * @returns mp_preapproval_plan_id devuelto por MP
-   */
   async createPreapprovalPlan(data: {
     titulo: string;
     descripcion?: string;
@@ -59,11 +55,6 @@ export class MercadoPagoService {
     }
   }
 
-  /**
-   * Cancela un plan en MP como operación de compensación.
-   * Se invoca SOLO si falla la persistencia en BD tras crear el plan en MP.
-   * No relanza errores para no pisar la excepción original.
-   */
   async cancelPreapprovalPlan(mp_preapproval_plan_id: string): Promise<void> {
     try {
       await this.preApprovalPlan.update({

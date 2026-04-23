@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MercadoPagoService } from './mercadopago.service';
+import { MercadoPagoService } from './services/mercadopago.service.interface';
+import { MercadoPagoService as MercadoPagoServiceImpl } from './services/mercadopago.service';
 
 @Module({
   imports: [ConfigModule],
-  providers: [MercadoPagoService],
+  providers: [
+    {
+      provide: MercadoPagoService,
+      useClass: MercadoPagoServiceImpl,
+    },
+  ],
   exports: [MercadoPagoService],
 })
 export class MercadoPagoModule {}

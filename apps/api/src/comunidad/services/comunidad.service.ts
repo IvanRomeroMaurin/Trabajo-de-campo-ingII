@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
-import { MiembroService } from '../../miembro/miembro.service';
+import { MiembroService } from '../../miembro/services/miembro.service.interface';
 import { stringToSlug } from '../../common/utils/slug.utils';
 import { IComunidad } from '@repo/types';
 import { ROLES } from '../../common/constants/roles';
@@ -66,11 +66,11 @@ export class ComunidadService implements IComunidadService {
         activa: false,
       });
 
-      await this.miembroService.agregarMiembro(
-        idCreador,
-        nuevaComunidad.id_comunidad,
-        ROLES.CREADOR,
-      );
+      await this.miembroService.agregarMiembro({
+        id_usuario: idCreador,
+        id_comunidad: nuevaComunidad.id_comunidad,
+        id_rol: ROLES.CREADOR,
+      });
 
       return nuevaComunidad;
     } catch (error) {
