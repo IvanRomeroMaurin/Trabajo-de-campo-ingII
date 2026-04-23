@@ -1,15 +1,25 @@
 import { Module } from '@nestjs/common';
-import { ComunidadService } from './comunidad.service';
+import { ComunidadService } from './services/comunidad.service.interface';
+import { ComunidadService as ComunidadServiceImpl } from './services/comunidad.service';
 import { ComunidadController } from './comunidad.controller';
+import { MiembroModule } from '../miembro/miembro.module';
+import { CategoriaComunidadModule } from '../categoria-comunidad/categoria-comunidad.module';
+import { ComunidadRepository } from './repositories/comunidad.repository.interface';
+import { PrismaComunidadRepository } from './repositories/comunidad.prisma.repository';
 
-/**
- * Módulo de Comunidades
- * Agrupa el controlador y el servicio de comunidades.
- * No necesita importar PrismaModule explícitamente porque está declarado como @Global().
- */
 @Module({
+  imports: [MiembroModule, CategoriaComunidadModule],
   controllers: [ComunidadController],
-  providers: [ComunidadService],
-  exports: [ComunidadService],
+  providers: [
+    {
+      provide: ComunidadService,
+      useClass: ComunidadServiceImpl,
+    },
+    {
+      provide: ComunidadRepository,
+      useClass: PrismaComunidadRepository,
+    },
+  ],
+  exports: [ComunidadService, ComunidadRepository],
 })
 export class ComunidadModule {}

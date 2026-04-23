@@ -8,7 +8,7 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
-import { PlanesService } from './planes.service';
+import { PlanesService } from './services/planes.service.interface';
 import { CrearPlanDto } from './dto/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -30,7 +30,15 @@ export class PlanesController {
   public async crearPlan(
     @Body() dto: CrearPlanDto,
   ): Promise<ICreatePlanResponse> {
-    return this.planesService.crearPlan(dto);
+    return this.planesService.crearPlan({
+      titulo: dto.titulo,
+      descripcion: dto.descripcion,
+      precio: dto.precio,
+      frecuencia: dto.frecuencia,
+      tipo_frecuencia: dto.tipo_frecuencia,
+      moneda: dto.moneda,
+      id_comunidad: dto.id_comunidad,
+    });
   }
 
   // TODO: validar que req.user.id_usuario sea creador de la comunidad (ownership)

@@ -12,29 +12,22 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ComunidadService } from './comunidad.service';
+import { ComunidadService } from './services/comunidad.service.interface';
 import { CrearComunidadDto } from './dto/crear-comunidad.dto';
 import { ActualizarComunidadDto } from './dto/actualizar-comunidad.dto';
 import { IComunidad, IUsuario } from '@repo/types';
 
 /**
- * Controlador de Comunidades
- * Gestiona los endpoints REST para el CRUD de comunidades.
- *
- * Rutas públicas:  GET /comunidades, GET /comunidades/:id
- * Rutas privadas:  POST /comunidades, GET /comunidades/mis-comunidades,
- *                  PATCH /comunidades/:id, DELETE /comunidades/:id
+ * Controlador de Comunidades.
+ * Gestiona los endpoints REST y mapea los DTOs a Comandos de negocio.
  */
 @Controller('comunidades')
 export class ComunidadController {
-  constructor(private readonly comunidadService: ComunidadService) {}
+  public constructor(private readonly comunidadService: ComunidadService) {}
 
   /**
    * Crea una nueva comunidad.
-   * La comunidad se crea con activa = false y el creador se registra como
-   * miembro con rol "Creador" (id_rol = 1) automáticamente vía agregarMiembro().
-   * @route POST /comunidades
-   * @access Protegido (JWT)
+   * Mapea el DTO de la petición al comando de creación del servicio.
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -43,15 +36,18 @@ export class ComunidadController {
     @Request() req: { user: IUsuario },
   ): Promise<IComunidad> {
     return this.comunidadService.crearComunidad(
-      dto,
+      {
+        nombre: dto.nombre,
+        descripcion: dto.descripcion,
+        portada_url: dto.portada_url,
+        id_categoria_comunidad: dto.id_categoria_comunidad,
+      },
       req.user.id_usuario.toString(),
     );
   }
 
   /**
    * Lista todas las comunidades activas.
-   * @route GET /comunidades
-   * @access Público
    */
   @Get()
   public async getComunidades(): Promise<IComunidad[]> {
@@ -59,21 +55,7 @@ export class ComunidadController {
   }
 
   /**
-   * Obtiene la lista de categorías para comunidades.
-   * @route GET /comunidades/categorias
-   * @access Público
-   */
-  @Get('categorias')
-  public async getCategorias(): Promise<any[]> {
-    return this.comunidadService.getCategorias();
-  }
-
-  /**
    * Lista las comunidades donde el usuario autenticado es el Creador.
-   * IMPORTANTE: esta ruta DEBE ir antes de GET /:id para que NestJS
-   * no la interprete como un parámetro dinámico.
-   * @route GET /comunidades/mis-comunidades
-   * @access Protegido (JWT)
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('mis-comunidades')
@@ -87,9 +69,6 @@ export class ComunidadController {
 
   /**
    * Obtiene una comunidad por su slug.
-   * Usamos el prefijo 's/' para evitar colisiones con el ID y errores de path-to-regexp.
-   * @route GET /comunidades/s/:slug
-   * @access Público
    */
   @Get('s/:slug')
   public async getComunidadPorSlug(
@@ -100,8 +79,6 @@ export class ComunidadController {
 
   /**
    * Obtiene una comunidad por su ID.
-   * @route GET /comunidades/:id
-   * @access Público
    */
   @Get(':id')
   public async getComunidad(@Param('id') id: string): Promise<IComunidad> {
@@ -110,8 +87,7 @@ export class ComunidadController {
 
   /**
    * Modifica los datos de una comunidad. Solo el creador puede hacerlo.
-   * @route PATCH /comunidades/:id
-   * @access Protegido (JWT)
+   * Mapea el DTO de la petición al comando de actualización.
    */
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
@@ -122,15 +98,18 @@ export class ComunidadController {
   ): Promise<IComunidad> {
     return this.comunidadService.actualizarComunidad(
       id,
-      dto,
+      {
+        nombre: dto.nombre,
+        descripcion: dto.descripcion,
+        portada_url: dto.portada_url,
+        id_categoria_comunidad: dto.id_categoria_comunidad,
+      },
       req.user.id_usuario.toString(),
     );
   }
 
   /**
-   * Baja lógica de la comunidad (activa = false). Solo el creador puede hacerlo.
-   * @route DELETE /comunidades/:id
-   * @access Protegido (JWT)
+   * Baja lógica de la comunidad (activa = false).
    */
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
@@ -146,9 +125,7 @@ export class ComunidadController {
   }
 
   /**
-   * Alta lógica de la comunidad (activa = true). Solo el creador puede hacerlo.
-   * @route POST /comunidades/:id/reactivar
-   * @access Protegido (JWT)
+   * Alta lógica de la comunidad (activa = true).
    */
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
