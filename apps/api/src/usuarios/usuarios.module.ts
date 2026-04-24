@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
-import { UsuariosService } from './services/usuarios.service.interface';
-import { UsuariosService as UsuariosServiceImpl } from './services/usuarios.service';
+import { UsuariosService as IUsuariosService } from './services/usuarios.service.interface';
+import { UsuariosServiceImpl } from './services/usuarios.service';
 import { UsuariosRepository } from './repositories/usuarios.repository.interface';
 import { PrismaUsuariosRepository } from './repositories/usuarios.prisma.repository';
 
@@ -9,7 +9,7 @@ import { PrismaUsuariosRepository } from './repositories/usuarios.prisma.reposit
   imports: [PrismaModule],
   providers: [
     {
-      provide: UsuariosService,
+      provide: IUsuariosService,
       useClass: UsuariosServiceImpl,
     },
     {
@@ -17,6 +17,7 @@ import { PrismaUsuariosRepository } from './repositories/usuarios.prisma.reposit
       useClass: PrismaUsuariosRepository,
     },
   ],
-  exports: [UsuariosService, UsuariosRepository],
+  exports: [IUsuariosService],
 })
+
 export class UsuariosModule {}

@@ -45,10 +45,11 @@ export class ComunidadMapper {
   public static toICategoriaComunidad(
     categoria: categoria_comunidad,
   ): ICategoriaComunidad {
-    return new CategoriaComunidad({
-      id_categoria_comunidad: categoria.id_categoria_comunidad,
-      descripcion: categoria.descripcion,
-      activa: categoria.activa,
-    });
+    return new CategoriaComunidad(
+      categoria.id_categoria_comunidad,
+      categoria.descripcion,
+      categoria.activa,
+    );
+
   }
 }

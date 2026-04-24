@@ -1,8 +1,10 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '../auth.service';
-import { IUsuario } from '@repo/types';
+import { AuthService } from '../services/auth.service.interface';
+import { Usuario } from '../../usuarios/models/usuario.entity';
+
+
 
 /**
  * Estrategia de Autenticación Local
@@ -11,18 +13,18 @@ import { IUsuario } from '@repo/types';
  */
 @Injectable()
 export class EstrategiaLocal extends PassportStrategy(Strategy) {
-  private readonly authService: AuthService;
-
-  public constructor(authService: AuthService) {
+  public constructor(private readonly authService: AuthService) {
     super({ usernameField: 'email', passwordField: 'password' });
-    this.authService = authService;
   }
 
   /**
    * Función que es ejecutada en cadena por Passport; se invoca con las properties decodificadas de la petición.
    * Retornar un error de tipo Unauthorized si el password está mal, sino devuelve al objeto usuario.
    */
-  public async validate(email: string, pass: string): Promise<IUsuario> {
+  public async validate(
+    email: string,
+    pass: string,
+  ): Promise<Omit<Usuario, 'password_hash'>> {
     const usuario = await this.authService.validarUsuario(email, pass);
     if (!usuario) {
       throw new UnauthorizedException('Credenciales incorrectas');
@@ -35,3 +37,4 @@ export class EstrategiaLocal extends PassportStrategy(Strategy) {
     return usuario;
   }
 }
+

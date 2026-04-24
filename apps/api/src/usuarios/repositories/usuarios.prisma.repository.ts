@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { UsuariosRepository } from './usuarios.repository.interface';
-import { CrearUsuarioCommand } from '../services/usuarios.commands';
-import { UsuariosMapper } from './usuarios.mapper';
+import {
+  UsuariosRepository,
+  CrearUsuarioData,
+} from './usuarios.repository.interface';
+import { UsuariosMapper } from '../infrastructure/usuarios.mapper';
 import { Usuario } from '../models/usuario.entity';
+
 
 /**
  * Implementación del repositorio de usuarios utilizando Prisma como ORM.
@@ -28,17 +31,14 @@ export class PrismaUsuariosRepository implements UsuariosRepository {
   /**
    * Crea un nuevo registro de usuario en la base de datos de Prisma.
    *
-   * @param data - Comandos con la información del usuario.
+   * @param data - Datos con la información del usuario.
    * @returns El usuario creado y mapeado.
    */
-  public async guardar(data: CrearUsuarioCommand): Promise<Usuario> {
+  public async guardar(data: CrearUsuarioData): Promise<Usuario> {
     const user = await this.prisma.usuario.create({
       data: {
-        nombre: data.nombre,
-        apellido: data.apellido,
-        email: data.email,
-        password_hash: data.password_hash,
-        activa: data.activa ?? true,
+        ...data,
+        activa: true,
       },
     });
     return UsuariosMapper.toIUsuario(user);
@@ -57,3 +57,4 @@ export class PrismaUsuariosRepository implements UsuariosRepository {
     return user ? UsuariosMapper.toIUsuario(user) : null;
   }
 }
+

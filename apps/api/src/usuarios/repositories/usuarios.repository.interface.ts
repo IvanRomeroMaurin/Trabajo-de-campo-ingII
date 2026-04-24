@@ -1,5 +1,14 @@
-import { CrearUsuarioCommand } from '../services/usuarios.commands';
 import { Usuario } from '../models/usuario.entity';
+
+/**
+ * Interfaz de dominio para la creación de un nuevo usuario.
+ */
+export interface CrearUsuarioData {
+  readonly nombre: string;
+  readonly apellido: string;
+  readonly email: string;
+  readonly password_hash: string;
+}
 
 /**
  * Interfaz que define el contrato para el acceso a datos de Usuarios.
@@ -20,7 +29,7 @@ export abstract class UsuariosRepository {
    * @param data - Datos para la creación del usuario.
    * @returns Una promesa con el usuario creado y mapeado.
    */
-  public abstract guardar(data: CrearUsuarioCommand): Promise<Usuario>;
+  public abstract guardar(data: CrearUsuarioData): Promise<Usuario>;
 
   /**
    * Busca un usuario en la persistencia utilizando su ID único.
@@ -30,3 +39,4 @@ export abstract class UsuariosRepository {
    */
   public abstract buscarPorId(id: string): Promise<Usuario | null>;
 }
+

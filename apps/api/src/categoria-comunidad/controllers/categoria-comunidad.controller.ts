@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CategoriaComunidadService } from '../services/categoria-comunidad.service.interface';
-import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
+import { CategoriaComunidadResponseDto } from '../dto/categoria-comunidad-response.dto';
 
 @ApiTags('Categorías de Comunidad')
 @Controller('categorias-comunidad')
@@ -12,10 +12,12 @@ export class CategoriaComunidadController {
   @ApiResponse({
     status: 200,
     description: 'Listado de categorías.',
-    type: [CategoriaComunidad],
+    type: [CategoriaComunidadResponseDto],
   })
   @Get()
-  public async getCategorias(): Promise<CategoriaComunidad[]> {
-    return this.service.getCategorias();
+  public async getCategorias(): Promise<CategoriaComunidadResponseDto[]> {
+    const categorias = await this.service.getCategorias();
+    return categorias.map(CategoriaComunidadResponseDto.fromEntity);
   }
 }
+

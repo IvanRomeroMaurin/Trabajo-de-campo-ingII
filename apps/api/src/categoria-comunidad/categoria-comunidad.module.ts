@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CategoriaComunidadController } from './controllers/categoria-comunidad.controller';
 import { CategoriaComunidadService } from './services/categoria-comunidad.service.interface';
-import { CategoriaComunidadService as CategoriaComunidadServiceImpl } from './services/categoria-comunidad.service';
+import { CategoriaComunidadServiceImpl } from './services/categoria-comunidad.service';
+
 import { CategoriaComunidadRepository } from './repositories/categoria-comunidad.repository.interface';
 import { PrismaCategoriaComunidadRepository } from './repositories/categoria-comunidad.prisma.repository';
 import { PrismaModule } from '../prisma/prisma.module';
@@ -19,6 +20,7 @@ import { PrismaModule } from '../prisma/prisma.module';
       useClass: PrismaCategoriaComunidadRepository,
     },
   ],
-  exports: [CategoriaComunidadService, CategoriaComunidadRepository],
+  exports: [CategoriaComunidadService],
 })
+
 export class CategoriaComunidadModule {}

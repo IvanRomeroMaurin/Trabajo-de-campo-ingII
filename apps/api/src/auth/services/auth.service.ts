@@ -1,54 +1,55 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { UsuariosService } from '../usuarios/services/usuarios.service.interface';
+import { UsuariosService } from '../../usuarios/services/usuarios.service.interface';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { RegistrarUsuarioDto } from './dto/registrar-usuario.dto';
-import { IUsuario, IRespuestaAuth } from '@repo/types';
-import { Usuario } from '../usuarios/models/usuario.entity';
+import type { IRespuestaAuth } from '@repo/types';
+
+import { Usuario } from '../../usuarios/models/usuario.entity';
+import { AuthService as IAuthService } from './auth.service.interface';
+import { RegistrarUsuarioCommand } from './auth.commands';
+
 /**
  * Servicio de Autenticación
  * Contiene la lógica de negocio responsable del encriptado de claves, generación
  * de tokens JWT, creación de usuarios y validación de las credenciales de entrada.
  */
 @Injectable()
-export class AuthService {
-  private readonly usuariosService: UsuariosService;
-  private readonly jwtService: JwtService;
-
-  public constructor(usuariosService: UsuariosService, jwtService: JwtService) {
-    this.usuariosService = usuariosService;
-    this.jwtService = jwtService;
-  }
+export class AuthServiceImpl implements IAuthService {
+  public constructor(
+    private readonly usuariosService: UsuariosService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   /**
    * Valida si la contraseña plana de un usuario coincide de forma segura con el Hash de la DB.
    * @param email Correo electrónico a buscar en el sistema.
    * @param pass Contraseña plana insertada por el cliente de forma cruda.
-   * @returns El archivo del usuario completo (sin el password_hash) en caso válido, o `null` si hay error.
+   * @returns El objeto del usuario (sin el password_hash) en caso válido, o `null` si hay error.
    */
   public async validarUsuario(
     email: string,
     pass: string,
-  ): Promise<Usuario | null> {
+  ): Promise<Omit<Usuario, 'password_hash'> | null> {
     const usuario = await this.usuariosService.buscarPorCorreo(email);
     if (
       usuario &&
       usuario.password_hash &&
       (await bcrypt.compare(pass, usuario.password_hash))
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password_hash, ...result } = usuario;
-      return result as unknown as IUsuario;
+      return result;
     }
     return null;
   }
 
   /**
    * Registra el inicio de sesion (en memoria) y genera el token JWT utilizando el id y el correo.
-   * @param usuario El objeto usuario validado por la Estrategia Local anteriormente.
+   * @param usuario El objeto usuario (sin hash) validado por la Estrategia Local anteriormente.
    * @returns Un token JWT con la expiración que haya sido configurada en la importación.
    */
-  public iniciarSesion(usuario: Usuario): IRespuestaAuth {
+  public iniciarSesion(
+    usuario: Omit<Usuario, 'password_hash'>,
+  ): IRespuestaAuth {
     const payload = {
       email: usuario.email,
       sub: usuario.id_usuario,
@@ -62,12 +63,15 @@ export class AuthService {
   /**
    * Transacciona el registro de usuario: se encarga de cifrar la contraseña con bcrypt
    * antes de contactar a Prisma. Verificará de antemano que el correo no esté ocupado.
-   * @param dto Los datos recolectados del request (nombre, email, pass).
+   * @param command Los datos recolectados del request (nombre, email, pass).
    * @throws {ConflictException} Si el correo electrónico ya existía en la DB.
+   * @returns El usuario creado sin el hash de contraseña.
    */
-  public async registrarUsuario(dto: RegistrarUsuarioDto): Promise<Usuario> {
+  public async registrarUsuario(
+    command: RegistrarUsuarioCommand,
+  ): Promise<Omit<Usuario, 'password_hash'>> {
     const usuarioExistente = await this.usuariosService.buscarPorCorreo(
-      dto.email,
+      command.email,
     );
 
     if (usuarioExistente) {
@@ -75,18 +79,16 @@ export class AuthService {
     }
 
     const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(dto.password, saltRounds);
+    const passwordHash = await bcrypt.hash(command.password, saltRounds);
 
     const nuevoUsuario = await this.usuariosService.crearUsuario({
-      nombre: dto.nombre,
-      apellido: dto.apellido,
-      email: dto.email,
+      nombre: command.nombre,
+      apellido: command.apellido,
+      email: command.email,
       password_hash: passwordHash,
-      activa: true,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password_hash, ...usuarioRestante } = nuevoUsuario;
-    return usuarioRestante as unknown as IUsuario;
+    return usuarioRestante;
   }
 }

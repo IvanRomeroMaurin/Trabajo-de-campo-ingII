@@ -16,9 +16,12 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service.interface';
 import { RegistrarUsuarioDto } from '../dto/registrar-usuario.dto';
-import type { IUsuario, IRespuestaAuth } from '@repo/types';
+
+import type { IRespuestaAuth } from '@repo/types';
+
+import { Usuario } from '../../usuarios/models/usuario.entity';
 
 /**
  * Controlador de Autenticación
@@ -43,14 +46,18 @@ export class AuthController {
   @Post('registrar')
   public async registrar(
     @Body() registrarUsuarioDto: RegistrarUsuarioDto,
-  ): Promise<IUsuario> {
-    return this.authService.registrarUsuario(registrarUsuarioDto);
+  ): Promise<Omit<Usuario, 'password_hash'>> {
+    return this.authService.registrarUsuario({
+      nombre: registrarUsuarioDto.nombre,
+      apellido: registrarUsuarioDto.apellido,
+      email: registrarUsuarioDto.email,
+      password: registrarUsuarioDto.password,
+    });
   }
 
   /**
    * Autentica a un usuario usando la estrategia local (verificando la contraseña con bcrypt).
    * @param req Objeto Request de Express que inyecta el usuario desencriptado al pasar el Guard.
-   * @param iniciarSesionDto DTO del inicio de sesión (email y contraseña)
    * @returns Un JWT de acceso (access_token) y la información pública del usuario.
    */
   @ApiOperation({ summary: 'Inicia sesión con email y contraseña' })
@@ -71,7 +78,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('local'))
   @Post('iniciar-sesion')
-  public iniciarSesion(@Req() req: { user: IUsuario }): IRespuestaAuth {
+  public iniciarSesion(
+    @Req() req: { user: Omit<Usuario, 'password_hash'> },
+  ): IRespuestaAuth {
     // El AuthGuard('local') valida las credenciales y añade el usuario a req.user
     return this.authService.iniciarSesion(req.user);
   }
@@ -87,8 +96,9 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get('perfil')
   public obtenerPerfil(
-    @Req() req: { user: Partial<IUsuario> },
-  ): Partial<IUsuario> {
+    @Req() req: { user: Omit<Usuario, 'password_hash'> },
+  ): Omit<Usuario, 'password_hash'> {
     return req.user;
   }
 }
+

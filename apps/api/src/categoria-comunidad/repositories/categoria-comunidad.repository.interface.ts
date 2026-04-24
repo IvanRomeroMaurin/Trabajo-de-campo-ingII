@@ -17,5 +17,6 @@ export abstract class CategoriaComunidadRepository {
    * @param id - Identificador único de la categoría.
    * @returns True si la categoría existe, false en caso contrario.
    */
-  abstract existe(id: string): Promise<boolean>;
+  public abstract existe(id: string): Promise<boolean>;
 }
+

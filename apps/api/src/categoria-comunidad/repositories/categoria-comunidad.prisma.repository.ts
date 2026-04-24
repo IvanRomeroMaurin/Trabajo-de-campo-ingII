@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CategoriaComunidadRepository } from './categoria-comunidad.repository.interface';
 import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
-import { CategoriaComunidadMapper } from './categoria-comunidad.mapper';
+import { CategoriaComunidadMapper } from '../infrastructure/categoria-comunidad.mapper';
+
 
 /**
  * Implementación del repositorio de categorías utilizando Prisma.

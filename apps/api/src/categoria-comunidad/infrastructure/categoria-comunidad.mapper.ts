@@ -12,11 +12,11 @@ export class CategoriaComunidadMapper {
    * @param cat - La entidad obtenida de Prisma.
    * @returns Objeto mapeado con los campos esenciales de la categoría.
    */
-  public static toDomain(cat: categoria_comunidad) {
-    return new CategoriaComunidad({
-      id_categoria_comunidad: cat.id_categoria_comunidad,
-      descripcion: cat.descripcion,
-      activa: cat.activa,
-    });
+  public static toDomain(cat: categoria_comunidad): CategoriaComunidad {
+    return new CategoriaComunidad(
+      cat.id_categoria_comunidad,
+      cat.descripcion,
+      cat.activa,
+    );
   }
 }

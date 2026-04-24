@@ -9,8 +9,9 @@ import { CrearUsuarioCommand } from './usuarios.commands';
  * Se encarga de la orquestación entre la lógica de negocio y la persistencia a través del repositorio.
  */
 @Injectable()
-export class UsuariosService implements IUsuariosService {
+export class UsuariosServiceImpl implements IUsuariosService {
   public constructor(private readonly repository: UsuariosRepository) {}
+
 
   /**
    * Busca un usuario por su correo electrónico delegando la consulta al repositorio.
@@ -29,8 +30,14 @@ export class UsuariosService implements IUsuariosService {
    * @returns El usuario creado.
    */
   public async crearUsuario(data: CrearUsuarioCommand): Promise<Usuario> {
-    return this.repository.guardar(data);
+    return this.repository.guardar({
+      nombre: data.nombre,
+      apellido: data.apellido,
+      email: data.email,
+      password_hash: data.password_hash,
+    });
   }
+
 
   /**
    * Busca un usuario por su identificador único delegando la consulta al repositorio.

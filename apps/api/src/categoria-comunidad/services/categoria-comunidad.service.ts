@@ -8,7 +8,8 @@ import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
  * Implementación del servicio de categorías de comunidad.
  */
 @Injectable()
-export class CategoriaComunidadService implements ICategoriaComunidadService {
+export class CategoriaComunidadServiceImpl implements ICategoriaComunidadService {
+
   public constructor(
     private readonly repository: CategoriaComunidadRepository,
   ) {}
