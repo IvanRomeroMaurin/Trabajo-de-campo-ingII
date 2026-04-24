@@ -11,4 +11,12 @@ export abstract class CategoriaComunidadService {
    * @returns Una promesa que resuelve con un arreglo de categorías.
    */
   public abstract getCategorias(): Promise<CategoriaComunidad[]>;
+
+  /**
+   * Verifica la existencia de una categoría.
+   *
+   * @param id - ID de la categoría.
+   * @returns Promesa con booleano.
+   */
+  public abstract existeCategoria(id: string): Promise<boolean>;
 }

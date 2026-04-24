@@ -3,6 +3,7 @@ import {
   NotFoundException,
   InternalServerErrorException,
   Logger,
+  HttpException,
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
 import { MiembroService } from '../../miembro/services/miembro.service.interface';
@@ -10,23 +11,26 @@ import { stringToSlug } from '../../common/utils/slug.utils';
 import { Comunidad } from '../models/comunidad.entity';
 import { ROLES } from '../../common/constants/roles';
 import { ComunidadRepository } from '../repositories/comunidad.repository.interface';
-import {
+import type {
   CrearComunidadCommand,
   ActualizarComunidadCommand,
 } from './comunidad.commands';
+
 import { ComunidadService as IComunidadService } from './comunidad.service.interface';
+import { CategoriaComunidadService } from '../../categoria-comunidad/services/categoria-comunidad.service.interface';
 
 /**
  * Servicio encargado de la lógica de negocio de Comunidades.
  * Utiliza interfaces de comando (CrearComunidadCommand) para desacoplarse de la capa HTTP.
  */
 @Injectable()
-export class ComunidadService implements IComunidadService {
-  private readonly logger = new Logger(ComunidadService.name);
+export class ComunidadServiceImpl implements IComunidadService {
+  private readonly logger = new Logger(ComunidadServiceImpl.name);
 
   public constructor(
     private readonly comunidadRepository: ComunidadRepository,
     private readonly miembroService: MiembroService,
+    private readonly categoriaComunidadService: CategoriaComunidadService,
   ) {}
 
   /**
@@ -46,7 +50,7 @@ export class ComunidadService implements IComunidadService {
   ): Promise<Comunidad> {
     const slug = await this.generarSlugUnico(command.nombre);
 
-    const existeCategoria = await this.comunidadRepository.existeCategoria(
+    const existeCategoria = await this.categoriaComunidadService.existeCategoria(
       command.id_categoria_comunidad,
     );
     if (!existeCategoria) {
@@ -73,6 +77,7 @@ export class ComunidadService implements IComunidadService {
 
       return nuevaComunidad;
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       this.logger.error('Error al crear comunidad', error);
       throw new InternalServerErrorException(
         'Error al configurar permisos, intentá de nuevo',
@@ -138,10 +143,8 @@ export class ComunidadService implements IComunidadService {
    *
    * @param id - Identificador único de la comunidad a actualizar.
    * @param command - Objeto con los campos parciales a actualizar (nombre, descripción, etc.).
-   * @param idUsuario - Identificador del usuario que intenta realizar la actualización.
    * @returns Una promesa que resuelve con los datos de la comunidad actualizada.
    * @throws {NotFoundException} Si la comunidad o la nueva categoría especificada no existen.
-   * @throws {ForbiddenException} Si el usuario no tiene permisos para modificar la comunidad.
    */
   @Transactional()
   public async actualizarComunidad(
@@ -162,7 +165,7 @@ export class ComunidadService implements IComunidadService {
     }
 
     if (command.id_categoria_comunidad !== undefined) {
-      const existeCat = await this.comunidadRepository.existeCategoria(
+      const existeCat = await this.categoriaComunidadService.existeCategoria(
         command.id_categoria_comunidad,
       );
       if (!existeCat) throw new NotFoundException(`La categoría no existe`);
@@ -172,6 +175,7 @@ export class ComunidadService implements IComunidadService {
   }
 
   /**
+
    * Desactiva una comunidad realizando una baja lógica (activa: false).
    * Requiere que el usuario sea el creador de la comunidad.
    *
@@ -181,11 +185,13 @@ export class ComunidadService implements IComunidadService {
    */
   @Transactional()
   public async desactivarComunidad(id: string): Promise<{ mensaje: string }> {
+    await this.getComunidad(id);
     await this.comunidadRepository.actualizar(id, { activa: false });
     return {
       mensaje: `La comunidad con id ${id} fue desactivada correctamente`,
     };
   }
+
 
   /**
    * Reactiva una comunidad que fue previamente desactivada (activa: true).
@@ -196,6 +202,7 @@ export class ComunidadService implements IComunidadService {
    */
   @Transactional()
   public async reactivarComunidad(id: string): Promise<{ mensaje: string }> {
+    await this.getComunidad(id);
     await this.comunidadRepository.actualizar(id, { activa: true });
     return {
       mensaje: `La comunidad con id ${id} fue reactivada correctamente`,

@@ -1,5 +1,5 @@
 import { comunidad, categoria_comunidad } from '@prisma/client';
-import { IComunidad, ICategoriaComunidad } from '@repo/types';
+import { ICategoriaComunidad } from '@repo/types';
 import { Comunidad } from '../models/comunidad.entity';
 import { CategoriaComunidad } from '../../categoria-comunidad/models/categoria-comunidad.entity';
 
@@ -9,30 +9,31 @@ import { CategoriaComunidad } from '../../categoria-comunidad/models/categoria-c
  */
 export class ComunidadMapper {
   /**
-   * Mapea un modelo de Prisma comunidad a la interfaz IComunidad.
+   * Mapea un modelo de Prisma comunidad a la entidad de dominio Comunidad.
    *
    * @param comunidad - El modelo de comunidad de Prisma (puede incluir la categoría).
-   * @returns La interfaz de dominio IComunidad.
+   * @returns La entidad de dominio Comunidad.
    */
   public static toIComunidad(
     comunidad: comunidad & {
       categoria_comunidad?: categoria_comunidad;
     },
-  ): IComunidad {
-    return new Comunidad({
-      id_comunidad: comunidad.id_comunidad,
-      nombre: comunidad.nombre,
-      slug: comunidad.slug,
-      descripcion: comunidad.descripcion ?? undefined,
-      portada_url: comunidad.portada_url ?? undefined,
-      activa: comunidad.activa,
-      fecha_creacion: comunidad.fecha_creacion,
-      id_categoria_comunidad: comunidad.id_categoria_comunidad,
-      // Mapeo de relación si está presente
-      categoria_comunidad: comunidad.categoria_comunidad
+  ): Comunidad {
+
+    return new Comunidad(
+      comunidad.id_comunidad,
+      comunidad.nombre,
+      comunidad.slug,
+      comunidad.activa,
+      comunidad.fecha_creacion,
+      comunidad.id_categoria_comunidad,
+      comunidad.descripcion ?? undefined,
+      comunidad.portada_url ?? undefined,
+      comunidad.categoria_comunidad
         ? ComunidadMapper.toICategoriaComunidad(comunidad.categoria_comunidad)
         : undefined,
-    });
+    );
+
   }
 
   /**

@@ -63,11 +63,13 @@ export abstract class ComunidadService {
     command: ActualizarComunidadCommand,
   ): Promise<Comunidad>;
 
+
   /**
    * Desactiva una comunidad realizando una baja lógica.
    *
    * @param id - Identificador único de la comunidad a desactivar.
    * @returns Una promesa que resuelve con un mensaje de éxito.
+   * @throws {NotFoundException} Si la comunidad no existe.
    */
   abstract desactivarComunidad(id: string): Promise<{ mensaje: string }>;
 
@@ -76,6 +78,8 @@ export abstract class ComunidadService {
    *
    * @param id - Identificador único de la comunidad a reactivar.
    * @returns Una promesa que resuelve con un mensaje de éxito.
+   * @throws {NotFoundException} Si la comunidad no existe.
    */
   abstract reactivarComunidad(id: string): Promise<{ mensaje: string }>;
+
 }

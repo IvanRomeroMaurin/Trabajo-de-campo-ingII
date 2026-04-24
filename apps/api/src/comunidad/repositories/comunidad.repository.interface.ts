@@ -1,6 +1,18 @@
 import { Comunidad } from '../models/comunidad.entity';
 
 /**
+ * Interfaz para los datos de creación de una comunidad.
+ */
+export interface CrearComunidadData {
+  nombre: string;
+  slug: string;
+  descripcion?: string;
+  portada_url?: string;
+  id_categoria_comunidad: string;
+  activa: boolean;
+}
+
+/**
  * Puerto (Interfaz) para la persistencia de Comunidades.
  * Define el contrato que cualquier adaptador de persistencia debe implementar.
  * Mantiene la lógica de negocio desacoplada de la tecnología de base de datos.
@@ -10,22 +22,9 @@ export abstract class ComunidadRepository {
    * Persiste una nueva comunidad en el sistema de almacenamiento.
    *
    * @param data - Objeto con los atributos de la comunidad a crear.
-   * @param data.nombre - Nombre de la comunidad.
-   * @param data.slug - Identificador único amigable para la URL.
-   * @param data.descripcion - Breve descripción de la comunidad (opcional).
-   * @param data.portada_url - URL de la imagen de portada (opcional).
-   * @param data.id_categoria_comunidad - ID de la categoría a la que pertenece.
-   * @param data.activa - Estado inicial de la comunidad.
    * @returns Promesa con la comunidad creada y su categoría cargada.
    */
-  public abstract guardar(data: {
-    nombre: string;
-    slug: string;
-    descripcion?: string;
-    portada_url?: string;
-    id_categoria_comunidad: string;
-    activa: boolean;
-  }): Promise<Comunidad>;
+  public abstract guardar(data: CrearComunidadData): Promise<Comunidad>;
 
   /**
    * Actualiza los datos de una comunidad existente.
@@ -80,12 +79,5 @@ export abstract class ComunidadRepository {
     id_usuario: string,
     id_rol_creador: string,
   ): Promise<Comunidad[]>;
-
-  /**
-   * Verifica si una categoría de comunidad existe en la base de datos.
-   *
-   * @param id_categoria - UUID de la categoría.
-   * @returns true si la categoría existe, false en caso contrario.
-   */
-  public abstract existeCategoria(id_categoria: string): Promise<boolean>;
 }
+

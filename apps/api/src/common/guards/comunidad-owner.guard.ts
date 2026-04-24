@@ -2,11 +2,9 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  ForbiddenException,
-  NotFoundException,
-  Inject,
+  ForbiddenException
 } from '@nestjs/common';
-import { ComunidadRepository } from '../../comunidad/repositories/comunidad.repository.interface';
+import { ComunidadService } from '../../comunidad/services/comunidad.service.interface';
 import { MiembroService } from '../../miembro/services/miembro.service.interface';
 import type { IUsuario } from '@repo/types';
 
@@ -17,10 +15,9 @@ import type { IUsuario } from '@repo/types';
 @Injectable()
 export class ComunidadOwnerGuard implements CanActivate {
   public constructor(
-    @Inject(ComunidadRepository)
-    private readonly comunidadRepository: ComunidadRepository,
+    private readonly comunidadService: ComunidadService,
     private readonly miembroService: MiembroService,
-  ) {}
+  ) { }
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<{
@@ -41,11 +38,8 @@ export class ComunidadOwnerGuard implements CanActivate {
       return false;
     }
 
-    // 1. Verificar existencia
-    const comunidad = await this.comunidadRepository.buscarPorId(idComunidad);
-    if (!comunidad) {
-      throw new NotFoundException('La comunidad no fue encontrada');
-    }
+    // 1. Verificar existencia (lanza NotFoundException si no existe)
+    await this.comunidadService.getComunidad(idComunidad);
 
     // 2. Verificar autoría/creador
     const esCreador = await this.miembroService.esCreador(
@@ -62,3 +56,4 @@ export class ComunidadOwnerGuard implements CanActivate {
     return true;
   }
 }
+

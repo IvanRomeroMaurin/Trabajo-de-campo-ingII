@@ -6,7 +6,6 @@ import {
   Delete,
   Body,
   Param,
-  Request,
   UseGuards,
   HttpCode,
   HttpStatus,
@@ -23,7 +22,7 @@ import { ComunidadService } from '../services/comunidad.service.interface';
 import { CrearComunidadDto } from '../dto/crear-comunidad.dto';
 import { ActualizarComunidadDto } from '../dto/actualizar-comunidad.dto';
 import type { IUsuario } from '@repo/types';
-import { Comunidad } from '../models/comunidad.entity';
+import { ComunidadResponseDto } from '../dto/comunidad-response.dto';
 import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
 
 /**
@@ -51,7 +50,7 @@ export class ComunidadController {
   @ApiResponse({
     status: 201,
     description: 'La comunidad ha sido creada exitosamente.',
-    type: Comunidad,
+    type: ComunidadResponseDto,
   })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   @ApiBearerAuth()
@@ -60,8 +59,8 @@ export class ComunidadController {
   public async crearComunidad(
     @Body() dto: CrearComunidadDto,
     @Req() req: { user: IUsuario },
-  ): Promise<Comunidad> {
-    return this.comunidadService.crearComunidad(
+  ): Promise<ComunidadResponseDto> {
+    const resultado = await this.comunidadService.crearComunidad(
       {
         nombre: dto.nombre,
         descripcion: dto.descripcion,
@@ -70,6 +69,7 @@ export class ComunidadController {
       },
       req.user.id_usuario.toString(),
     );
+    return ComunidadResponseDto.fromEntity(resultado);
   }
 
   /**
@@ -81,11 +81,12 @@ export class ComunidadController {
   @ApiResponse({
     status: 200,
     description: 'Listado de comunidades.',
-    type: [Comunidad],
+    type: [ComunidadResponseDto],
   })
   @Get()
-  public async getComunidades(): Promise<Comunidad[]> {
-    return this.comunidadService.getComunidades();
+  public async getComunidades(): Promise<ComunidadResponseDto[]> {
+    const comunidades = await this.comunidadService.getComunidades();
+    return comunidades.map((c) => ComunidadResponseDto.fromEntity(c));
   }
 
   /**
@@ -98,10 +99,11 @@ export class ComunidadController {
   @Get('mis-comunidades')
   public async getMisComunidades(
     @Req() req: { user: IUsuario },
-  ): Promise<Comunidad[]> {
-    return this.comunidadService.getMisComunidades(
+  ): Promise<ComunidadResponseDto[]> {
+    const comunidades = await this.comunidadService.getMisComunidades(
       req.user.id_usuario.toString(),
     );
+    return comunidades.map((c) => ComunidadResponseDto.fromEntity(c));
   }
 
   /**
@@ -114,8 +116,9 @@ export class ComunidadController {
   @Get('s/:slug')
   public async getComunidadPorSlug(
     @Param('slug') slug: string,
-  ): Promise<Comunidad> {
-    return this.comunidadService.getComunidadPorSlug(slug);
+  ): Promise<ComunidadResponseDto> {
+    const resultado = await this.comunidadService.getComunidadPorSlug(slug);
+    return ComunidadResponseDto.fromEntity(resultado);
   }
 
   /**
@@ -126,8 +129,11 @@ export class ComunidadController {
    * @throws {NotFoundException} Si la comunidad no existe.
    */
   @Get(':id')
-  public async getComunidad(@Param('id') id: string): Promise<Comunidad> {
-    return this.comunidadService.getComunidad(id);
+  public async getComunidad(
+    @Param('id') id: string,
+  ): Promise<ComunidadResponseDto> {
+    const resultado = await this.comunidadService.getComunidad(id);
+    return ComunidadResponseDto.fromEntity(resultado);
   }
 
   /**
@@ -140,19 +146,22 @@ export class ComunidadController {
    * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
    * @throws {NotFoundException} Si la comunidad no existe.
    */
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @Patch(':id')
   public async actualizarComunidad(
     @Param('id') id: string,
     @Body() dto: ActualizarComunidadDto,
-  ): Promise<Comunidad> {
-    return this.comunidadService.actualizarComunidad(id, {
+  ): Promise<ComunidadResponseDto> {
+    const resultado = await this.comunidadService.actualizarComunidad(id, {
       nombre: dto.nombre,
       descripcion: dto.descripcion,
       portada_url: dto.portada_url,
       id_categoria_comunidad: dto.id_categoria_comunidad,
     });
+    return ComunidadResponseDto.fromEntity(resultado);
   }
+
 
   /**
    * Realiza una desactivación lógica de la comunidad (baja lógica).
@@ -162,6 +171,7 @@ export class ComunidadController {
    * @returns Un mensaje confirmando la desactivación.
    * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
    */
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
@@ -179,6 +189,7 @@ export class ComunidadController {
    * @returns Un mensaje confirmando la reactivación.
    * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
    */
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)
   @Post(':id/reactivar')

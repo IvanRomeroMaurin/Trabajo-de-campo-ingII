@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ComunidadService } from './services/comunidad.service.interface';
-import { ComunidadService as ComunidadServiceImpl } from './services/comunidad.service';
+import { ComunidadServiceImpl } from './services/comunidad.service';
 import { ComunidadController } from './controllers/comunidad.controller';
 import { MiembroModule } from '../miembro/miembro.module';
 import { CategoriaComunidadModule } from '../categoria-comunidad/categoria-comunidad.module';
@@ -22,11 +22,7 @@ import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
     },
     ComunidadOwnerGuard,
   ],
-  exports: [
-    ComunidadService,
-    ComunidadRepository,
-    ComunidadOwnerGuard,
-    MiembroModule,
-  ],
+  exports: [ComunidadService, ComunidadOwnerGuard, MiembroModule],
 })
 export class ComunidadModule {}
+

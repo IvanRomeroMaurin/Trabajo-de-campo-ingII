@@ -21,4 +21,15 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
   public async getCategorias(): Promise<CategoriaComunidad[]> {
     return this.repository.buscarTodasActivas();
   }
+
+  /**
+   * Verifica la existencia de una categoría.
+   *
+   * @param id - ID de la categoría.
+   * @returns Promesa con booleano.
+   */
+  public async existeCategoria(id: string): Promise<boolean> {
+    return this.repository.existe(id);
+  }
 }
+

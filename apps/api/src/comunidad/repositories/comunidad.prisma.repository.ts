@@ -2,8 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { Comunidad } from '../models/comunidad.entity';
-import { ComunidadRepository } from './comunidad.repository.interface';
-import { ComunidadMapper } from './comunidad.mapper';
+import {
+  ComunidadRepository,
+  CrearComunidadData,
+} from './comunidad.repository.interface';
+import { ComunidadMapper } from '../infrastructure/comunidad.mapper';
 
 /**
  * Adaptador de persistencia para Comunidades usando Prisma.
@@ -21,14 +24,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
    * @param data - Atributos de la comunidad.
    * @returns La comunidad mapeada a la interfaz de dominio.
    */
-  public async guardar(data: {
-    nombre: string;
-    slug: string;
-    descripcion?: string;
-    portada_url?: string;
-    id_categoria_comunidad: string;
-    activa: boolean;
-  }): Promise<Comunidad> {
+  public async guardar(data: CrearComunidadData): Promise<Comunidad> {
     const comunidad = await this.txHost.tx.comunidad.create({
       data: {
         ...data,
@@ -39,6 +35,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
     return ComunidadMapper.toIComunidad(comunidad);
   }
+
 
   /**
    * Actualiza parcialmente una comunidad existente en la base de datos.
@@ -138,18 +135,5 @@ export class PrismaComunidadRepository implements ComunidadRepository {
     });
 
     return miembros.map((m) => ComunidadMapper.toIComunidad(m.comunidad));
-  }
-
-  /**
-   * Verifica la existencia de una categoría.
-   *
-   * @param id_categoria - UUID de la categoría.
-   * @returns true si existe, false en caso contrario.
-   */
-  public async existeCategoria(id_categoria: string): Promise<boolean> {
-    const categoria = await this.txHost.tx.categoria_comunidad.findUnique({
-      where: { id_categoria_comunidad: id_categoria },
-    });
-    return !!categoria;
   }
 }
