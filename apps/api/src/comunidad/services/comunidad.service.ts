@@ -8,7 +8,6 @@ import {
 import { Transactional } from '@nestjs-cls/transactional';
 import { MiembroService } from '../../miembro/services/miembro.service.interface';
 import { stringToSlug } from '../../common/utils/slug.utils';
-import { IComunidad } from '@repo/types';
 import { Comunidad } from '../models/comunidad.entity';
 import { ROLES } from '../../common/constants/roles';
 import { ComunidadRepository } from '../repositories/comunidad.repository.interface';
@@ -29,7 +28,7 @@ export class ComunidadService implements IComunidadService {
   public constructor(
     private readonly comunidadRepository: ComunidadRepository,
     private readonly miembroService: MiembroService,
-  ) {}
+  ) { }
 
   /**
    * Crea una nueva comunidad e inserta al creador como miembro con el rol de CREADOR.

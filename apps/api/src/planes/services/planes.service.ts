@@ -75,7 +75,6 @@ export class PlanesService implements IPlanesService {
       return { plan };
     } catch (error) {
       this.logger.error('Error al guardar el plan en BD', error);
-      // Rollback manual de MP si falla la BD (aunque @Transactional maneja la DB)
       await this.mercadoPagoService.cancelPreapprovalPlan(
         mp_preapproval_plan_id,
       );

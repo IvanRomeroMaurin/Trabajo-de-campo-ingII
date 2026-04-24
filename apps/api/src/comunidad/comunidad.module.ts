@@ -29,4 +29,4 @@ import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
     MiembroModule,
   ],
 })
-export class ComunidadModule {}
+export class ComunidadModule { }
