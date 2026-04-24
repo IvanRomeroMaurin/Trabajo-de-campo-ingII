@@ -4,12 +4,23 @@ import { Comunidad } from '../models/comunidad.entity';
  * Interfaz para los datos de creación de una comunidad.
  */
 export interface CrearComunidadData {
-  nombre: string;
-  slug: string;
-  descripcion?: string;
-  portada_url?: string;
-  id_categoria_comunidad: string;
-  activa: boolean;
+  readonly nombre: string;
+  readonly slug: string;
+  readonly descripcion?: string;
+  readonly portada_url?: string;
+  readonly id_categoria_comunidad: string;
+}
+
+/**
+ * Datos permitidos para la actualización parcial de una comunidad.
+ */
+export interface ActualizarComunidadData {
+  readonly nombre?: string;
+  readonly slug?: string;
+  readonly descripcion?: string;
+  readonly portada_url?: string;
+  readonly id_categoria_comunidad?: string;
+  readonly activa?: boolean;
 }
 
 /**
@@ -35,15 +46,9 @@ export abstract class ComunidadRepository {
    */
   public abstract actualizar(
     id_comunidad: string,
-    data: Partial<{
-      nombre: string;
-      slug: string;
-      descripcion: string;
-      portada_url: string;
-      id_categoria_comunidad: string;
-      activa: boolean;
-    }>,
+    data: ActualizarComunidadData,
   ): Promise<Comunidad>;
+
 
   /**
    * Busca una comunidad por su identificador único primario.

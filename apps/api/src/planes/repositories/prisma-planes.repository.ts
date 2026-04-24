@@ -4,8 +4,11 @@ import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-pr
 
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
-import { PlanesRepository } from './planes.repository.interface';
-import { PlanesMapper } from './planes.mapper';
+import {
+  PlanesRepository,
+  CrearPlanData,
+} from './planes.repository.interface';
+import { PlanesMapper } from '../infrastructure/planes.mapper';
 
 /**
  * Implementación de PlanesRepository usando Prisma.
@@ -24,15 +27,7 @@ export class PrismaPlanesRepository implements PlanesRepository {
    * @param data - Datos para la creación del plan.
    * @returns El plan mapeado al dominio de la aplicación.
    */
-  public async guardar(data: {
-    titulo: string;
-    descripcion?: string;
-    precio: number;
-    id_ciclo_pago: string;
-    id_moneda: string;
-    mp_preapproval_plan_id: string;
-    id_comunidad: string;
-  }): Promise<PlanComunidad> {
+  public async guardar(data: CrearPlanData): Promise<PlanComunidad> {
     const plan = await this.txHost.tx.plan_comunidad.create({
       data: {
         ...data,
@@ -43,6 +38,7 @@ export class PrismaPlanesRepository implements PlanesRepository {
 
     return PlanesMapper.toIPlanComunidad(plan);
   }
+
 
 
   /**

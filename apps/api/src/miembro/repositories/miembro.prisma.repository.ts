@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
-import { MiembroRepository } from './miembro.repository.interface';
+import {
+  MiembroRepository,
+  CrearMiembroData,
+  ActualizarMiembroData,
+} from './miembro.repository.interface';
+
 import { Miembro } from '../models/miembro.entity';
 import { ROLES } from '../../common/constants/roles';
-import { MiembroMapper } from './miembro.mapper';
+import { MiembroMapper } from '../infrastructure/miembro.mapper';
 
 /**
  * Implementación del repositorio de miembros utilizando Prisma.
@@ -43,12 +48,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
    *
    * @param data - Datos de la membresía.
    */
-  public async crearMiembro(data: {
-    id_usuario: string;
-    id_comunidad: string;
-    id_rol_comunidad: string;
-    fecha_ingreso: Date;
-  }): Promise<void> {
+  public async crearMiembro(data: CrearMiembroData): Promise<void> {
     await this.txHost.tx.miembro_comunidad.create({ data });
   }
 
@@ -62,10 +62,7 @@ export class PrismaMiembroRepository implements MiembroRepository {
   public async actualizarMiembro(
     id_usuario: string,
     id_comunidad: string,
-    data: {
-      id_rol_comunidad?: string;
-      fecha_actualizacion: Date;
-    },
+    data: ActualizarMiembroData,
   ): Promise<void> {
     await this.txHost.tx.miembro_comunidad.update({
       where: {
@@ -100,18 +97,8 @@ export class PrismaMiembroRepository implements MiembroRepository {
   }
 
   /**
-   * Comprueba la existencia de un usuario mediante un conteo rápido.
-   *
-   * @param id_usuario - ID a buscar.
-   * @returns True si el conteo es mayor a cero.
-   */
-  public async existeUsuario(id_usuario: string): Promise<boolean> {
-    const count = await this.txHost.tx.usuario.count({ where: { id_usuario } });
-    return count > 0;
-  }
-
-  /**
    * Comprueba la existencia de una comunidad mediante un conteo rápido.
+   * // TODO: mover a ComunidadService cuando se resuelva la dependencia circular.
    *
    * @param id_comunidad - ID a buscar.
    * @returns True si la comunidad existe.
@@ -134,3 +121,4 @@ export class PrismaMiembroRepository implements MiembroRepository {
     return count > 0;
   }
 }
+

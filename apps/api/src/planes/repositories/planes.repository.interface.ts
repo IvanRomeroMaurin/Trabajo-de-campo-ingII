@@ -2,6 +2,19 @@ import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 
 /**
+ * Datos necesarios para la creación de un nuevo plan de suscripción.
+ */
+export interface CrearPlanData {
+  readonly titulo: string;
+  readonly descripcion?: string;
+  readonly precio: number;
+  readonly id_ciclo_pago: string;
+  readonly id_moneda: string;
+  readonly mp_preapproval_plan_id: string;
+  readonly id_comunidad: string;
+}
+
+/**
  * Interfaz que define el contrato para el acceso a datos de Planes.
  * Sigue el patrón Repository para desacoplar la lógica de negocio de la persistencia.
  */
@@ -9,26 +22,10 @@ export abstract class PlanesRepository {
   /**
    * Registra un nuevo plan de suscripción en el sistema.
    *
-   * @param data - Objeto con la información necesaria para crear el plan.
-   * @param data.titulo - Nombre descriptivo del plan.
-   * @param data.descripcion - (Opcional) Detalle de lo que incluye el plan.
-   * @param data.precio - Monto a cobrar en la suscripción.
-   * @param data.id_ciclo_pago - ID del ciclo de pago (frecuencia).
-   * @param data.id_moneda - ID de la moneda del plan.
-   * @param data.mp_preapproval_plan_id - ID del plan generado en Mercado Pago.
-   * @param data.id_comunidad - ID de la comunidad a la que pertenece el plan.
+   * @param data - Datos para la creación del plan.
    * @returns Una promesa que resuelve con el plan creado.
    */
-  abstract guardar(data: {
-    titulo: string;
-    descripcion?: string;
-    precio: number;
-    id_ciclo_pago: string;
-    id_moneda: string;
-    mp_preapproval_plan_id: string;
-    id_comunidad: string;
-  }): Promise<PlanComunidad>;
-
+  public abstract guardar(data: CrearPlanData): Promise<PlanComunidad>;
 
   /**
    * Obtiene todos los planes de suscripción asociados a una comunidad específica.
@@ -48,3 +45,4 @@ export abstract class PlanesRepository {
    */
   public abstract buscarCiclosPago(): Promise<CicloPago[]>;
 }
+

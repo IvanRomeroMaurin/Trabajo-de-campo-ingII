@@ -77,6 +77,7 @@ export class PlanesServiceImpl implements IPlanesService {
         id_comunidad: command.id_comunidad,
       });
       return { plan };
+
     } catch (error) {
       this.logger.error('Error al guardar el plan en BD', error);
       try {

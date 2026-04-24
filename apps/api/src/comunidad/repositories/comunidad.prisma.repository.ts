@@ -5,6 +5,7 @@ import { Comunidad } from '../models/comunidad.entity';
 import {
   ComunidadRepository,
   CrearComunidadData,
+  ActualizarComunidadData,
 } from './comunidad.repository.interface';
 import { ComunidadMapper } from '../infrastructure/comunidad.mapper';
 
@@ -28,6 +29,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
     const comunidad = await this.txHost.tx.comunidad.create({
       data: {
         ...data,
+        activa: false, // regla de negocio: toda comunidad nueva comienza inactiva
         fecha_creacion: new Date(),
       },
       include: { categoria_comunidad: true },
@@ -35,7 +37,6 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
     return ComunidadMapper.toIComunidad(comunidad);
   }
-
 
   /**
    * Actualiza parcialmente una comunidad existente en la base de datos.
@@ -46,14 +47,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
    */
   public async actualizar(
     id_comunidad: string,
-    data: Partial<{
-      nombre: string;
-      slug: string;
-      descripcion: string;
-      portada_url: string;
-      id_categoria_comunidad: string;
-      activa: boolean;
-    }>,
+    data: ActualizarComunidadData,
   ): Promise<Comunidad> {
     const comunidad = await this.txHost.tx.comunidad.update({
       where: { id_comunidad },
@@ -63,6 +57,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
     return ComunidadMapper.toIComunidad(comunidad);
   }
+
 
   /**
    * Recupera una comunidad por su ID incluyendo su categoría.

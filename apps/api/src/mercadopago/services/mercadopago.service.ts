@@ -1,11 +1,15 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MercadoPagoConfig, PreApprovalPlan } from 'mercadopago';
-import { MercadoPagoService as IMercadoPagoService } from './mercadopago.service.interface';
+import {
+  MercadoPagoService as IMercadoPagoService,
+  CrearPreapprovalPlanData,
+} from './mercadopago.service.interface';
 
 @Injectable()
-export class MercadoPagoService implements IMercadoPagoService {
-  private readonly logger = new Logger(MercadoPagoService.name);
+export class MercadoPagoServiceImpl implements IMercadoPagoService {
+
+  private readonly logger = new Logger(MercadoPagoServiceImpl.name);
   private readonly preApprovalPlan: PreApprovalPlan;
 
   public constructor(private readonly configService: ConfigService) {
@@ -15,15 +19,9 @@ export class MercadoPagoService implements IMercadoPagoService {
     this.preApprovalPlan = new PreApprovalPlan(client);
   }
 
-  public async createPreapprovalPlan(data: {
-    titulo: string;
-    descripcion?: string;
-    precio: number;
-    frecuencia: number;
-    tipo_frecuencia: string;
-    moneda: string;
-    back_url: string;
-  }): Promise<{ mp_preapproval_plan_id: string }> {
+  public async createPreapprovalPlan(
+    data: CrearPreapprovalPlanData,
+  ): Promise<{ mp_preapproval_plan_id: string }> {
     try {
       const response = await this.preApprovalPlan.create({
         body: {

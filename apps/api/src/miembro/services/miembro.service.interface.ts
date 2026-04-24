@@ -15,7 +15,7 @@ export abstract class MiembroService {
    * @param command - Datos que contienen id_usuario, id_comunidad e id_rol.
    * @returns Una promesa que se resuelve cuando la operación se completa.
    */
-  abstract agregarMiembro(command: AgregarMiembroCommand): Promise<void>;
+  public abstract agregarMiembro(command: AgregarMiembroCommand): Promise<void>;
 
   /**
    * Cambia el rol asignado a un miembro existente dentro de una comunidad.
@@ -24,7 +24,9 @@ export abstract class MiembroService {
    * @param command - Datos con el ID del miembro y el nuevo ID del rol.
    * @returns Una promesa que se resuelve cuando el rol ha sido actualizado.
    */
-  abstract cambiarRolMiembro(command: CambiarRolMiembroCommand): Promise<void>;
+  public abstract cambiarRolMiembro(
+    command: CambiarRolMiembroCommand,
+  ): Promise<void>;
 
   /**
    * Verifica si un usuario posee el rol de 'Creador' en una comunidad determinada.
@@ -34,8 +36,9 @@ export abstract class MiembroService {
    * @param id_comunidad - Identificador único de la comunidad.
    * @returns Una promesa que resuelve true si es el creador, false en caso contrario.
    */
-  abstract esCreador(
+  public abstract esCreador(
     id_usuario: string,
     id_comunidad: string,
   ): Promise<boolean>;
+
 }

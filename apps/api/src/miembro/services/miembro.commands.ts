@@ -1,11 +1,11 @@
 export interface AgregarMiembroCommand {
-  id_usuario: string;
-  id_comunidad: string;
-  id_rol: string;
+  readonly id_usuario: string;
+  readonly id_comunidad: string;
+  readonly id_rol: string;
 }
 
 export interface CambiarRolMiembroCommand {
-  id_usuario: string;
-  id_comunidad: string;
-  id_rol_nuevo: string;
+  readonly id_usuario: string;
+  readonly id_comunidad: string;
+  readonly id_rol_nuevo: string;
 }

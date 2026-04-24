@@ -11,13 +11,13 @@ export class MiembroMapper {
    * @param miembro - El registro crudo de la base de datos.
    * @returns Un objeto con la estructura de dominio para membresía.
    */
-  public static toDomain(miembro: miembro_comunidad) {
-    return new Miembro({
-      id_usuario: miembro.id_usuario,
-      id_comunidad: miembro.id_comunidad,
-      id_rol_comunidad: miembro.id_rol_comunidad,
-      fecha_ingreso: miembro.fecha_ingreso,
-      fecha_actualizacion: miembro.fecha_actualizacion,
-    });
+  public static toDomain(miembro: miembro_comunidad): Miembro {
+    return new Miembro(
+      miembro.id_usuario,
+      miembro.id_comunidad,
+      miembro.id_rol_comunidad,
+      miembro.fecha_ingreso,
+      miembro.fecha_actualizacion,
+    );
   }
 }

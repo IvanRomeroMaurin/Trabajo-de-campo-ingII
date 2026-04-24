@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MiembroRepository } from '../repositories/miembro.repository.interface';
-import { MiembroService as IMiembroService } from './miembro.service.interface';
+import { MiembroService } from './miembro.service.interface';
+import { UsuariosService } from '../../usuarios/services/usuarios.service.interface';
 import {
   AgregarMiembroCommand,
   CambiarRolMiembroCommand,
@@ -11,8 +12,12 @@ import {
  * Orquestra la lógica para unir usuarios a comunidades, gestionar sus roles y verificar permisos.
  */
 @Injectable()
-export class MiembroService implements IMiembroService {
-  public constructor(private readonly repository: MiembroRepository) {}
+export class MiembroServiceImpl implements MiembroService {
+
+  public constructor(
+    private readonly repository: MiembroRepository,
+    private readonly usuariosService: UsuariosService,
+  ) {}
 
   /**
    * Une a un usuario a una comunidad.
@@ -25,12 +30,13 @@ export class MiembroService implements IMiembroService {
   public async agregarMiembro(command: AgregarMiembroCommand): Promise<void> {
     const { id_usuario, id_comunidad, id_rol } = command;
 
-    if (!(await this.repository.existeUsuario(id_usuario))) {
-      throw new NotFoundException(`Usuario no encontrado`);
+    const usuario = await this.usuariosService.buscarPorId(id_usuario);
+    if (!usuario) {
+      throw new NotFoundException('Usuario no encontrado');
     }
 
     if (!(await this.repository.existeComunidad(id_comunidad))) {
-      throw new NotFoundException(`Comunidad no encontrada`);
+      throw new NotFoundException('Comunidad no encontrada');
     }
 
     const miembroExistente = await this.repository.buscarMiembro(
@@ -51,6 +57,7 @@ export class MiembroService implements IMiembroService {
       });
     }
   }
+
 
   /**
    * Actualiza el rol de un miembro en una comunidad.

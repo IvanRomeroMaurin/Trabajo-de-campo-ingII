@@ -1,5 +1,4 @@
 import { plan_comunidad, ciclo_pago, moneda } from '@prisma/client';
-import { IPlanComunidad, ICicloPago } from '@repo/types';
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 
@@ -52,5 +51,4 @@ export class PlanesMapper {
   public static toICicloPago(c: ciclo_pago): CicloPago {
     return new CicloPago(c.id_ciclo_pago, c.frecuencia, c.tipo_frecuencia);
   }
-
 }

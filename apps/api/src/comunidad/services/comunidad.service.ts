@@ -10,7 +10,10 @@ import { MiembroService } from '../../miembro/services/miembro.service.interface
 import { stringToSlug } from '../../common/utils/slug.utils';
 import { Comunidad } from '../models/comunidad.entity';
 import { ROLES } from '../../common/constants/roles';
-import { ComunidadRepository } from '../repositories/comunidad.repository.interface';
+import {
+  ComunidadRepository,
+  ActualizarComunidadData,
+} from '../repositories/comunidad.repository.interface';
 import type {
   CrearComunidadCommand,
   ActualizarComunidadCommand,
@@ -31,7 +34,7 @@ export class ComunidadServiceImpl implements IComunidadService {
     private readonly comunidadRepository: ComunidadRepository,
     private readonly miembroService: MiembroService,
     private readonly categoriaComunidadService: CategoriaComunidadService,
-  ) {}
+  ) { }
 
   /**
    * Crea una nueva comunidad e inserta al creador como miembro con el rol de CREADOR.
@@ -66,7 +69,7 @@ export class ComunidadServiceImpl implements IComunidadService {
         descripcion: command.descripcion,
         portada_url: command.portada_url,
         id_categoria_comunidad: command.id_categoria_comunidad,
-        activa: false,
+        // activa ya no se pasa — lo decide el repositorio
       });
 
       await this.miembroService.agregarMiembro({
@@ -151,17 +154,11 @@ export class ComunidadServiceImpl implements IComunidadService {
     id: string,
     command: ActualizarComunidadCommand,
   ): Promise<Comunidad> {
-    const updateData: Partial<{
-      nombre: string;
-      slug: string;
-      descripcion: string;
-      portada_url: string;
-      id_categoria_comunidad: string;
-      activa: boolean;
-    }> = { ...command };
+    const updateData: ActualizarComunidadData = { ...command };
 
     if (command.nombre !== undefined) {
-      updateData.slug = await this.generarSlugUnico(command.nombre);
+      const slug = await this.generarSlugUnico(command.nombre);
+      Object.assign(updateData, { slug });
     }
 
     if (command.id_categoria_comunidad !== undefined) {
@@ -175,7 +172,6 @@ export class ComunidadServiceImpl implements IComunidadService {
   }
 
   /**
-
    * Desactiva una comunidad realizando una baja lógica (activa: false).
    * Requiere que el usuario sea el creador de la comunidad.
    *
