@@ -12,13 +12,14 @@ import {
   HttpStatus,
   Req,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { ComunidadService } from './services/comunidad.service.interface';
-import { CrearComunidadDto } from './dto/crear-comunidad.dto';
-import { ActualizarComunidadDto } from './dto/actualizar-comunidad.dto';
+import { ComunidadService } from '../services/comunidad.service.interface';
+import { CrearComunidadDto } from '../dto/crear-comunidad.dto';
+import { ActualizarComunidadDto } from '../dto/actualizar-comunidad.dto';
 import { IUsuario } from '@repo/types';
-import { Comunidad } from './models/comunidad.entity';
-import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
+import { Comunidad } from '../models/comunidad.entity';
+import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
 
 /**
  * Controlador de Comunidades.
@@ -27,6 +28,7 @@ import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
  * incluyendo la creación, consulta, actualización y reactivación de las mismas.
  * Se encarga de validar la autenticación y los permisos de autoría mediante Guards.
  */
+@ApiTags('Comunidades')
 @Controller('comunidades')
 export class ComunidadController {
   public constructor(private readonly comunidadService: ComunidadService) { }
@@ -40,6 +42,10 @@ export class ComunidadController {
    * @param req - Objeto de petición que contiene el usuario autenticado.
    * @returns Los datos de la comunidad recién creada.
    */
+  @ApiOperation({ summary: 'Crea una nueva comunidad' })
+  @ApiResponse({ status: 201, description: 'La comunidad ha sido creada exitosamente.', type: Comunidad })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Post()
   public async crearComunidad(
@@ -62,6 +68,8 @@ export class ComunidadController {
    *
    * @returns Un arreglo con todas las comunidades activas.
    */
+  @ApiOperation({ summary: 'Obtiene todas las comunidades activas' })
+  @ApiResponse({ status: 200, description: 'Listado de comunidades.', type: [Comunidad] })
   @Get()
   public async getComunidades(): Promise<Comunidad[]> {
     return this.comunidadService.getComunidades();

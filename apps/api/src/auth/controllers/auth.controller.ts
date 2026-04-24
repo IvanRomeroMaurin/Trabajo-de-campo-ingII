@@ -8,15 +8,17 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth.service';
-import { RegistrarUsuarioDto } from './dto/registrar-usuario.dto';
+import { AuthService } from '../auth.service';
+import { RegistrarUsuarioDto } from '../dto/registrar-usuario.dto';
 import { IUsuario, IRespuestaAuth } from '@repo/types';
 
 /**
  * Controlador de Autenticación
  * Maneja las rutas principales para el registro y el inicio de sesión de usuarios.
  */
+@ApiTags('Autenticación')
 @Controller('auth')
 export class AuthController {
   private readonly authService: AuthService;
@@ -30,6 +32,9 @@ export class AuthController {
    * @param registrarUsuarioDto Objeto con los datos del usuario (nombre, apellido, email, password)
    * @returns El usuario recién creado guardado en la base de datos.
    */
+  @ApiOperation({ summary: 'Registra un nuevo usuario' })
+  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.' })
+  @ApiResponse({ status: 409, description: 'El correo electrónico ya está en uso.' })
   @Post('registrar')
   public async registrar(
     @Body() registrarUsuarioDto: RegistrarUsuarioDto,
@@ -43,6 +48,18 @@ export class AuthController {
    * @param iniciarSesionDto DTO del inicio de sesión (email y contraseña)
    * @returns Un JWT de acceso (access_token) y la información pública del usuario.
    */
+  @ApiOperation({ summary: 'Inicia sesión con email y contraseña' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'usuario@ejemplo.com' },
+        password: { type: 'string', example: 'password123' }
+      }
+    }
+  })
+  @ApiResponse({ status: 200, description: 'Sesión iniciada. Devuelve el JWT.' })
+  @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('local'))
   @Post('iniciar-sesion')
@@ -58,6 +75,9 @@ export class AuthController {
    * Si el guard de JWT valida la firma correctamente, extrae el perfil y lo devuelve.
    * @param req Objeto Request de Express donde el guard inyectó al usuario validado.
    */
+  @ApiOperation({ summary: 'Obtiene el perfil del usuario autenticado' })
+  @ApiResponse({ status: 200, description: 'Datos del perfil.' })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get('perfil')
   public obtenerPerfil(

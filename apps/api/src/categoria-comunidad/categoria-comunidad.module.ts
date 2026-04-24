@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CategoriaComunidadController } from './categoria-comunidad.controller';
+import { CategoriaComunidadController } from './controllers/categoria-comunidad.controller';
 import { CategoriaComunidadService } from './services/categoria-comunidad.service.interface';
 import { CategoriaComunidadService as CategoriaComunidadServiceImpl } from './services/categoria-comunidad.service';
 import { CategoriaComunidadRepository } from './repositories/categoria-comunidad.repository.interface';
