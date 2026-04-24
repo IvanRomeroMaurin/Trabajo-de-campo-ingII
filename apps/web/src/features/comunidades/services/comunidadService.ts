@@ -48,7 +48,7 @@ export const comunidadService = {
    * Obtiene la lista de categorías disponibles
    */
   async getCategorias(): Promise<ICategoriaComunidad[]> {
-    return api.get<ICategoriaComunidad[]>('/comunidades/categorias');
+    return api.get<ICategoriaComunidad[]>('/categorias-comunidad');
   },
   /**
    * Da de baja una comunidad lógicamente
