@@ -19,42 +19,38 @@ export class PlanesMapper {
       ciclo_pago?: ciclo_pago;
       moneda?: moneda;
     },
-  ): IPlanComunidad {
-    return new PlanComunidad({
-      ...p,
-      id_plan_comunidad: p.id_plan_comunidad,
-      id_comunidad: p.id_comunidad,
-      id_ciclo_pago: p.id_ciclo_pago,
-      id_moneda: p.id_moneda,
-      precio: Number(p.precio),
-      descripcion: p.descripcion ?? undefined,
-      mp_preapproval_plan_id: p.mp_preapproval_plan_id ?? undefined,
-      // Mapear relaciones anidadas si existen
-      ciclo_pago: p.ciclo_pago
-        ? new CicloPago({
-            ...p.ciclo_pago,
-            id_ciclo_pago: p.ciclo_pago.id_ciclo_pago,
-          })
-        : undefined,
-      moneda: p.moneda
+  ): PlanComunidad {
+    return new PlanComunidad(
+      p.id_plan_comunidad,
+      Number(p.precio),
+      p.titulo,
+      p.activa,
+      p.fecha_creacion,
+      p.id_comunidad,
+      p.id_ciclo_pago,
+      p.id_moneda,
+      p.descripcion ?? undefined,
+      p.mp_preapproval_plan_id ?? undefined,
+      p.fecha_modificacion ?? undefined,
+      p.ciclo_pago ? PlanesMapper.toICicloPago(p.ciclo_pago) : undefined,
+      undefined, // comunidad (no mapeada por defecto)
+      p.moneda
         ? {
             ...p.moneda,
             id_moneda: p.moneda.id_moneda,
           }
         : undefined,
-    });
+    );
   }
 
   /**
-   * Transforma una entidad de ciclo de pago de Prisma a la interfaz ICicloPago.
+   * Transforma una entidad de ciclo de pago de Prisma a la entidad de dominio CicloPago.
    *
    * @param c - El objeto de ciclo de pago de la base de datos.
    * @returns El ciclo de pago formateado.
    */
-  public static toICicloPago(c: ciclo_pago): ICicloPago {
-    return new CicloPago({
-      ...c,
-      id_ciclo_pago: c.id_ciclo_pago,
-    });
+  public static toICicloPago(c: ciclo_pago): CicloPago {
+    return new CicloPago(c.id_ciclo_pago, c.frecuencia, c.tipo_frecuencia);
   }
+
 }

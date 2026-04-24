@@ -7,8 +7,9 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Transactional } from '@nestjs-cls/transactional';
 import { MercadoPagoService } from '../../mercadopago/services/mercadopago.service.interface';
-import { CrearPlanCommand } from './planes.commands';
+import type { CrearPlanCommand } from './planes.commands';
 import type { ICreatePlanResponse } from '@repo/types';
+
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 import { MONEDAS, MAP_CICLOS_PAGO } from '../../common/constants/planes';
@@ -20,8 +21,8 @@ import { PlanesService as IPlanesService } from './planes.service.interface';
  * Implementa la interfaz IPlanesService para mantener un contrato claro.
  */
 @Injectable()
-export class PlanesService implements IPlanesService {
-  private readonly logger = new Logger(PlanesService.name);
+export class PlanesServiceImpl implements IPlanesService {
+  private readonly logger = new Logger(PlanesServiceImpl.name);
 
   public constructor(
     private readonly planesRepository: PlanesRepository,
@@ -43,7 +44,7 @@ export class PlanesService implements IPlanesService {
   public async crearPlan(
     command: CrearPlanCommand,
   ): Promise<ICreatePlanResponse> {
-    this.validatePlanData(command.titulo, command.precio, command.frecuencia);
+    this.validatePlanData(command.precio, command.frecuencia);
 
     const id_ciclo_pago = this.getCicloPago(
       command.tipo_frecuencia,
@@ -74,14 +75,20 @@ export class PlanesService implements IPlanesService {
         id_moneda,
         mp_preapproval_plan_id,
         id_comunidad: command.id_comunidad,
-        activa: true,
       });
       return { plan };
     } catch (error) {
       this.logger.error('Error al guardar el plan en BD', error);
-      await this.mercadoPagoService.cancelPreapprovalPlan(
-        mp_preapproval_plan_id,
-      );
+      try {
+        await this.mercadoPagoService.cancelPreapprovalPlan(
+          mp_preapproval_plan_id,
+        );
+      } catch (cancelError) {
+        this.logger.error(
+          'Error al cancelar plan en MP tras fallo de BD',
+          cancelError,
+        );
+      }
       throw new InternalServerErrorException(
         'Error al guardar el plan, intentá de nuevo',
       );
@@ -112,27 +119,20 @@ export class PlanesService implements IPlanesService {
   /**
    * Valida que los datos fundamentales del plan cumplan con las reglas de negocio.
    *
-   * @param titulo - Nombre descriptivo del plan.
    * @param precio - Monto a cobrar (debe ser > 0).
    * @param frecuencia - Valor numérico de la frecuencia (debe ser > 0).
    * @throws {BadRequestException} Si alguna de las validaciones falla.
    * @private
    */
-  private validatePlanData(
-    titulo: string,
-    precio: number,
-    frecuencia: number,
-  ): void {
+  private validatePlanData(precio: number, frecuencia: number): void {
     if (precio <= 0) {
       throw new BadRequestException('El precio debe ser mayor a cero');
     }
     if (frecuencia <= 0) {
       throw new BadRequestException('La frecuencia debe ser mayor a cero');
     }
-    if (!titulo?.trim()) {
-      throw new BadRequestException('El título es un campo obligatorio');
-    }
   }
+
 
   /**
    * Determina el identificador único del ciclo de pago basado en la lógica de negocio.

@@ -1,5 +1,6 @@
-import { CrearPlanCommand } from './planes.commands';
-import { ICreatePlanResponse } from '@repo/types';
+import type { CrearPlanCommand } from './planes.commands';
+import type { ICreatePlanResponse } from '@repo/types';
+
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 

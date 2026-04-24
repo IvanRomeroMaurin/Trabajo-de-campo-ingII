@@ -32,17 +32,18 @@ export class PrismaPlanesRepository implements PlanesRepository {
     id_moneda: string;
     mp_preapproval_plan_id: string;
     id_comunidad: string;
-    activa: boolean;
   }): Promise<PlanComunidad> {
     const plan = await this.txHost.tx.plan_comunidad.create({
       data: {
         ...data,
+        activa: true,
         fecha_creacion: new Date(),
       },
     });
 
     return PlanesMapper.toIPlanComunidad(plan);
   }
+
 
   /**
    * Recupera todos los planes de una comunidad desde la base de datos.

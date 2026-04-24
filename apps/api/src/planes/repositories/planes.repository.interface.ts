@@ -17,7 +17,6 @@ export abstract class PlanesRepository {
    * @param data.id_moneda - ID de la moneda del plan.
    * @param data.mp_preapproval_plan_id - ID del plan generado en Mercado Pago.
    * @param data.id_comunidad - ID de la comunidad a la que pertenece el plan.
-   * @param data.activa - Estado inicial del plan.
    * @returns Una promesa que resuelve con el plan creado.
    */
   abstract guardar(data: {
@@ -28,8 +27,8 @@ export abstract class PlanesRepository {
     id_moneda: string;
     mp_preapproval_plan_id: string;
     id_comunidad: string;
-    activa: boolean;
   }): Promise<PlanComunidad>;
+
 
   /**
    * Obtiene todos los planes de suscripción asociados a una comunidad específica.
