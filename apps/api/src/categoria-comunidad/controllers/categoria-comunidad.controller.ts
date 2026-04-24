@@ -9,7 +9,11 @@ export class CategoriaComunidadController {
   public constructor(private readonly service: CategoriaComunidadService) {}
 
   @ApiOperation({ summary: 'Obtiene todas las categorías de comunidades' })
-  @ApiResponse({ status: 200, description: 'Listado de categorías.', type: [CategoriaComunidad] })
+  @ApiResponse({
+    status: 200,
+    description: 'Listado de categorías.',
+    type: [CategoriaComunidad],
+  })
   @Get()
   public async getCategorias(): Promise<CategoriaComunidad[]> {
     return this.service.getCategorias();

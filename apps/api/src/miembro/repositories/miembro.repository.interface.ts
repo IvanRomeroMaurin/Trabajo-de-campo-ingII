@@ -12,7 +12,10 @@ export abstract class MiembroRepository {
    * @param id_comunidad - ID de la comunidad.
    * @returns Una promesa con el registro de membresía o null.
    */
-  public abstract buscarMiembro(id_usuario: string, id_comunidad: string): Promise<Miembro | null>;
+  public abstract buscarMiembro(
+    id_usuario: string,
+    id_comunidad: string,
+  ): Promise<Miembro | null>;
 
   /**
    * Registra una nueva unión de un usuario a una comunidad.
@@ -51,7 +54,10 @@ export abstract class MiembroRepository {
    * @param id_comunidad - ID de la comunidad.
    * @returns True si el usuario es el creador.
    */
-  abstract esCreador(id_usuario: string, id_comunidad: string): Promise<boolean>;
+  abstract esCreador(
+    id_usuario: string,
+    id_comunidad: string,
+  ): Promise<boolean>;
 
   /**
    * Valida si un usuario existe en la persistencia.

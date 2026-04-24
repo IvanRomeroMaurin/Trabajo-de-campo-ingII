@@ -55,7 +55,9 @@ export class MercadoPagoService implements IMercadoPagoService {
     }
   }
 
-  public async cancelPreapprovalPlan(mp_preapproval_plan_id: string): Promise<void> {
+  public async cancelPreapprovalPlan(
+    mp_preapproval_plan_id: string,
+  ): Promise<void> {
     try {
       await this.preApprovalPlan.update({
         id: mp_preapproval_plan_id,

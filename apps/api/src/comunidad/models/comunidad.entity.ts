@@ -1,4 +1,10 @@
-import { IComunidad, ICategoriaComunidad, ICurso, IMiembroComunidad, IPlanComunidad } from '@repo/types';
+import {
+  IComunidad,
+  ICategoriaComunidad,
+  ICurso,
+  IMiembroComunidad,
+  IPlanComunidad,
+} from '@repo/types';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class Comunidad implements IComunidad {

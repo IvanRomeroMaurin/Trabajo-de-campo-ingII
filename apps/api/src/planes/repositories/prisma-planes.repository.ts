@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
-import { IPlanComunidad, ICicloPago } from '@repo/types';
+
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 import { PlanesRepository } from './planes.repository.interface';
@@ -63,7 +63,7 @@ export class PrismaPlanesRepository implements PlanesRepository {
       orderBy: { fecha_creacion: 'desc' },
     });
 
-    return planes.map(PlanesMapper.toIPlanComunidad);
+    return planes.map((p) => PlanesMapper.toIPlanComunidad(p));
   }
 
   /**
@@ -76,6 +76,6 @@ export class PrismaPlanesRepository implements PlanesRepository {
       orderBy: [{ tipo_frecuencia: 'asc' }, { frecuencia: 'asc' }],
     });
 
-    return ciclos.map(PlanesMapper.toICicloPago);
+    return ciclos.map((c) => PlanesMapper.toICicloPago(c));
   }
 }

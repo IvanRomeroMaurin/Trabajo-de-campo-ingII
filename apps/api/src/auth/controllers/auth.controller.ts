@@ -1,18 +1,24 @@
 import {
   Controller,
-  Request,
   Post,
   UseGuards,
   Body,
   Get,
   HttpCode,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth.service';
 import { RegistrarUsuarioDto } from '../dto/registrar-usuario.dto';
-import { IUsuario, IRespuestaAuth } from '@repo/types';
+import type { IUsuario, IRespuestaAuth } from '@repo/types';
 
 /**
  * Controlador de Autenticación
@@ -21,11 +27,7 @@ import { IUsuario, IRespuestaAuth } from '@repo/types';
 @ApiTags('Autenticación')
 @Controller('auth')
 export class AuthController {
-  private readonly authService: AuthService;
-
-  public constructor(authService: AuthService) {
-    this.authService = authService;
-  }
+  public constructor(private readonly authService: AuthService) {}
 
   /**
    * Registra un nuevo usuario en la plataforma.
@@ -34,7 +36,10 @@ export class AuthController {
    */
   @ApiOperation({ summary: 'Registra un nuevo usuario' })
   @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.' })
-  @ApiResponse({ status: 409, description: 'El correo electrónico ya está en uso.' })
+  @ApiResponse({
+    status: 409,
+    description: 'El correo electrónico ya está en uso.',
+  })
   @Post('registrar')
   public async registrar(
     @Body() registrarUsuarioDto: RegistrarUsuarioDto,
@@ -54,18 +59,19 @@ export class AuthController {
       type: 'object',
       properties: {
         email: { type: 'string', example: 'usuario@ejemplo.com' },
-        password: { type: 'string', example: 'password123' }
-      }
-    }
+        password: { type: 'string', example: 'password123' },
+      },
+    },
   })
-  @ApiResponse({ status: 200, description: 'Sesión iniciada. Devuelve el JWT.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Sesión iniciada. Devuelve el JWT.',
+  })
   @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('local'))
   @Post('iniciar-sesion')
-  public async iniciarSesion(
-    @Request() req: { user: IUsuario },
-  ): Promise<IRespuestaAuth> {
+  public iniciarSesion(@Req() req: { user: IUsuario }): IRespuestaAuth {
     // El AuthGuard('local') valida las credenciales y añade el usuario a req.user
     return this.authService.iniciarSesion(req.user);
   }
@@ -81,7 +87,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get('perfil')
   public obtenerPerfil(
-    @Request() req: { user: Partial<IUsuario> },
+    @Req() req: { user: Partial<IUsuario> },
   ): Partial<IUsuario> {
     return req.user;
   }

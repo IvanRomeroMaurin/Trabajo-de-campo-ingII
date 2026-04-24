@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MiembroRepository } from '../repositories/miembro.repository.interface';
 import { MiembroService as IMiembroService } from './miembro.service.interface';
-import { AgregarMiembroCommand, CambiarRolMiembroCommand } from './miembro.commands';
+import {
+  AgregarMiembroCommand,
+  CambiarRolMiembroCommand,
+} from './miembro.commands';
 
 /**
  * Implementación del servicio de gestión de miembros.
@@ -30,7 +33,10 @@ export class MiembroService implements IMiembroService {
       throw new NotFoundException(`Comunidad no encontrada`);
     }
 
-    const miembroExistente = await this.repository.buscarMiembro(id_usuario, id_comunidad);
+    const miembroExistente = await this.repository.buscarMiembro(
+      id_usuario,
+      id_comunidad,
+    );
 
     if (miembroExistente) {
       await this.repository.actualizarMiembro(id_usuario, id_comunidad, {
@@ -53,10 +59,15 @@ export class MiembroService implements IMiembroService {
    * @param command - Datos del cambio de rol.
    * @throws {NotFoundException} Si el miembro no existe en la comunidad o el rol no existe.
    */
-  public async cambiarRolMiembro(command: CambiarRolMiembroCommand): Promise<void> {
+  public async cambiarRolMiembro(
+    command: CambiarRolMiembroCommand,
+  ): Promise<void> {
     const { id_usuario, id_comunidad, id_rol_nuevo } = command;
 
-    const miembro = await this.repository.buscarMiembro(id_usuario, id_comunidad);
+    const miembro = await this.repository.buscarMiembro(
+      id_usuario,
+      id_comunidad,
+    );
     if (!miembro) throw new NotFoundException(`El usuario no es miembro`);
 
     if (!(await this.repository.existeRol(id_rol_nuevo))) {

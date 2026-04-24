@@ -18,11 +18,13 @@ async function bootstrap() {
   // Configuración de Swagger
   const config = new DocumentBuilder()
     .setTitle('KOMU API')
-    .setDescription('Documentación de la API para el Trabajo de Campo de Ingeniería de Software II')
+    .setDescription(
+      'Documentación de la API para el Trabajo de Campo de Ingeniería de Software II',
+    )
     .setVersion('1.0')
     .addBearerAuth() // Para soportar JWT en la UI de Swagger
     .build();
-    
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 

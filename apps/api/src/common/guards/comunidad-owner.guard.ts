@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ComunidadRepository } from '../../comunidad/repositories/comunidad.repository.interface';
 import { MiembroService } from '../../miembro/services/miembro.service.interface';
-import { IUsuario } from '@repo/types';
+import type { IUsuario } from '@repo/types';
 
 /**
  * Guardia que verifica que el usuario autenticado sea el creador de la comunidad.
@@ -23,13 +23,17 @@ export class ComunidadOwnerGuard implements CanActivate {
   ) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const user = request.user as IUsuario;
-    
+    const request = context.switchToHttp().getRequest<{
+      user: IUsuario;
+      params: { id?: string; id_comunidad?: string };
+      body: { id_comunidad?: string };
+    }>();
+    const user = request.user;
+
     // Buscar el ID en params (:id o :id_comunidad) o en el body
-    const idComunidad = 
-      request.params.id || 
-      request.params.id_comunidad || 
+    const idComunidad =
+      request.params.id ||
+      request.params.id_comunidad ||
       request.body.id_comunidad;
 
     // Si no hay usuario (AuthGuard no corrió) o no hay ID, denegar.

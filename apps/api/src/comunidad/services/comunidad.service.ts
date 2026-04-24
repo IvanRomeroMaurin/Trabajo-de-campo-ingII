@@ -1,7 +1,6 @@
 import {
   Injectable,
   NotFoundException,
-  ForbiddenException,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
@@ -28,7 +27,7 @@ export class ComunidadService implements IComunidadService {
   public constructor(
     private readonly comunidadRepository: ComunidadRepository,
     private readonly miembroService: MiembroService,
-  ) { }
+  ) {}
 
   /**
    * Crea una nueva comunidad e inserta al creador como miembro con el rol de CREADOR.
@@ -149,8 +148,14 @@ export class ComunidadService implements IComunidadService {
     id: string,
     command: ActualizarComunidadCommand,
   ): Promise<Comunidad> {
-
-    const updateData: any = { ...command };
+    const updateData: Partial<{
+      nombre: string;
+      slug: string;
+      descripcion: string;
+      portada_url: string;
+      id_categoria_comunidad: string;
+      activa: boolean;
+    }> = { ...command };
 
     if (command.nombre !== undefined) {
       updateData.slug = await this.generarSlugUnico(command.nombre);
@@ -177,7 +182,9 @@ export class ComunidadService implements IComunidadService {
   @Transactional()
   public async desactivarComunidad(id: string): Promise<{ mensaje: string }> {
     await this.comunidadRepository.actualizar(id, { activa: false });
-    return { mensaje: `La comunidad con id ${id} fue desactivada correctamente` };
+    return {
+      mensaje: `La comunidad con id ${id} fue desactivada correctamente`,
+    };
   }
 
   /**
@@ -190,7 +197,9 @@ export class ComunidadService implements IComunidadService {
   @Transactional()
   public async reactivarComunidad(id: string): Promise<{ mensaje: string }> {
     await this.comunidadRepository.actualizar(id, { activa: true });
-    return { mensaje: `La comunidad con id ${id} fue reactivada correctamente` };
+    return {
+      mensaje: `La comunidad con id ${id} fue reactivada correctamente`,
+    };
   }
 
   /**

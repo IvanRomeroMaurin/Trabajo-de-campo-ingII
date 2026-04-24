@@ -8,7 +8,12 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { PlanesService } from '../services/planes.service.interface';
 import { CrearPlanDto } from '../dto/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
@@ -50,13 +55,16 @@ export class PlanesController {
     });
   }
 
-
   /**
    * Obtiene las configuraciones de ciclos de pago válidos (frecuencia/tipo).
    * Se usa para poblar los selectores del formulario de creación de planes.
    */
   @ApiOperation({ summary: 'Obtiene los ciclos de pago válidos' })
-  @ApiResponse({ status: 200, description: 'Listado de ciclos de pago.', type: [CicloPago] })
+  @ApiResponse({
+    status: 200,
+    description: 'Listado de ciclos de pago.',
+    type: [CicloPago],
+  })
   @Get('config/ciclos-pago')
   public async getCiclosPago(): Promise<CicloPago[]> {
     return this.planesService.getValidCiclosPago();
@@ -69,7 +77,11 @@ export class PlanesController {
    * @param id_comunidad ID numérico de la comunidad
    */
   @ApiOperation({ summary: 'Obtiene los planes de una comunidad' })
-  @ApiResponse({ status: 200, description: 'Listado de planes.', type: [PlanComunidad] })
+  @ApiResponse({
+    status: 200,
+    description: 'Listado de planes.',
+    type: [PlanComunidad],
+  })
   @Get('comunidad/:id_comunidad')
   public async getPlanesPorComunidad(
     @Param('id_comunidad') id_comunidad: string,

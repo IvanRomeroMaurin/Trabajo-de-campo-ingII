@@ -1,4 +1,3 @@
-import { IPlanComunidad, ICicloPago } from '@repo/types';
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 
@@ -39,7 +38,9 @@ export abstract class PlanesRepository {
    * @param id_comunidad - Identificador único de la comunidad.
    * @returns Una promesa con el listado de planes encontrados.
    */
-  public abstract buscarPorComunidad(id_comunidad: string): Promise<PlanComunidad[]>;
+  public abstract buscarPorComunidad(
+    id_comunidad: string,
+  ): Promise<PlanComunidad[]>;
 
   /**
    * Obtiene la lista completa de ciclos de pago (frecuencias) disponibles en el sistema.

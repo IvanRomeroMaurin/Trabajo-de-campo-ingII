@@ -1,3 +1,4 @@
+import { plan_comunidad, ciclo_pago, moneda } from '@prisma/client';
 import { IPlanComunidad, ICicloPago } from '@repo/types';
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
@@ -13,7 +14,12 @@ export class PlanesMapper {
    * @param p - El objeto crudo de la base de datos.
    * @returns El plan formateado según la interfaz de dominio.
    */
-  public static toIPlanComunidad(p: any): IPlanComunidad {
+  public static toIPlanComunidad(
+    p: plan_comunidad & {
+      ciclo_pago?: ciclo_pago;
+      moneda?: moneda;
+    },
+  ): IPlanComunidad {
     return new PlanComunidad({
       ...p,
       id_plan_comunidad: p.id_plan_comunidad,
@@ -45,7 +51,7 @@ export class PlanesMapper {
    * @param c - El objeto de ciclo de pago de la base de datos.
    * @returns El ciclo de pago formateado.
    */
-  public static toICicloPago(c: any): ICicloPago {
+  public static toICicloPago(c: ciclo_pago): ICicloPago {
     return new CicloPago({
       ...c,
       id_ciclo_pago: c.id_ciclo_pago,

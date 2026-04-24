@@ -1,4 +1,3 @@
-import { IComunidad } from '@repo/types';
 import { Comunidad } from '../models/comunidad.entity';
 import {
   CrearComunidadCommand,

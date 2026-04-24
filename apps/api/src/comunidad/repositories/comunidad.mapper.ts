@@ -10,7 +10,7 @@ import { CategoriaComunidad } from '../../categoria-comunidad/models/categoria-c
 export class ComunidadMapper {
   /**
    * Mapea un modelo de Prisma comunidad a la interfaz IComunidad.
-   * 
+   *
    * @param comunidad - El modelo de comunidad de Prisma (puede incluir la categoría).
    * @returns La interfaz de dominio IComunidad.
    */
@@ -37,7 +37,7 @@ export class ComunidadMapper {
 
   /**
    * Mapea un modelo de Prisma categoria_comunidad a la interfaz ICategoriaComunidad.
-   * 
+   *
    * @param categoria - El modelo de categoría de Prisma.
    * @returns La interfaz de dominio ICategoriaComunidad.
    */

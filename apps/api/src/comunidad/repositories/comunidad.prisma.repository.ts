@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
-import { IComunidad } from '@repo/types';
 import { Comunidad } from '../models/comunidad.entity';
 import { ComunidadRepository } from './comunidad.repository.interface';
 import { ComunidadMapper } from './comunidad.mapper';
@@ -13,25 +12,23 @@ import { ComunidadMapper } from './comunidad.mapper';
 @Injectable()
 export class PrismaComunidadRepository implements ComunidadRepository {
   public constructor(
-    private readonly txHost: TransactionHost<TransactionalAdapterPrisma>
+    private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
   ) {}
 
   /**
    * Inserta un nuevo registro de comunidad en la base de datos.
-   * 
+   *
    * @param data - Atributos de la comunidad.
    * @returns La comunidad mapeada a la interfaz de dominio.
    */
-  public async guardar(
-    data: {
-      nombre: string;
-      slug: string;
-      descripcion?: string;
-      portada_url?: string;
-      id_categoria_comunidad: string;
-      activa: boolean;
-    }
-  ): Promise<Comunidad> {
+  public async guardar(data: {
+    nombre: string;
+    slug: string;
+    descripcion?: string;
+    portada_url?: string;
+    id_categoria_comunidad: string;
+    activa: boolean;
+  }): Promise<Comunidad> {
     const comunidad = await this.txHost.tx.comunidad.create({
       data: {
         ...data,
@@ -45,7 +42,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
   /**
    * Actualiza parcialmente una comunidad existente en la base de datos.
-   * 
+   *
    * @param id_comunidad - UUID de la comunidad.
    * @param data - Campos a actualizar.
    * @returns La comunidad con los cambios aplicados.
@@ -59,7 +56,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
       portada_url: string;
       id_categoria_comunidad: string;
       activa: boolean;
-    }>
+    }>,
   ): Promise<Comunidad> {
     const comunidad = await this.txHost.tx.comunidad.update({
       where: { id_comunidad },
@@ -72,7 +69,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
   /**
    * Recupera una comunidad por su ID incluyendo su categoría.
-   * 
+   *
    * @param id_comunidad - UUID de la comunidad.
    * @returns IComunidad o null si no se encuentra.
    */
@@ -88,7 +85,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
   /**
    * Recupera una comunidad por su slug.
-   * 
+   *
    * @param slug - Slug único de la comunidad.
    * @returns IComunidad o null si no se encuentra.
    */
@@ -104,7 +101,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
   /**
    * Obtiene la lista de todas las comunidades activas ordenadas por novedad.
-   * 
+   *
    * @returns Lista de comunidades activas.
    */
   public async buscarTodasActivas(): Promise<Comunidad[]> {
@@ -114,19 +111,19 @@ export class PrismaComunidadRepository implements ComunidadRepository {
       orderBy: { fecha_creacion: 'desc' },
     });
 
-    return comunidades.map(ComunidadMapper.toIComunidad);
+    return comunidades.map((c) => ComunidadMapper.toIComunidad(c));
   }
 
   /**
    * Busca en la tabla asociativa de miembros para encontrar comunidades creadas por el usuario.
-   * 
+   *
    * @param id_usuario - UUID del usuario.
    * @param id_rol_creador - UUID del rol de creador.
    * @returns Lista de comunidades encontradas.
    */
   public async buscarPorCreador(
     id_usuario: string,
-    id_rol_creador: string
+    id_rol_creador: string,
   ): Promise<Comunidad[]> {
     const miembros = await this.txHost.tx.miembro_comunidad.findMany({
       where: {
@@ -145,7 +142,7 @@ export class PrismaComunidadRepository implements ComunidadRepository {
 
   /**
    * Verifica la existencia de una categoría.
-   * 
+   *
    * @param id_categoria - UUID de la categoría.
    * @returns true si existe, false en caso contrario.
    */

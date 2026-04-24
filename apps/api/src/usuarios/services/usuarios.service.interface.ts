@@ -1,4 +1,3 @@
-import { IUsuario } from '@repo/types';
 import { CrearUsuarioCommand } from './usuarios.commands';
 import { Usuario } from '../models/usuario.entity';
 

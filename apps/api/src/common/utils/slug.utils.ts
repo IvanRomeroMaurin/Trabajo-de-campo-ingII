@@ -10,7 +10,7 @@ export const stringToSlug = (text: string): string => {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // elimina tildes
-    .replace(/[^a-z0-9\s-]/g, '')    // elimina caracteres especiales
+    .replace(/[^a-z0-9\s-]/g, '') // elimina caracteres especiales
     .trim()
-    .replace(/\s+/g, '-');          // espacios → guiones
+    .replace(/\s+/g, '-'); // espacios → guiones
 };

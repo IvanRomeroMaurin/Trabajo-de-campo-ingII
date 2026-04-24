@@ -1,4 +1,3 @@
-import { IComunidad } from '@repo/types';
 import { Comunidad } from '../models/comunidad.entity';
 
 /**
@@ -9,7 +8,7 @@ import { Comunidad } from '../models/comunidad.entity';
 export abstract class ComunidadRepository {
   /**
    * Persiste una nueva comunidad en el sistema de almacenamiento.
-   * 
+   *
    * @param data - Objeto con los atributos de la comunidad a crear.
    * @param data.nombre - Nombre de la comunidad.
    * @param data.slug - Identificador único amigable para la URL.
@@ -19,20 +18,18 @@ export abstract class ComunidadRepository {
    * @param data.activa - Estado inicial de la comunidad.
    * @returns Promesa con la comunidad creada y su categoría cargada.
    */
-  public abstract guardar(
-    data: {
-      nombre: string;
-      slug: string;
-      descripcion?: string;
-      portada_url?: string;
-      id_categoria_comunidad: string;
-      activa: boolean;
-    }
-  ): Promise<Comunidad>;
+  public abstract guardar(data: {
+    nombre: string;
+    slug: string;
+    descripcion?: string;
+    portada_url?: string;
+    id_categoria_comunidad: string;
+    activa: boolean;
+  }): Promise<Comunidad>;
 
   /**
    * Actualiza los datos de una comunidad existente.
-   * 
+   *
    * @param id_comunidad - UUID de la comunidad a modificar.
    * @param data - Atributos parciales a actualizar.
    * @returns Promesa con la comunidad actualizada.
@@ -46,12 +43,12 @@ export abstract class ComunidadRepository {
       portada_url: string;
       id_categoria_comunidad: string;
       activa: boolean;
-    }>
+    }>,
   ): Promise<Comunidad>;
 
   /**
    * Busca una comunidad por su identificador único primario.
-   * 
+   *
    * @param id_comunidad - UUID de la comunidad.
    * @returns La comunidad encontrada o null si no existe.
    */
@@ -59,7 +56,7 @@ export abstract class ComunidadRepository {
 
   /**
    * Busca una comunidad por su slug (URL friendly name).
-   * 
+   *
    * @param slug - El slug único de la comunidad.
    * @returns La comunidad encontrada con su categoría o null.
    */
@@ -67,26 +64,26 @@ export abstract class ComunidadRepository {
 
   /**
    * Recupera todas las comunidades que están marcadas como activas.
-   * 
+   *
    * @returns Lista de comunidades activas ordenadas por fecha de creación descendente.
    */
   public abstract buscarTodasActivas(): Promise<Comunidad[]>;
 
   /**
    * Obtiene la lista de comunidades donde un usuario específico tiene el rol de creador.
-   * 
+   *
    * @param id_usuario - UUID del usuario.
    * @param id_rol_creador - UUID del rol que identifica al creador.
    * @returns Lista de comunidades vinculadas al usuario como creador.
    */
   public abstract buscarPorCreador(
     id_usuario: string,
-    id_rol_creador: string
+    id_rol_creador: string,
   ): Promise<Comunidad[]>;
 
   /**
    * Verifica si una categoría de comunidad existe en la base de datos.
-   * 
+   *
    * @param id_categoria - UUID de la categoría.
    * @returns true si la categoría existe, false en caso contrario.
    */

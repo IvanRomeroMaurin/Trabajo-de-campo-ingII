@@ -42,4 +42,4 @@ import { CategoriaComunidadModule } from './categoria-comunidad/categoria-comuni
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

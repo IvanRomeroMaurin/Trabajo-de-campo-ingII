@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { Transactional } from '@nestjs-cls/transactional';
 import { MercadoPagoService } from '../../mercadopago/services/mercadopago.service.interface';
 import { CrearPlanCommand } from './planes.commands';
-import { ICreatePlanResponse, IPlanComunidad, ICicloPago } from '@repo/types';
+import type { ICreatePlanResponse } from '@repo/types';
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 import { MONEDAS, MAP_CICLOS_PAGO } from '../../common/constants/planes';
@@ -27,7 +27,7 @@ export class PlanesService implements IPlanesService {
     private readonly planesRepository: PlanesRepository,
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
@@ -40,11 +40,15 @@ export class PlanesService implements IPlanesService {
    * @throws {InternalServerErrorException} Si falla la comunicación con Mercado Pago o la persistencia en BD.
    */
   @Transactional()
-  public async crearPlan(command: CrearPlanCommand): Promise<ICreatePlanResponse> {
-
+  public async crearPlan(
+    command: CrearPlanCommand,
+  ): Promise<ICreatePlanResponse> {
     this.validatePlanData(command.titulo, command.precio, command.frecuencia);
 
-    const id_ciclo_pago = this.getCicloPago(command.tipo_frecuencia, command.frecuencia);
+    const id_ciclo_pago = this.getCicloPago(
+      command.tipo_frecuencia,
+      command.frecuencia,
+    );
 
     const id_moneda = this.getMoneda(command.moneda);
 
