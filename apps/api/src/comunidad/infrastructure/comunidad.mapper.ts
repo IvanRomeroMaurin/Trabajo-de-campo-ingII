@@ -19,21 +19,19 @@ export class ComunidadMapper {
       categoria_comunidad?: categoria_comunidad;
     },
   ): Comunidad {
-
-    return new Comunidad(
-      comunidad.id_comunidad,
-      comunidad.nombre,
-      comunidad.slug,
-      comunidad.activa,
-      comunidad.fecha_creacion,
-      comunidad.id_categoria_comunidad,
-      comunidad.descripcion ?? undefined,
-      comunidad.portada_url ?? undefined,
-      comunidad.categoria_comunidad
+    return Comunidad.reconstituirComunidad({
+      id_comunidad: comunidad.id_comunidad,
+      nombre: comunidad.nombre,
+      slug: comunidad.slug,
+      activa: comunidad.activa,
+      fecha_creacion: comunidad.fecha_creacion,
+      id_categoria_comunidad: comunidad.id_categoria_comunidad,
+      descripcion: comunidad.descripcion ?? undefined,
+      portada_url: comunidad.portada_url ?? undefined,
+      categoria_comunidad: comunidad.categoria_comunidad
         ? ComunidadMapper.toICategoriaComunidad(comunidad.categoria_comunidad)
         : undefined,
-    );
-
+    });
   }
 
   /**

@@ -12,8 +12,7 @@ import { Comunidad } from '../models/comunidad.entity';
 import { ROLES } from '../../common/constants/roles';
 import {
   IComunidadRepository,
-  ActualizarComunidadData,
-} from '../repositories/comunidad.repository.interface';
+} from '../infrastructure/comunidad.repository.interface';
 import type {
   CrearComunidadCommand,
   ActualizarComunidadCommand,
@@ -63,14 +62,15 @@ export class ComunidadService implements IComunidadService {
     }
 
     try {
-      const nuevaComunidad = await this.comunidadRepository.guardar({
-        nombre: command.nombre,
+      const comunidad = Comunidad.crearComunidad(
+        command.nombre,
         slug,
-        descripcion: command.descripcion,
-        portada_url: command.portada_url,
-        id_categoria_comunidad: command.id_categoria_comunidad,
-        // activa ya no se pasa — lo decide el repositorio
-      });
+        command.id_categoria_comunidad,
+        command.descripcion,
+        command.portada_url,
+      );
+
+      const nuevaComunidad = await this.comunidadRepository.guardar(comunidad);
 
       await this.miembroService.agregarMiembro({
         id_usuario: idCreador,
@@ -154,11 +154,11 @@ export class ComunidadService implements IComunidadService {
     id: string,
     command: ActualizarComunidadCommand,
   ): Promise<Comunidad> {
-    const updateData: ActualizarComunidadData = { ...command };
+    const comunidad = await this.getComunidad(id);
 
+    let slug: string | undefined;
     if (command.nombre !== undefined) {
-      const slug = await this.generarSlugUnico(command.nombre);
-      Object.assign(updateData, { slug });
+      slug = await this.generarSlugUnico(command.nombre);
     }
 
     if (command.id_categoria_comunidad !== undefined) {
@@ -168,7 +168,15 @@ export class ComunidadService implements IComunidadService {
       if (!existeCat) throw new NotFoundException(`La categoría no existe`);
     }
 
-    return this.comunidadRepository.actualizar(id, updateData);
+    comunidad.actualizarComunidad(
+      command.nombre,
+      slug,
+      command.descripcion,
+      command.portada_url,
+      command.id_categoria_comunidad,
+    );
+
+    return this.comunidadRepository.guardar(comunidad);
   }
 
   /**
@@ -176,16 +184,14 @@ export class ComunidadService implements IComunidadService {
    * Requiere que el usuario sea el creador de la comunidad.
    *
    * @param id - Identificador único de la comunidad a desactivar.
-   * @returns Una promesa que resuelve con un mensaje de éxito.
+   * @returns Una promesa que resuelve cuando la comunidad ha sido desactivada.
    * @throws {NotFoundException} Si la comunidad no existe.
    */
   @Transactional()
-  public async desactivarComunidad(id: string): Promise<{ mensaje: string }> {
-    await this.getComunidad(id);
-    await this.comunidadRepository.actualizar(id, { activa: false });
-    return {
-      mensaje: `La comunidad con id ${id} fue desactivada correctamente`,
-    };
+  public async desactivarComunidad(id: string): Promise<void> {
+    const comunidad = await this.getComunidad(id);
+    comunidad.desactivarComunidad();
+    await this.comunidadRepository.guardar(comunidad);
   }
 
 
@@ -193,16 +199,14 @@ export class ComunidadService implements IComunidadService {
    * Reactiva una comunidad que fue previamente desactivada (activa: true).
    *
    * @param id - Identificador único de la comunidad a reactivar.
-   * @returns Una promesa que resuelve con un mensaje de éxito.
+   * @returns Una promesa que resuelve cuando la comunidad ha sido reactivada.
    * @throws {NotFoundException} Si la comunidad no existe.
    */
   @Transactional()
-  public async reactivarComunidad(id: string): Promise<{ mensaje: string }> {
-    await this.getComunidad(id);
-    await this.comunidadRepository.actualizar(id, { activa: true });
-    return {
-      mensaje: `La comunidad con id ${id} fue reactivada correctamente`,
-    };
+  public async reactivarComunidad(id: string): Promise<void> {
+    const comunidad = await this.getComunidad(id);
+    comunidad.reactivarComunidad();
+    await this.comunidadRepository.guardar(comunidad);
   }
 
   /**

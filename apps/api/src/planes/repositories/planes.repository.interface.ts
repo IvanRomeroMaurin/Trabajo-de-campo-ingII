@@ -2,30 +2,25 @@ import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 
 /**
- * Datos necesarios para la creación de un nuevo plan de suscripción.
- */
-export interface CrearPlanData {
-  readonly titulo: string;
-  readonly descripcion?: string;
-  readonly precio: number;
-  readonly id_ciclo_pago: string;
-  readonly id_moneda: string;
-  readonly mp_preapproval_plan_id: string;
-  readonly id_comunidad: string;
-}
-
-/**
  * Interfaz que define el contrato para el acceso a datos de Planes.
  * Sigue el patrón Repository para desacoplar la lógica de negocio de la persistencia.
  */
 export abstract class IPlanesRepository {
   /**
-   * Registra un nuevo plan de suscripción en el sistema.
+   * Registra o actualiza un plan de suscripción en el sistema (Upsert).
    *
-   * @param data - Datos para la creación del plan.
-   * @returns Una promesa que resuelve con el plan creado.
+   * @param plan - La entidad plan a persistir.
+   * @returns Una promesa que resuelve con el plan persistido.
    */
-  public abstract guardar(data: CrearPlanData): Promise<PlanComunidad>;
+  public abstract guardar(plan: PlanComunidad): Promise<PlanComunidad>;
+
+  /**
+   * Busca un plan por su identificador único.
+   *
+   * @param id_plan - Identificador del plan.
+   * @returns El plan encontrado o null.
+   */
+  public abstract buscarPorId(id_plan: string): Promise<PlanComunidad | null>;
 
   /**
    * Obtiene todos los planes de suscripción asociados a una comunidad específica.

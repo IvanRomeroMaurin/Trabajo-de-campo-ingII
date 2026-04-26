@@ -178,7 +178,8 @@ export class ComunidadController {
   public async desactivarComunidad(
     @Param('id') id: string,
   ): Promise<{ mensaje: string }> {
-    return this.comunidadService.desactivarComunidad(id);
+    await this.comunidadService.desactivarComunidad(id);
+    return { mensaje: `La comunidad con id ${id} fue desactivada correctamente` };
   }
 
   /**
@@ -196,6 +197,7 @@ export class ComunidadController {
   public async reactivarComunidad(
     @Param('id') id: string,
   ): Promise<{ mensaje: string }> {
-    return this.comunidadService.reactivarComunidad(id);
+    await this.comunidadService.reactivarComunidad(id);
+    return { mensaje: `La comunidad con id ${id} fue reactivada correctamente` };
   }
 }

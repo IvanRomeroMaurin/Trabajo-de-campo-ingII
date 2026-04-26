@@ -19,27 +19,25 @@ export class PlanesMapper {
       moneda?: moneda;
     },
   ): PlanComunidad {
-    return new PlanComunidad(
-      p.id_plan_comunidad,
-      Number(p.precio),
-      p.titulo,
-      p.activa,
-      p.fecha_creacion,
-      p.id_comunidad,
-      p.id_ciclo_pago,
-      p.id_moneda,
-      p.descripcion ?? undefined,
-      p.mp_preapproval_plan_id ?? undefined,
-      p.fecha_modificacion ?? undefined,
-      p.ciclo_pago ? PlanesMapper.toICicloPago(p.ciclo_pago) : undefined,
-      undefined, // comunidad (no mapeada por defecto)
-      p.moneda
+    return PlanComunidad.reconstituirPlanComunidad({
+      id_plan_comunidad: p.id_plan_comunidad,
+      precio: Number(p.precio),
+      titulo: p.titulo,
+      activa: p.activa,
+      fecha_creacion: p.fecha_creacion,
+      id_comunidad: p.id_comunidad,
+      id_ciclo_pago: p.id_ciclo_pago,
+      id_moneda: p.id_moneda,
+      descripcion: p.descripcion ?? undefined,
+      mp_preapproval_plan_id: p.mp_preapproval_plan_id ?? undefined,
+      ciclo_pago: p.ciclo_pago ? PlanesMapper.toICicloPago(p.ciclo_pago) : undefined,
+      moneda: p.moneda
         ? {
             ...p.moneda,
             id_moneda: p.moneda.id_moneda,
           }
         : undefined,
-    );
+    });
   }
 
   /**

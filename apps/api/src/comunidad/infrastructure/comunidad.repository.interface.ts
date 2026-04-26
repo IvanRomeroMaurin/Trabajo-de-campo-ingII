@@ -1,54 +1,18 @@
 import { Comunidad } from '../models/comunidad.entity';
 
 /**
- * Interfaz para los datos de creación de una comunidad.
- */
-export interface CrearComunidadData {
-  readonly nombre: string;
-  readonly slug: string;
-  readonly descripcion?: string;
-  readonly portada_url?: string;
-  readonly id_categoria_comunidad: string;
-}
-
-/**
- * Datos permitidos para la actualización parcial de una comunidad.
- */
-export interface ActualizarComunidadData {
-  readonly nombre?: string;
-  readonly slug?: string;
-  readonly descripcion?: string;
-  readonly portada_url?: string;
-  readonly id_categoria_comunidad?: string;
-  readonly activa?: boolean;
-}
-
-/**
  * Puerto (Interfaz) para la persistencia de Comunidades.
  * Define el contrato que cualquier adaptador de persistencia debe implementar.
  * Mantiene la lógica de negocio desacoplada de la tecnología de base de datos.
  */
 export abstract class IComunidadRepository {
   /**
-   * Persiste una nueva comunidad en el sistema de almacenamiento.
+   * Persiste o actualiza una comunidad en el sistema de almacenamiento (Upsert).
    *
-   * @param data - Objeto con los atributos de la comunidad a crear.
-   * @returns Promesa con la comunidad creada y su categoría cargada.
+   * @param comunidad - La entidad comunidad a guardar.
+   * @returns Promesa con la comunidad persistida.
    */
-  public abstract guardar(data: CrearComunidadData): Promise<Comunidad>;
-
-  /**
-   * Actualiza los datos de una comunidad existente.
-   *
-   * @param id_comunidad - UUID de la comunidad a modificar.
-   * @param data - Atributos parciales a actualizar.
-   * @returns Promesa con la comunidad actualizada.
-   */
-  public abstract actualizar(
-    id_comunidad: string,
-    data: ActualizarComunidadData,
-  ): Promise<Comunidad>;
-
+  public abstract guardar(comunidad: Comunidad): Promise<Comunidad>;
 
   /**
    * Busca una comunidad por su identificador único primario.

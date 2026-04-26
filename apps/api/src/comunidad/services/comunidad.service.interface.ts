@@ -68,18 +68,18 @@ export abstract class IComunidadService {
    * Desactiva una comunidad realizando una baja lógica.
    *
    * @param id - Identificador único de la comunidad a desactivar.
-   * @returns Una promesa que resuelve con un mensaje de éxito.
+   * @returns Una promesa que resuelve cuando la comunidad ha sido desactivada.
    * @throws {NotFoundException} Si la comunidad no existe.
    */
-  abstract desactivarComunidad(id: string): Promise<{ mensaje: string }>;
+  abstract desactivarComunidad(id: string): Promise<void>;
 
   /**
    * Reactiva una comunidad que fue previamente desactivada.
    *
    * @param id - Identificador único de la comunidad a reactivar.
-   * @returns Una promesa que resuelve con un mensaje de éxito.
+   * @returns Una promesa que resuelve cuando la comunidad ha sido reactivada.
    * @throws {NotFoundException} Si la comunidad no existe.
    */
-  abstract reactivarComunidad(id: string): Promise<{ mensaje: string }>;
+  abstract reactivarComunidad(id: string): Promise<void>;
 
 }

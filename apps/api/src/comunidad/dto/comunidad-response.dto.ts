@@ -13,7 +13,14 @@ export class ComunidadResponseDto {
 
   public static fromEntity(entity: Comunidad): ComunidadResponseDto {
     const dto = new ComunidadResponseDto();
-    Object.assign(dto, entity);
+    dto.id_comunidad = entity.id_comunidad;
+    dto.nombre = entity.nombre;
+    dto.slug = entity.slug;
+    dto.activa = entity.activa;
+    dto.fecha_creacion = entity.fecha_creacion;
+    dto.descripcion = entity.descripcion;
+    dto.portada_url = entity.portada_url;
+    dto.id_categoria_comunidad = entity.id_categoria_comunidad;
     return dto;
   }
 }

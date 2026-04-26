@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { Comunidad } from '../models/comunidad.entity';
-import {
-  IComunidadRepository,
-  CrearComunidadData,
-  ActualizarComunidadData,
-} from './comunidad.repository.interface';
+import { IComunidadRepository } from '../infrastructure/comunidad.repository.interface';
 import { ComunidadMapper } from '../infrastructure/comunidad.mapper';
 
 /**
@@ -20,42 +16,36 @@ export class PrismaComunidadRepository implements IComunidadRepository {
   ) { }
 
   /**
-   * Inserta un nuevo registro de comunidad en la base de datos.
+   * Persiste o actualiza una comunidad en la base de datos (Upsert).
    *
-   * @param data - Atributos de la comunidad.
-   * @returns La comunidad mapeada a la interfaz de dominio.
+   * @param comunidad - La entidad comunidad a persistir.
+   * @returns La comunidad persistida mapeada a la interfaz de dominio.
    */
-  public async guardar(data: CrearComunidadData): Promise<Comunidad> {
-    const comunidad = await this.txHost.tx.comunidad.create({
-      data: {
-        ...data,
-        activa: false, // regla de negocio: toda comunidad nueva comienza inactiva
-        fecha_creacion: new Date(),
+  public async guardar(comunidad: Comunidad): Promise<Comunidad> {
+    const persistida = await this.txHost.tx.comunidad.upsert({
+      where: { id_comunidad: comunidad.id_comunidad },
+      update: {
+        nombre: comunidad.nombre,
+        slug: comunidad.slug,
+        activa: comunidad.activa,
+        descripcion: comunidad.descripcion,
+        portada_url: comunidad.portada_url,
+        id_categoria_comunidad: comunidad.id_categoria_comunidad,
+      },
+      create: {
+        id_comunidad: comunidad.id_comunidad,
+        nombre: comunidad.nombre,
+        slug: comunidad.slug,
+        activa: comunidad.activa,
+        fecha_creacion: comunidad.fecha_creacion,
+        descripcion: comunidad.descripcion,
+        portada_url: comunidad.portada_url,
+        id_categoria_comunidad: comunidad.id_categoria_comunidad,
       },
       include: { categoria_comunidad: true },
     });
 
-    return ComunidadMapper.toIComunidad(comunidad);
-  }
-
-  /**
-   * Actualiza parcialmente una comunidad existente en la base de datos.
-   *
-   * @param id_comunidad - UUID de la comunidad.
-   * @param data - Campos a actualizar.
-   * @returns La comunidad con los cambios aplicados.
-   */
-  public async actualizar(
-    id_comunidad: string,
-    data: ActualizarComunidadData,
-  ): Promise<Comunidad> {
-    const comunidad = await this.txHost.tx.comunidad.update({
-      where: { id_comunidad },
-      data,
-      include: { categoria_comunidad: true },
-    });
-
-    return ComunidadMapper.toIComunidad(comunidad);
+    return ComunidadMapper.toIComunidad(persistida);
   }
 
 

@@ -3,6 +3,7 @@ import {
   Logger,
   BadRequestException,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transactional } from '@nestjs-cls/transactional';
@@ -67,16 +68,20 @@ export class PlanesService implements IPlanesService {
       });
 
     try {
-      const plan = await this.planesRepository.guardar({
+      const plan = PlanComunidad.crearPlanComunidad({
         titulo: command.titulo,
         descripcion: command.descripcion,
         precio: command.precio,
         id_ciclo_pago,
         id_moneda,
-        mp_preapproval_plan_id,
         id_comunidad: command.id_comunidad,
       });
-      return { plan };
+
+      // Se asigna el ID de MP que viene de la infraestructura
+      plan.actualizarPlanComunidad({ mp_preapproval_plan_id });
+
+      const nuevoPlan = await this.planesRepository.guardar(plan);
+      return { plan: nuevoPlan };
 
     } catch (error) {
       this.logger.error('Error al guardar el plan en BD', error);
@@ -115,6 +120,43 @@ export class PlanesService implements IPlanesService {
     id_comunidad: string,
   ): Promise<PlanComunidad[]> {
     return this.planesRepository.buscarPorComunidad(id_comunidad);
+  }
+
+  /**
+   * Busca y retorna la información de un plan específico utilizando su ID.
+   *
+   * @param id - Identificador único del plan.
+   * @returns La entidad PlanComunidad encontrada.
+   * @throws {NotFoundException} Si el plan no existe.
+   */
+  public async getPlan(id: string): Promise<PlanComunidad> {
+    const plan = await this.planesRepository.buscarPorId(id);
+    if (!plan) throw new NotFoundException('Plan no encontrado');
+    return plan;
+  }
+
+  /**
+   * Desactiva un plan realizando una baja lógica.
+   *
+   * @param id - Identificador único del plan.
+   */
+  @Transactional()
+  public async desactivarPlanComunidad(id: string): Promise<void> {
+    const plan = await this.getPlan(id);
+    plan.desactivarPlanComunidad();
+    await this.planesRepository.guardar(plan);
+  }
+
+  /**
+   * Reactiva un plan previamente desactivado.
+   *
+   * @param id - Identificador único del plan.
+   */
+  @Transactional()
+  public async reactivarPlanComunidad(id: string): Promise<void> {
+    const plan = await this.getPlan(id);
+    plan.reactivarPlanComunidad();
+    await this.planesRepository.guardar(plan);
   }
 
   /**

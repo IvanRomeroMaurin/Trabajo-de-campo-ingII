@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Get,
+  Delete,
   Body,
   UseGuards,
   HttpCode,
@@ -17,7 +18,7 @@ import {
 import { IPlanesService } from '../services/planes.service.interface';
 import { CrearPlanDto } from '../dto/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
-import { PlanComunidad } from '../models/plan.entity';
+import { PlanResponseDto } from '../dto/plan-response.dto';
 import { CicloPago } from '../models/ciclo-pago.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
@@ -44,7 +45,7 @@ export class PlanesController {
   public async crearPlan(
     @Body() dto: CrearPlanDto,
   ): Promise<ICreatePlanResponse> {
-    return this.planesService.crearPlan({
+    const resultado = await this.planesService.crearPlan({
       titulo: dto.titulo,
       descripcion: dto.descripcion,
       precio: dto.precio,
@@ -53,6 +54,11 @@ export class PlanesController {
       moneda: dto.moneda,
       id_comunidad: dto.id_comunidad,
     });
+    
+    return {
+      ...resultado,
+      plan: PlanResponseDto.fromEntity(resultado.plan as any),
+    };
   }
 
   /**
@@ -71,6 +77,19 @@ export class PlanesController {
   }
 
   /**
+   * Obtiene un plan por su ID.
+   *
+   * @param id - ID del plan.
+   */
+  @Get(':id')
+  public async getPlan(
+    @Param('id') id: string,
+  ): Promise<PlanResponseDto> {
+    const resultado = await this.planesService.getPlan(id);
+    return PlanResponseDto.fromEntity(resultado);
+  }
+
+  /**
    * Obtiene la lista de planes asociados a una comunidad.
    * Devuelve todos los planes (activos e inactivos).
    *
@@ -80,12 +99,41 @@ export class PlanesController {
   @ApiResponse({
     status: 200,
     description: 'Listado de planes.',
-    type: [PlanComunidad],
+    type: [PlanResponseDto],
   })
   @Get('comunidad/:id_comunidad')
   public async getPlanesPorComunidad(
     @Param('id_comunidad') id_comunidad: string,
-  ): Promise<PlanComunidad[]> {
-    return this.planesService.getPlanesPorComunidad(id_comunidad);
+  ): Promise<PlanResponseDto[]> {
+    const planes = await this.planesService.getPlanesPorComunidad(id_comunidad);
+    return planes.map((p) => PlanResponseDto.fromEntity(p));
+  }
+
+  /**
+   * Desactiva un plan de suscripción.
+   *
+   * @param id - ID del plan.
+   */
+  @ApiOperation({ summary: 'Desactiva un plan' })
+  @Delete(':id')
+  public async desactivarPlan(
+    @Param('id') id: string,
+  ): Promise<{ mensaje: string }> {
+    await this.planesService.desactivarPlanComunidad(id);
+    return { mensaje: `El plan con id ${id} fue desactivado correctamente` };
+  }
+
+  /**
+   * Reactiva un plan de suscripción.
+   *
+   * @param id - ID del plan.
+   */
+  @ApiOperation({ summary: 'Reactiva un plan' })
+  @Post(':id/reactivar')
+  public async reactivarPlan(
+    @Param('id') id: string,
+  ): Promise<{ mensaje: string }> {
+    await this.planesService.reactivarPlanComunidad(id);
+    return { mensaje: `El plan con id ${id} fue reactivado correctamente` };
   }
 }

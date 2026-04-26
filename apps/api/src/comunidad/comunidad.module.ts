@@ -4,7 +4,7 @@ import { ComunidadService } from './services/comunidad.service';
 import { ComunidadController } from './controllers/comunidad.controller';
 import { MiembroModule } from '../miembro/miembro.module';
 import { CategoriaComunidadModule } from '../categoria-comunidad/categoria-comunidad.module';
-import { IComunidadRepository } from './repositories/comunidad.repository.interface';
+import { IComunidadRepository } from './infrastructure/comunidad.repository.interface';
 import { PrismaComunidadRepository } from './repositories/comunidad.prisma.repository';
 import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
 
