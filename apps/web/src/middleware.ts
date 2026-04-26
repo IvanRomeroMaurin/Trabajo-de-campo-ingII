@@ -30,14 +30,8 @@ export function middleware(request: NextRequest) {
 // Configurar en qué rutas se ejecuta el middleware
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public assets
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|assets|favicon.svg).*)',
+    '/comunidades/:path*',
+    '/perfil/:path*',
+    '/ajustes/:path*',
   ],
 };
