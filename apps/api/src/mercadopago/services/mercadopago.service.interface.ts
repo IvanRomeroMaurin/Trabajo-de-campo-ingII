@@ -14,7 +14,7 @@ export interface CrearPreapprovalPlanData {
 /**
  * Puerto (Interfaz) para la integración con Mercado Pago.
  */
-export abstract class MercadoPagoService {
+export abstract class IMercadoPagoService {
   /**
    * Registra un plan de suscripción recurrente en Mercado Pago.
    *

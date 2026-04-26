@@ -14,7 +14,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { PlanesService } from '../services/planes.service.interface';
+import { IPlanesService } from '../services/planes.service.interface';
 import { CrearPlanDto } from '../dto/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
 import { PlanComunidad } from '../models/plan.entity';
@@ -27,7 +27,7 @@ import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
 @Controller('planes')
 @UseGuards(JwtAuthGuard)
 export class PlanesController {
-  public constructor(private readonly planesService: PlanesService) {}
+  public constructor(private readonly planesService: IPlanesService) {}
 
   /**
    * Endpoint para crear un nuevo plan de suscripción.

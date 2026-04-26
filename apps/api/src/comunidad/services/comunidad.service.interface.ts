@@ -7,7 +7,7 @@ import {
 /**
  * Interfaz que define el contrato para el servicio de Comunidades.
  */
-export abstract class ComunidadService {
+export abstract class IComunidadService {
   /**
    * Crea una nueva comunidad e inserta al creador como miembro con el rol de CREADOR.
    *

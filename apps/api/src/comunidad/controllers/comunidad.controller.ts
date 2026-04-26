@@ -18,7 +18,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { ComunidadService } from '../services/comunidad.service.interface';
+import { IComunidadService } from '../services/comunidad.service.interface';
 import { CrearComunidadDto } from '../dto/crear-comunidad.dto';
 import { ActualizarComunidadDto } from '../dto/actualizar-comunidad.dto';
 import type { IUsuario } from '@repo/types';
@@ -35,7 +35,7 @@ import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
 @ApiTags('Comunidades')
 @Controller('comunidades')
 export class ComunidadController {
-  public constructor(private readonly comunidadService: ComunidadService) {}
+  public constructor(private readonly comunidadService: IComunidadService) {}
 
   /**
    * Crea una nueva comunidad.

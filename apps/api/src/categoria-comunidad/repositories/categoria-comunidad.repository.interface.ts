@@ -3,7 +3,7 @@ import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 /**
  * Interfaz que define el contrato para el acceso a datos de categorías de comunidades.
  */
-export abstract class CategoriaComunidadRepository {
+export abstract class ICategoriaComunidadRepository {
   /**
    * Obtiene todas las categorías de comunidades que se encuentran en estado activo.
    *

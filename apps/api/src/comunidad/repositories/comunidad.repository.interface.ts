@@ -28,7 +28,7 @@ export interface ActualizarComunidadData {
  * Define el contrato que cualquier adaptador de persistencia debe implementar.
  * Mantiene la lógica de negocio desacoplada de la tecnología de base de datos.
  */
-export abstract class ComunidadRepository {
+export abstract class IComunidadRepository {
   /**
    * Persiste una nueva comunidad en el sistema de almacenamiento.
    *

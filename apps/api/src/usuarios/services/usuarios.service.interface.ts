@@ -5,7 +5,7 @@ import { Usuario } from '../models/usuario.entity';
  * Interfaz que define el contrato para el servicio de Usuarios.
  * Centraliza las operaciones de negocio relacionadas con la gestión de usuarios.
  */
-export abstract class UsuariosService {
+export abstract class IUsuariosService {
   /**
    * Busca un usuario registrado en el sistema utilizando su dirección de correo electrónico.
    *

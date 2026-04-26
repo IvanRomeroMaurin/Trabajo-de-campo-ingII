@@ -4,8 +4,8 @@ import {
   ExecutionContext,
   ForbiddenException
 } from '@nestjs/common';
-import { ComunidadService } from '../../comunidad/services/comunidad.service.interface';
-import { MiembroService } from '../../miembro/services/miembro.service.interface';
+import { IComunidadService } from '../../comunidad/services/comunidad.service.interface';
+import { IMiembroService } from '../../miembro/services/miembro.service.interface';
 import type { IUsuario } from '@repo/types';
 
 /**
@@ -15,8 +15,8 @@ import type { IUsuario } from '@repo/types';
 @Injectable()
 export class ComunidadOwnerGuard implements CanActivate {
   public constructor(
-    private readonly comunidadService: ComunidadService,
-    private readonly miembroService: MiembroService,
+    private readonly comunidadService: IComunidadService,
+    private readonly miembroService: IMiembroService,
   ) { }
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {

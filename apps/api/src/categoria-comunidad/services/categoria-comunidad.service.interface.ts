@@ -3,7 +3,7 @@ import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 /**
  * Interfaz que define las operaciones para la gestión de categorías de comunidad.
  */
-export abstract class CategoriaComunidadService {
+export abstract class ICategoriaComunidadService {
   /**
    * Obtiene el listado completo de categorías disponibles en el sistema.
    * Estas categorías se utilizan para clasificar las comunidades.

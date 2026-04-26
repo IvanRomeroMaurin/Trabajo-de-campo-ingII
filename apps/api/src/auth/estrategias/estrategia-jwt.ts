@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { IJwtPayload } from '@repo/types';
-import { UsuariosService } from '../../usuarios/services/usuarios.service.interface';
+import { IUsuariosService } from '../../usuarios/services/usuarios.service.interface';
 import { Usuario } from '../../usuarios/models/usuario.entity';
 
 /**
@@ -16,7 +16,7 @@ import { Usuario } from '../../usuarios/models/usuario.entity';
 export class EstrategiaJwt extends PassportStrategy(Strategy) {
   public constructor(
     configService: ConfigService,
-    private readonly usuariosService: UsuariosService,
+    private readonly usuariosService: IUsuariosService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

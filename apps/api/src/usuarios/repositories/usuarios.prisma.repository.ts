@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
-  UsuariosRepository,
+  IUsuariosRepository,
   CrearUsuarioData,
 } from './usuarios.repository.interface';
 import { UsuariosMapper } from '../infrastructure/usuarios.mapper';
@@ -12,7 +12,7 @@ import { Usuario } from '../models/usuario.entity';
  * Implementación del repositorio de usuarios utilizando Prisma como ORM.
  */
 @Injectable()
-export class PrismaUsuariosRepository implements UsuariosRepository {
+export class PrismaUsuariosRepository implements IUsuariosRepository {
   public constructor(private readonly prisma: PrismaService) { }
 
   /**

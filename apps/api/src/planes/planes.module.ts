@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '../prisma/prisma.module';
 import { MercadoPagoModule } from '../mercadopago/mercadopago.module';
 import { PlanesController } from './controllers/planes.controller';
-import { PlanesService as IPlanesService } from './services/planes.service.interface';
-import { PlanesServiceImpl } from './services/planes.service';
-import { PlanesRepository } from './repositories/planes.repository.interface';
+import { IPlanesService } from './services/planes.service.interface';
+import { PlanesService } from './services/planes.service';
+import { IPlanesRepository } from './repositories/planes.repository.interface';
 import { PrismaPlanesRepository } from './repositories/prisma-planes.repository';
 import { ComunidadModule } from '../comunidad/comunidad.module';
 
@@ -15,10 +15,10 @@ import { ComunidadModule } from '../comunidad/comunidad.module';
   providers: [
     {
       provide: IPlanesService,
-      useClass: PlanesServiceImpl,
+      useClass: PlanesService,
     },
     {
-      provide: PlanesRepository,
+      provide: IPlanesRepository,
       useClass: PrismaPlanesRepository,
     },
   ],

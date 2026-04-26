@@ -3,7 +3,7 @@ import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { Comunidad } from '../models/comunidad.entity';
 import {
-  ComunidadRepository,
+  IComunidadRepository,
   CrearComunidadData,
   ActualizarComunidadData,
 } from './comunidad.repository.interface';
@@ -14,7 +14,7 @@ import { ComunidadMapper } from '../infrastructure/comunidad.mapper';
  * Utiliza nestjs-cls para gestionar el contexto transaccional de forma transparente.
  */
 @Injectable()
-export class PrismaComunidadRepository implements ComunidadRepository {
+export class PrismaComunidadRepository implements IComunidadRepository {
   public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
   ) { }

@@ -18,7 +18,7 @@ export interface CrearPlanData {
  * Interfaz que define el contrato para el acceso a datos de Planes.
  * Sigue el patrón Repository para desacoplar la lógica de negocio de la persistencia.
  */
-export abstract class PlanesRepository {
+export abstract class IPlanesRepository {
   /**
    * Registra un nuevo plan de suscripción en el sistema.
    *

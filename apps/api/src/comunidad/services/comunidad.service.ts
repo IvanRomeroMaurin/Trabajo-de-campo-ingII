@@ -6,12 +6,12 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
-import { MiembroService } from '../../miembro/services/miembro.service.interface';
+import { IMiembroService } from '../../miembro/services/miembro.service.interface';
 import { stringToSlug } from '../../common/utils/slug.utils';
 import { Comunidad } from '../models/comunidad.entity';
 import { ROLES } from '../../common/constants/roles';
 import {
-  ComunidadRepository,
+  IComunidadRepository,
   ActualizarComunidadData,
 } from '../repositories/comunidad.repository.interface';
 import type {
@@ -19,21 +19,21 @@ import type {
   ActualizarComunidadCommand,
 } from './comunidad.commands';
 
-import { ComunidadService as IComunidadService } from './comunidad.service.interface';
-import { CategoriaComunidadService } from '../../categoria-comunidad/services/categoria-comunidad.service.interface';
+import { IComunidadService } from './comunidad.service.interface';
+import { ICategoriaComunidadService } from '../../categoria-comunidad/services/categoria-comunidad.service.interface';
 
 /**
  * Servicio encargado de la lógica de negocio de Comunidades.
  * Utiliza interfaces de comando (CrearComunidadCommand) para desacoplarse de la capa HTTP.
  */
 @Injectable()
-export class ComunidadServiceImpl implements IComunidadService {
-  private readonly logger = new Logger(ComunidadServiceImpl.name);
+export class ComunidadService implements IComunidadService {
+  private readonly logger = new Logger(ComunidadService.name);
 
   public constructor(
-    private readonly comunidadRepository: ComunidadRepository,
-    private readonly miembroService: MiembroService,
-    private readonly categoriaComunidadService: CategoriaComunidadService,
+    private readonly comunidadRepository: IComunidadRepository,
+    private readonly miembroService: IMiembroService,
+    private readonly categoriaComunidadService: ICategoriaComunidadService,
   ) { }
 
   /**

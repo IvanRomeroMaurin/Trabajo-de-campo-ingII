@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UsuariosRepository } from '../repositories/usuarios.repository.interface';
-import { UsuariosService as IUsuariosService } from './usuarios.service.interface';
+import { IUsuariosRepository } from '../repositories/usuarios.repository.interface';
+import { IUsuariosService } from './usuarios.service.interface';
 import { Usuario } from '../models/usuario.entity';
 import { CrearUsuarioCommand } from './usuarios.commands';
 
@@ -9,8 +9,8 @@ import { CrearUsuarioCommand } from './usuarios.commands';
  * Se encarga de la orquestación entre la lógica de negocio y la persistencia a través del repositorio.
  */
 @Injectable()
-export class UsuariosServiceImpl implements IUsuariosService {
-  public constructor(private readonly repository: UsuariosRepository) { }
+export class UsuariosService implements IUsuariosService {
+  public constructor(private readonly repository: IUsuariosRepository) { }
 
 
   /**

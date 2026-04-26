@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { MiembroRepository } from '../repositories/miembro.repository.interface';
-import { MiembroService } from './miembro.service.interface';
-import { UsuariosService } from '../../usuarios/services/usuarios.service.interface';
+import { IMiembroRepository } from '../repositories/miembro.repository.interface';
+import { IMiembroService } from './miembro.service.interface';
+import { IUsuariosService } from '../../usuarios/services/usuarios.service.interface';
 import {
   AgregarMiembroCommand,
   CambiarRolMiembroCommand,
@@ -12,11 +12,11 @@ import {
  * Orquestra la lógica para unir usuarios a comunidades, gestionar sus roles y verificar permisos.
  */
 @Injectable()
-export class MiembroServiceImpl implements MiembroService {
+export class MiembroService implements IMiembroService {
 
   public constructor(
-    private readonly repository: MiembroRepository,
-    private readonly usuariosService: UsuariosService,
+    private readonly repository: IMiembroRepository,
+    private readonly usuariosService: IUsuariosService,
   ) {}
 
   /**

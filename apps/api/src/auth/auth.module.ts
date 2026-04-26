@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { AuthService } from './services/auth.service.interface';
-import { AuthServiceImpl } from './services/auth.service';
+import { IAuthService } from './services/auth.service.interface';
+import { AuthService } from './services/auth.service';
 
 import { AuthController } from './controllers/auth.controller';
 import { UsuariosModule } from '../usuarios/usuarios.module';
@@ -31,8 +31,8 @@ import { EstrategiaJwt } from './estrategias/estrategia-jwt';
   ],
   providers: [
     {
-      provide: AuthService,
-      useClass: AuthServiceImpl,
+      provide: IAuthService,
+      useClass: AuthService,
     },
     EstrategiaLocal,
     EstrategiaJwt,

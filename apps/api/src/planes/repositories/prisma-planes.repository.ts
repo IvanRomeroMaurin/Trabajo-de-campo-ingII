@@ -4,10 +4,7 @@ import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-pr
 
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
-import {
-  PlanesRepository,
-  CrearPlanData,
-} from './planes.repository.interface';
+import { IPlanesRepository, CrearPlanData } from './planes.repository.interface';
 import { PlanesMapper } from '../infrastructure/planes.mapper';
 
 /**
@@ -15,7 +12,7 @@ import { PlanesMapper } from '../infrastructure/planes.mapper';
  * Utiliza nestjs-cls para gestionar transacciones de forma transparente.
  */
 @Injectable()
-export class PrismaPlanesRepository implements PlanesRepository {
+export class PrismaPlanesRepository implements IPlanesRepository {
   public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
   ) { }

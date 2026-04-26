@@ -14,7 +14,7 @@ export interface CrearUsuarioData {
  * Interfaz que define el contrato para el acceso a datos de Usuarios.
  * Sigue el patrón Repository para desacoplar el acceso a la base de datos de la lógica de negocio.
  */
-export abstract class UsuariosRepository {
+export abstract class IUsuariosRepository {
   /**
    * Busca un usuario en la persistencia utilizando su dirección de correo electrónico.
    *

@@ -7,7 +7,7 @@ import {
  * Interfaz que define las operaciones de negocio para la gestión de miembros de comunidades.
  * Controla la membresía, roles y permisos dentro de las comunidades.
  */
-export abstract class MiembroService {
+export abstract class IMiembroService {
   /**
    * Agrega un usuario como miembro de una comunidad con un rol específico.
    * Si el usuario ya es miembro, se puede utilizar para refrescar su estado o actividad.

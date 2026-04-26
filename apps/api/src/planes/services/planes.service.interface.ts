@@ -7,7 +7,7 @@ import { CicloPago } from '../models/ciclo-pago.entity';
 /**
  * Interfaz que define el contrato para el servicio de Planes.
  */
-export abstract class PlanesService {
+export abstract class IPlanesService {
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
    *

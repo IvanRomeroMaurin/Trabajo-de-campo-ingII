@@ -22,7 +22,7 @@ export interface ActualizarMiembroData {
  * Interfaz que define el contrato para el acceso a datos relacionados con miembros de comunidades.
  * Centraliza las consultas de persistencia y validaciones de existencia para el módulo Miembro.
  */
-export abstract class MiembroRepository {
+export abstract class IMiembroRepository {
   /**
    * Busca un registro de membresía específico.
    *

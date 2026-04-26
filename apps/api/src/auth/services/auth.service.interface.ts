@@ -7,7 +7,7 @@ import { RegistrarUsuarioCommand } from './auth.commands';
 /**
  * Interfaz que define el contrato para el servicio de Autenticación.
  */
-export abstract class AuthService {
+export abstract class IAuthService {
   /**
    * Valida las credenciales de un usuario.
    *

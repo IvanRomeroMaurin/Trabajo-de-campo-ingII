@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CategoriaComunidadService } from '../services/categoria-comunidad.service.interface';
+import { ICategoriaComunidadService } from '../services/categoria-comunidad.service.interface';
 import { CategoriaComunidadResponseDto } from '../dto/categoria-comunidad-response.dto';
 
 @ApiTags('Categorías de Comunidad')
 @Controller('categorias-comunidad')
 export class CategoriaComunidadController {
-  public constructor(private readonly service: CategoriaComunidadService) {}
+  public constructor(private readonly service: ICategoriaComunidadService) {}
 
   @ApiOperation({ summary: 'Obtiene todas las categorías de comunidades' })
   @ApiResponse({

@@ -6,27 +6,27 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transactional } from '@nestjs-cls/transactional';
-import { MercadoPagoService } from '../../mercadopago/services/mercadopago.service.interface';
+import { IMercadoPagoService } from '../../mercadopago/services/mercadopago.service.interface';
 import type { CrearPlanCommand } from './planes.commands';
 import type { ICreatePlanResponse } from '@repo/types';
 
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 import { MONEDAS, MAP_CICLOS_PAGO } from '../../common/constants/planes';
-import { PlanesRepository } from '../repositories/planes.repository.interface';
-import { PlanesService as IPlanesService } from './planes.service.interface';
+import { IPlanesRepository } from '../repositories/planes.repository.interface';
+import { IPlanesService } from './planes.service.interface';
 
 /**
  * Servicio encargado de la lógica de negocio para la gestión de Planes.
  * Implementa la interfaz IPlanesService para mantener un contrato claro.
  */
 @Injectable()
-export class PlanesServiceImpl implements IPlanesService {
-  private readonly logger = new Logger(PlanesServiceImpl.name);
+export class PlanesService implements IPlanesService {
+  private readonly logger = new Logger(PlanesService.name);
 
   public constructor(
-    private readonly planesRepository: PlanesRepository,
-    private readonly mercadoPagoService: MercadoPagoService,
+    private readonly planesRepository: IPlanesRepository,
+    private readonly mercadoPagoService: IMercadoPagoService,
     private readonly configService: ConfigService,
   ) { }
 

@@ -16,7 +16,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from '../services/auth.service.interface';
+import { IAuthService } from '../services/auth.service.interface';
 import { RegistrarUsuarioDto } from '../dto/registrar-usuario.dto';
 
 import type { IRespuestaAuth } from '@repo/types';
@@ -30,7 +30,7 @@ import { Usuario } from '../../usuarios/models/usuario.entity';
 @ApiTags('Autenticación')
 @Controller('auth')
 export class AuthController {
-  public constructor(private readonly authService: AuthService) {}
+  public constructor(private readonly authService: IAuthService) {}
 
   /**
    * Registra un nuevo usuario en la plataforma.

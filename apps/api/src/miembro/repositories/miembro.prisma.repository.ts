@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import {
-  MiembroRepository,
+  IMiembroRepository,
   CrearMiembroData,
   ActualizarMiembroData,
 } from './miembro.repository.interface';
@@ -16,7 +16,7 @@ import { MiembroMapper } from '../infrastructure/miembro.mapper';
  * Gestiona la persistencia de las relaciones entre usuarios y comunidades.
  */
 @Injectable()
-export class PrismaMiembroRepository implements MiembroRepository {
+export class PrismaMiembroRepository implements IMiembroRepository {
   public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
   ) {}

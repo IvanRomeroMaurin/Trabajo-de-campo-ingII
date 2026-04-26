@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ComunidadService } from './services/comunidad.service.interface';
-import { ComunidadServiceImpl } from './services/comunidad.service';
+import { IComunidadService } from './services/comunidad.service.interface';
+import { ComunidadService } from './services/comunidad.service';
 import { ComunidadController } from './controllers/comunidad.controller';
 import { MiembroModule } from '../miembro/miembro.module';
 import { CategoriaComunidadModule } from '../categoria-comunidad/categoria-comunidad.module';
-import { ComunidadRepository } from './repositories/comunidad.repository.interface';
+import { IComunidadRepository } from './repositories/comunidad.repository.interface';
 import { PrismaComunidadRepository } from './repositories/comunidad.prisma.repository';
 import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
 
@@ -13,16 +13,16 @@ import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
   controllers: [ComunidadController],
   providers: [
     {
-      provide: ComunidadService,
-      useClass: ComunidadServiceImpl,
+      provide: IComunidadService,
+      useClass: ComunidadService,
     },
     {
-      provide: ComunidadRepository,
+      provide: IComunidadRepository,
       useClass: PrismaComunidadRepository,
     },
     ComunidadOwnerGuard,
   ],
-  exports: [ComunidadService, ComunidadOwnerGuard, MiembroModule],
+  exports: [IComunidadService, ComunidadOwnerGuard, MiembroModule],
 })
 export class ComunidadModule { }
 

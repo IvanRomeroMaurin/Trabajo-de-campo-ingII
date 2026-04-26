@@ -1,11 +1,11 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { UsuariosService } from '../../usuarios/services/usuarios.service.interface';
+import { IUsuariosService } from '../../usuarios/services/usuarios.service.interface';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import type { IRespuestaAuth } from '@repo/types';
 
 import { Usuario } from '../../usuarios/models/usuario.entity';
-import { AuthService as IAuthService } from './auth.service.interface';
+import { IAuthService } from './auth.service.interface';
 import { RegistrarUsuarioCommand } from './auth.commands';
 
 /**
@@ -14,9 +14,9 @@ import { RegistrarUsuarioCommand } from './auth.commands';
  * de tokens JWT, creación de usuarios y validación de las credenciales de entrada.
  */
 @Injectable()
-export class AuthServiceImpl implements IAuthService {
+export class AuthService implements IAuthService {
   public constructor(
-    private readonly usuariosService: UsuariosService,
+    private readonly usuariosService: IUsuariosService,
     private readonly jwtService: JwtService,
   ) {}
 

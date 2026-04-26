@@ -2,14 +2,14 @@ import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MercadoPagoConfig, PreApprovalPlan } from 'mercadopago';
 import {
-  MercadoPagoService as IMercadoPagoService,
+  IMercadoPagoService,
   CrearPreapprovalPlanData,
 } from './mercadopago.service.interface';
 
 @Injectable()
-export class MercadoPagoServiceImpl implements IMercadoPagoService {
+export class MercadoPagoService implements IMercadoPagoService {
 
-  private readonly logger = new Logger(MercadoPagoServiceImpl.name);
+  private readonly logger = new Logger(MercadoPagoService.name);
   private readonly preApprovalPlan: PreApprovalPlan;
 
   public constructor(private readonly configService: ConfigService) {
