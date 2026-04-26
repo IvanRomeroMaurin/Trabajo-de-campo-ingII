@@ -24,5 +24,5 @@ import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
   ],
   exports: [ComunidadService, ComunidadOwnerGuard, MiembroModule],
 })
-export class ComunidadModule {}
+export class ComunidadModule { }
 

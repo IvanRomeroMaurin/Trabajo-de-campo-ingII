@@ -13,7 +13,7 @@ import { Usuario } from '../models/usuario.entity';
  */
 @Injectable()
 export class PrismaUsuariosRepository implements UsuariosRepository {
-  public constructor(private readonly prisma: PrismaService) {}
+  public constructor(private readonly prisma: PrismaService) { }
 
   /**
    * Busca un usuario por email utilizando el cliente de Prisma.

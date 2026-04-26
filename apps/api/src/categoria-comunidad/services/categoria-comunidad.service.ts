@@ -12,7 +12,7 @@ export class CategoriaComunidadServiceImpl implements ICategoriaComunidadService
 
   public constructor(
     private readonly repository: CategoriaComunidadRepository,
-  ) {}
+  ) { }
 
   /**
    * Obtiene todas las categorías activas a través del repositorio.

@@ -17,7 +17,7 @@ import { ComunidadMapper } from '../infrastructure/comunidad.mapper';
 export class PrismaComunidadRepository implements ComunidadRepository {
   public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
-  ) {}
+  ) { }
 
   /**
    * Inserta un nuevo registro de comunidad en la base de datos.

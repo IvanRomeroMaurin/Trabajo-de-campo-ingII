@@ -23,4 +23,4 @@ import { PrismaModule } from '../prisma/prisma.module';
   exports: [CategoriaComunidadService],
 })
 
-export class CategoriaComunidadModule {}
+export class CategoriaComunidadModule { }

@@ -25,4 +25,4 @@ import { ComunidadModule } from '../comunidad/comunidad.module';
   exports: [IPlanesService],
 })
 
-export class PlanesModule {}
+export class PlanesModule { }

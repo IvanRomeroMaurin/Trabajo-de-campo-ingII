@@ -10,7 +10,7 @@ import { CategoriaComunidadMapper } from '../infrastructure/categoria-comunidad.
  */
 @Injectable()
 export class PrismaCategoriaComunidadRepository implements CategoriaComunidadRepository {
-  public constructor(private readonly prisma: PrismaService) {}
+  public constructor(private readonly prisma: PrismaService) { }
 
   /**
    * Consulta la base de datos para obtener categorías activas ordenadas por descripción.

@@ -28,7 +28,7 @@ export class PlanesServiceImpl implements IPlanesService {
     private readonly planesRepository: PlanesRepository,
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
