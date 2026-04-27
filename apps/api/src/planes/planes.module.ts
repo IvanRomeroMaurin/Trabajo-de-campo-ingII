@@ -5,7 +5,7 @@ import { MercadoPagoModule } from '../mercadopago/mercadopago.module';
 import { PlanesController } from './controllers/planes.controller';
 import { IPlanesService } from './services/planes.service.interface';
 import { PlanesService } from './services/planes.service';
-import { IPlanesRepository } from './repositories/planes.repository.interface';
+import { IPlanesRepository } from './infrastructure/planes.repository.interface';
 import { PrismaPlanesRepository } from './repositories/prisma-planes.repository';
 import { ComunidadModule } from '../comunidad/comunidad.module';
 

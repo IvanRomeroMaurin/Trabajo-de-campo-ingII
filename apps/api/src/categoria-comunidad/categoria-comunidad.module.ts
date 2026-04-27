@@ -3,7 +3,7 @@ import { CategoriaComunidadController } from './controllers/categoria-comunidad.
 import { ICategoriaComunidadService } from './services/categoria-comunidad.service.interface';
 import { CategoriaComunidadService } from './services/categoria-comunidad.service';
 
-import { ICategoriaComunidadRepository } from './repositories/categoria-comunidad.repository.interface';
+import { ICategoriaComunidadRepository } from './infrastructure/categoria-comunidad.repository.interface';
 import { PrismaCategoriaComunidadRepository } from './repositories/categoria-comunidad.prisma.repository';
 import { PrismaModule } from '../prisma/prisma.module';
 

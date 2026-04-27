@@ -6,17 +6,26 @@ import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 export abstract class ICategoriaComunidadService {
   /**
    * Obtiene el listado completo de categorías disponibles en el sistema.
-   * Estas categorías se utilizan para clasificar las comunidades.
-   *
-   * @returns Una promesa que resuelve con un arreglo de categorías.
    */
   public abstract getCategorias(): Promise<CategoriaComunidad[]>;
 
   /**
+   * Crea una nueva categoría.
+   */
+  public abstract crear(descripcion: string): Promise<CategoriaComunidad>;
+
+  /**
+   * Actualiza una categoría existente.
+   */
+  public abstract actualizar(id: string, descripcion: string): Promise<void>;
+
+  /**
+   * Desactiva una categoría.
+   */
+  public abstract desactivar(id: string): Promise<void>;
+
+  /**
    * Verifica la existencia de una categoría.
-   *
-   * @param id - ID de la categoría.
-   * @returns Promesa con booleano.
    */
   public abstract existeCategoria(id: string): Promise<boolean>;
 }

@@ -3,20 +3,21 @@ import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 
 /**
  * Mapper para la entidad CategoriaComunidad.
- * Centraliza la lógica de transformación entre la base de datos y la capa de dominio.
+ * Centraliza la lógica de transformación entre los modelos de persistencia (Prisma) y el Dominio.
  */
 export class CategoriaComunidadMapper {
   /**
-   * Transforma una entidad cruda de Prisma al formato esperado por el dominio.
+   * Transforma un registro crudo de Prisma a una entidad de dominio CategoriaComunidad.
+   * Utiliza el patrón de reconstitución para evitar validaciones de negocio en datos ya existentes.
    *
-   * @param cat - La entidad obtenida de Prisma.
-   * @returns Objeto mapeado con los campos esenciales de la categoría.
+   * @param cat - El registro obtenido de la base de datos.
+   * @returns La entidad de dominio hidratada.
    */
   public static toDomain(cat: categoria_comunidad): CategoriaComunidad {
-    return new CategoriaComunidad(
-      cat.id_categoria_comunidad,
-      cat.descripcion,
-      cat.activa,
-    );
+    return CategoriaComunidad.reconstituirCategoria({
+      id_categoria_comunidad: cat.id_categoria_comunidad,
+      descripcion: cat.descripcion,
+      activa: cat.activa,
+    });
   }
 }

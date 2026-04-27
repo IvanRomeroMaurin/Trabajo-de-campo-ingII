@@ -2,6 +2,10 @@ import crypto from 'crypto';
 import { ICategoriaComunidad } from '@repo/types';
 import { DomainException } from '../../common/exceptions/domain.exception';
 
+/**
+ * Entidad de Dominio que representa una Comunidad en el sistema.
+ * Gestiona el perfil, el estado de activación y la categorización de los grupos de usuarios.
+ */
 export class Comunidad {
   private _id_comunidad: string;
   private _nombre: string;
@@ -36,14 +40,23 @@ export class Comunidad {
   }
 
   // Getters
+  /** Identificador único (UUID) de la comunidad. */
   public get id_comunidad(): string { return this._id_comunidad; }
+  /** Nombre público de la comunidad. */
   public get nombre(): string { return this._nombre; }
+  /** Identificador amigable para URLs (slug). */
   public get slug(): string { return this._slug; }
+  /** Indica si la comunidad es visible y permite interacciones. */
   public get activa(): boolean { return this._activa; }
+  /** Fecha en la que la comunidad fue registrada inicialmente. */
   public get fecha_creacion(): Date { return this._fecha_creacion; }
+  /** ID de la categoría a la que pertenece la comunidad. */
   public get id_categoria_comunidad(): string { return this._id_categoria_comunidad; }
+  /** Texto descriptivo sobre los objetivos o reglas de la comunidad. */
   public get descripcion(): string | null | undefined { return this._descripcion; }
+  /** URL de la imagen de portada o banner. */
   public get portada_url(): string | null | undefined { return this._portada_url; }
+  /** Datos extendidos de la categoría (opcional, cargados desde persistencia). */
   public get categoria_comunidad(): ICategoriaComunidad | undefined { return this._categoria_comunidad; }
 
   // Setters privados (Validación de formato/estructura)
@@ -77,6 +90,15 @@ export class Comunidad {
   }
 
   // Factory Methods
+  /**
+   * Crea una nueva instancia de Comunidad con valores por defecto (inactiva).
+   * @param nombre Nombre de la comunidad.
+   * @param slug Identificador para URL.
+   * @param id_categoria_comunidad ID de la categoría inicial.
+   * @param descripcion Descripción opcional.
+   * @param portada_url Imagen de portada opcional.
+   * @returns Una nueva entidad Comunidad.
+   */
   public static crearComunidad(
     nombre: string,
     slug: string,
@@ -96,6 +118,11 @@ export class Comunidad {
     );
   }
 
+  /**
+   * Reconstituye una entidad Comunidad desde el estado de persistencia.
+   * @param props Propiedades crudas de la base de datos.
+   * @returns La entidad Comunidad hidratada.
+   */
   public static reconstituirComunidad(props: {
     id_comunidad: string;
     nombre: string;
@@ -121,6 +148,10 @@ export class Comunidad {
   }
 
   // Métodos de Comportamiento
+  /**
+   * Desactiva la comunidad, impidiendo nuevas interacciones públicas.
+   * @throws DomainException si ya estaba inactiva.
+   */
   public desactivarComunidad(): void {
     if (!this._activa) {
       throw new DomainException('La comunidad ya está inactiva');
@@ -128,6 +159,10 @@ export class Comunidad {
     this._activa = false;
   }
 
+  /**
+   * Reactiva la comunidad, haciéndola visible nuevamente.
+   * @throws DomainException si ya estaba activa.
+   */
   public reactivarComunidad(): void {
     if (this._activa) {
       throw new DomainException('La comunidad ya está activa');
@@ -135,6 +170,14 @@ export class Comunidad {
     this._activa = true;
   }
 
+  /**
+   * Actualiza el perfil de la comunidad aplicando las validaciones correspondientes.
+   * @param nombre Nuevo nombre (opcional).
+   * @param slug Nuevo slug (opcional).
+   * @param descripcion Nueva descripción (opcional).
+   * @param portada_url Nueva imagen (opcional).
+   * @param id_categoria_comunidad Nueva categoría (opcional).
+   */
   public actualizarComunidad(
     nombre?: string,
     slug?: string,

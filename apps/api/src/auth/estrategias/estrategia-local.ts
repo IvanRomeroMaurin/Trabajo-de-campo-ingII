@@ -2,9 +2,7 @@ import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { IAuthService } from '../services/auth.service.interface';
-import { Usuario } from '../../usuarios/models/usuario.entity';
-
-
+import { UsuarioResponseDto } from '../../usuarios/dto/usuario-response.dto';
 
 /**
  * Estrategia de Autenticación Local
@@ -24,7 +22,7 @@ export class EstrategiaLocal extends PassportStrategy(Strategy) {
   public async validate(
     email: string,
     pass: string,
-  ): Promise<Omit<Usuario, 'password_hash'>> {
+  ): Promise<UsuarioResponseDto> {
     const usuario = await this.authService.validarUsuario(email, pass);
     if (!usuario) {
       throw new UnauthorizedException('Credenciales incorrectas');

@@ -1,8 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { IMiembroRepository } from '../repositories/miembro.repository.interface';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Transactional } from '@nestjs-cls/transactional';
+import { IMiembroRepository } from '../infrastructure/miembro.repository.interface';
 import { IMiembroService } from './miembro.service.interface';
 import { IUsuariosService } from '../../usuarios/services/usuarios.service.interface';
-import {
+import { Miembro } from '../models/miembro.entity';
+import type {
   AgregarMiembroCommand,
   CambiarRolMiembroCommand,
 } from './miembro.commands';
@@ -17,16 +19,14 @@ export class MiembroService implements IMiembroService {
   public constructor(
     private readonly repository: IMiembroRepository,
     private readonly usuariosService: IUsuariosService,
-  ) {}
+  ) { }
 
   /**
    * Une a un usuario a una comunidad.
    * Valida la existencia del usuario y la comunidad antes de proceder.
-   * Si el usuario ya era miembro, actualiza su marca de tiempo de actividad.
-   *
-   * @param command - Datos de la membresía (usuario, comunidad y rol inicial).
-   * @throws {NotFoundException} Si el usuario o la comunidad no existen.
+   * Si el usuario ya era miembro, el dominio gestionará su actualización.
    */
+  @Transactional()
   public async agregarMiembro(command: AgregarMiembroCommand): Promise<void> {
     const { id_usuario, id_comunidad, id_rol } = command;
 
@@ -39,65 +39,53 @@ export class MiembroService implements IMiembroService {
       throw new NotFoundException('Comunidad no encontrada');
     }
 
-    const miembroExistente = await this.repository.buscarMiembro(
+    const existe = await this.repository.buscarMiembroPorId(id_usuario, id_comunidad);
+    if (existe) {
+      throw new ConflictException('El usuario ya es miembro de esta comunidad');
+    }
+
+    const miembro = Miembro.crearMiembro({
       id_usuario,
       id_comunidad,
-    );
+      id_rol_comunidad: id_rol,
+    });
 
-    if (miembroExistente) {
-      await this.repository.actualizarMiembro(id_usuario, id_comunidad, {
-        fecha_actualizacion: new Date(),
-      });
-    } else {
-      await this.repository.crearMiembro({
-        id_usuario,
-        id_comunidad,
-        id_rol_comunidad: id_rol,
-        fecha_ingreso: new Date(),
-      });
-    }
+    await this.repository.guardarMiembro(miembro);
   }
-
 
   /**
    * Actualiza el rol de un miembro en una comunidad.
    * Verifica que el miembro exista y que el nuevo rol sea válido.
-   *
-   * @param command - Datos del cambio de rol.
-   * @throws {NotFoundException} Si el miembro no existe en la comunidad o el rol no existe.
    */
+  @Transactional()
   public async cambiarRolMiembro(
     command: CambiarRolMiembroCommand,
   ): Promise<void> {
     const { id_usuario, id_comunidad, id_rol_nuevo } = command;
 
-    const miembro = await this.repository.buscarMiembro(
-      id_usuario,
-      id_comunidad,
-    );
-    if (!miembro) throw new NotFoundException(`El usuario no es miembro`);
-
-    if (!(await this.repository.existeRol(id_rol_nuevo))) {
-      throw new NotFoundException(`El rol no existe`);
+    const miembro = await this.repository.buscarMiembroPorId(id_usuario, id_comunidad);
+    if (!miembro) {
+      throw new NotFoundException(`El usuario no es miembro de esta comunidad`);
     }
 
-    await this.repository.actualizarMiembro(id_usuario, id_comunidad, {
-      id_rol_comunidad: id_rol_nuevo,
-      fecha_actualizacion: new Date(),
-    });
+    if (!(await this.repository.existeRol(id_rol_nuevo))) {
+      throw new NotFoundException(`El rol solicitado no existe`);
+    }
+
+    miembro.cambiarRol(id_rol_nuevo);
+    await this.repository.guardarMiembro(miembro);
   }
 
   /**
-   * Verifica permisos de creador delegando la consulta al repositorio especializado.
-   *
-   * @param id_usuario - ID del usuario.
-   * @param id_comunidad - ID de la comunidad.
-   * @returns True si es creador.
+   * Verifica si un usuario posee el rol de creador en una comunidad específica.
+   * @param id_usuario ID del usuario.
+   * @param id_comunidad ID de la comunidad.
+   * @returns True si es el creador.
    */
   public async esCreador(
     id_usuario: string,
     id_comunidad: string,
   ): Promise<boolean> {
-    return this.repository.esCreador(id_usuario, id_comunidad);
+    return this.repository.esCreadorDeComunidad(id_usuario, id_comunidad);
   }
 }

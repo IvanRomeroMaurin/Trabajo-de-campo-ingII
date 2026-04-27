@@ -21,7 +21,7 @@ export class PrismaComunidadRepository implements IComunidadRepository {
    * @param comunidad - La entidad comunidad a persistir.
    * @returns La comunidad persistida mapeada a la interfaz de dominio.
    */
-  public async guardar(comunidad: Comunidad): Promise<Comunidad> {
+  public async guardarComunidad(comunidad: Comunidad): Promise<Comunidad> {
     const persistida = await this.txHost.tx.comunidad.upsert({
       where: { id_comunidad: comunidad.id_comunidad },
       update: {
@@ -55,7 +55,7 @@ export class PrismaComunidadRepository implements IComunidadRepository {
    * @param id_comunidad - UUID de la comunidad.
    * @returns IComunidad o null si no se encuentra.
    */
-  public async buscarPorId(id_comunidad: string): Promise<Comunidad | null> {
+  public async buscarComunidadPorId(id_comunidad: string): Promise<Comunidad | null> {
     const comunidad = await this.txHost.tx.comunidad.findUnique({
       where: { id_comunidad },
       include: { categoria_comunidad: true },
@@ -71,7 +71,7 @@ export class PrismaComunidadRepository implements IComunidadRepository {
    * @param slug - Slug único de la comunidad.
    * @returns IComunidad o null si no se encuentra.
    */
-  public async buscarPorSlug(slug: string): Promise<Comunidad | null> {
+  public async buscarComunidadPorSlug(slug: string): Promise<Comunidad | null> {
     const comunidad = await this.txHost.tx.comunidad.findUnique({
       where: { slug },
       include: { categoria_comunidad: true },
@@ -86,7 +86,7 @@ export class PrismaComunidadRepository implements IComunidadRepository {
    *
    * @returns Lista de comunidades activas.
    */
-  public async buscarTodasActivas(): Promise<Comunidad[]> {
+  public async buscarComunidadesActivas(): Promise<Comunidad[]> {
     const comunidades = await this.txHost.tx.comunidad.findMany({
       where: { activa: true },
       include: { categoria_comunidad: true },
@@ -103,7 +103,7 @@ export class PrismaComunidadRepository implements IComunidadRepository {
    * @param id_rol_creador - UUID del rol de creador.
    * @returns Lista de comunidades encontradas.
    */
-  public async buscarPorCreador(
+  public async buscarComunidadesPorCreador(
     id_usuario: string,
     id_rol_creador: string,
   ): Promise<Comunidad[]> {

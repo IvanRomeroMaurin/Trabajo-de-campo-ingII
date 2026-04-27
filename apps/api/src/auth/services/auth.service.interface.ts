@@ -1,7 +1,7 @@
 import type { IRespuestaAuth } from '@repo/types';
 
-import { Usuario } from '../../usuarios/models/usuario.entity';
 import { RegistrarUsuarioCommand } from './auth.commands';
+import { UsuarioResponseDto } from '../../usuarios/dto/usuario-response.dto';
 
 
 /**
@@ -18,7 +18,7 @@ export abstract class IAuthService {
   public abstract validarUsuario(
     email: string,
     pass: string,
-  ): Promise<Omit<Usuario, 'password_hash'> | null>;
+  ): Promise<UsuarioResponseDto | null>;
 
   /**
    * Inicia la sesión de un usuario generando un token JWT.
@@ -27,7 +27,7 @@ export abstract class IAuthService {
    * @returns La respuesta de autenticación con el token y datos del usuario.
    */
   public abstract iniciarSesion(
-    usuario: Omit<Usuario, 'password_hash'>,
+    usuario: UsuarioResponseDto,
   ): IRespuestaAuth;
 
   /**
@@ -38,5 +38,5 @@ export abstract class IAuthService {
    */
   public abstract registrarUsuario(
     command: RegistrarUsuarioCommand,
-  ): Promise<Omit<Usuario, 'password_hash'>>;
+  ): Promise<UsuarioResponseDto>;
 }

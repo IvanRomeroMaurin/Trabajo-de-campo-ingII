@@ -14,7 +14,7 @@ import type { ICreatePlanResponse } from '@repo/types';
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 import { MONEDAS, MAP_CICLOS_PAGO } from '../../common/constants/planes';
-import { IPlanesRepository } from '../repositories/planes.repository.interface';
+import { IPlanesRepository } from '../infrastructure/planes.repository.interface';
 import { IPlanesService } from './planes.service.interface';
 
 /**
@@ -80,7 +80,7 @@ export class PlanesService implements IPlanesService {
       // Se asigna el ID de MP que viene de la infraestructura
       plan.actualizarPlanComunidad({ mp_preapproval_plan_id });
 
-      const nuevoPlan = await this.planesRepository.guardar(plan);
+      const nuevoPlan = await this.planesRepository.guardarPlan(plan);
       return { plan: nuevoPlan };
 
     } catch (error) {
@@ -107,7 +107,7 @@ export class PlanesService implements IPlanesService {
    * @returns Una promesa que resuelve con un arreglo de ciclos de pago (mensual, anual, etc.).
    */
   public async getValidCiclosPago(): Promise<CicloPago[]> {
-    return this.planesRepository.buscarCiclosPago();
+    return this.planesRepository.buscarCiclosDePago();
   }
 
   /**
@@ -119,7 +119,7 @@ export class PlanesService implements IPlanesService {
   public async getPlanesPorComunidad(
     id_comunidad: string,
   ): Promise<PlanComunidad[]> {
-    return this.planesRepository.buscarPorComunidad(id_comunidad);
+    return this.planesRepository.buscarPlanesPorComunidad(id_comunidad);
   }
 
   /**
@@ -130,7 +130,7 @@ export class PlanesService implements IPlanesService {
    * @throws {NotFoundException} Si el plan no existe.
    */
   public async getPlan(id: string): Promise<PlanComunidad> {
-    const plan = await this.planesRepository.buscarPorId(id);
+    const plan = await this.planesRepository.buscarPlanPorId(id);
     if (!plan) throw new NotFoundException('Plan no encontrado');
     return plan;
   }
@@ -144,7 +144,7 @@ export class PlanesService implements IPlanesService {
   public async desactivarPlanComunidad(id: string): Promise<void> {
     const plan = await this.getPlan(id);
     plan.desactivarPlanComunidad();
-    await this.planesRepository.guardar(plan);
+    await this.planesRepository.guardarPlan(plan);
   }
 
   /**
@@ -156,7 +156,7 @@ export class PlanesService implements IPlanesService {
   public async reactivarPlanComunidad(id: string): Promise<void> {
     const plan = await this.getPlan(id);
     plan.reactivarPlanComunidad();
-    await this.planesRepository.guardar(plan);
+    await this.planesRepository.guardarPlan(plan);
   }
 
   /**

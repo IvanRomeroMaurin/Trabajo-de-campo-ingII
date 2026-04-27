@@ -20,8 +20,7 @@ import { IAuthService } from '../services/auth.service.interface';
 import { RegistrarUsuarioDto } from '../dto/registrar-usuario.dto';
 
 import type { IRespuestaAuth } from '@repo/types';
-
-import { Usuario } from '../../usuarios/models/usuario.entity';
+import { UsuarioResponseDto } from '../../usuarios/dto/usuario-response.dto';
 
 /**
  * Controlador de Autenticación
@@ -38,7 +37,7 @@ export class AuthController {
    * @returns El usuario recién creado guardado en la base de datos.
    */
   @ApiOperation({ summary: 'Registra un nuevo usuario' })
-  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.' })
+  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.', type: UsuarioResponseDto })
   @ApiResponse({
     status: 409,
     description: 'El correo electrónico ya está en uso.',
@@ -46,7 +45,7 @@ export class AuthController {
   @Post('registrar')
   public async registrar(
     @Body() registrarUsuarioDto: RegistrarUsuarioDto,
-  ): Promise<Omit<Usuario, 'password_hash'>> {
+  ): Promise<UsuarioResponseDto> {
     return this.authService.registrarUsuario({
       nombre: registrarUsuarioDto.nombre,
       apellido: registrarUsuarioDto.apellido,
@@ -79,7 +78,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('iniciar-sesion')
   public iniciarSesion(
-    @Req() req: { user: Omit<Usuario, 'password_hash'> },
+    @Req() req: { user: UsuarioResponseDto },
   ): IRespuestaAuth {
     // El AuthGuard('local') valida las credenciales y añade el usuario a req.user
     return this.authService.iniciarSesion(req.user);
@@ -91,13 +90,13 @@ export class AuthController {
    * @param req Objeto Request de Express donde el guard inyectó al usuario validado.
    */
   @ApiOperation({ summary: 'Obtiene el perfil del usuario autenticado' })
-  @ApiResponse({ status: 200, description: 'Datos del perfil.' })
+  @ApiResponse({ status: 200, description: 'Datos del perfil.', type: UsuarioResponseDto })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get('perfil')
   public obtenerPerfil(
-    @Req() req: { user: Omit<Usuario, 'password_hash'> },
-  ): Omit<Usuario, 'password_hash'> {
+    @Req() req: { user: UsuarioResponseDto },
+  ): UsuarioResponseDto {
     return req.user;
   }
 }

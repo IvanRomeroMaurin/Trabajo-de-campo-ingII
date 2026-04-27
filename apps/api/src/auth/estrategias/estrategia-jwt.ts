@@ -4,7 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { IJwtPayload } from '@repo/types';
 import { IUsuariosService } from '../../usuarios/services/usuarios.service.interface';
-import { Usuario } from '../../usuarios/models/usuario.entity';
+import { UsuarioResponseDto } from '../../usuarios/dto/usuario-response.dto';
 
 /**
  * Estrategia de Validación de Token JWT
@@ -32,16 +32,14 @@ export class EstrategiaJwt extends PassportStrategy(Strategy) {
    */
   public async validate(
     payload: IJwtPayload,
-  ): Promise<Omit<Usuario, 'password_hash'>> {
+  ): Promise<UsuarioResponseDto> {
     const usuario = await this.usuariosService.buscarPorId(payload.sub);
 
     if (!usuario) {
       throw new UnauthorizedException('Usuario no encontrado');
     }
 
-    const { password_hash, ...res } = usuario;
-
-    return res;
+    return UsuarioResponseDto.fromEntity(usuario);
   }
 }
 

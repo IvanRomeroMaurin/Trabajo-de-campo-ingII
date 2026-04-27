@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
-
-import { ICategoriaComunidadRepository } from '../repositories/categoria-comunidad.repository.interface';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Transactional } from '@nestjs-cls/transactional';
+import { ICategoriaComunidadRepository } from '../infrastructure/categoria-comunidad.repository.interface';
 import { ICategoriaComunidadService } from './categoria-comunidad.service.interface';
 import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 
 /**
  * Implementación del servicio de categorías de comunidad.
+ * Orquestra las operaciones de negocio relacionadas con la clasificación de comunidades.
  */
 @Injectable()
 export class CategoriaComunidadService implements ICategoriaComunidadService {
@@ -15,22 +16,71 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
   ) { }
 
   /**
-   * Obtiene todas las categorías activas a través del repositorio.
-   *
-   * @returns Listado de categorías.
+   * Obtiene todas las categorías marcadas como activas en el sistema.
+   * @returns Promesa con el listado de categorías.
    */
   public async getCategorias(): Promise<CategoriaComunidad[]> {
-    return this.repository.buscarTodasActivas();
+    return this.repository.buscarCategoriasActivas();
   }
 
   /**
-   * Verifica la existencia de una categoría.
-   *
-   * @param id - ID de la categoría.
-   * @returns Promesa con booleano.
+   * Registra una nueva categoría en el sistema.
+   * @param descripcion Nombre o descripción de la categoría.
+   * @returns La entidad creada.
+   */
+  @Transactional()
+  public async crear(descripcion: string): Promise<CategoriaComunidad> {
+    const nuevaCategoria = CategoriaComunidad.crearCategoria(descripcion);
+    await this.repository.guardarCategoria(nuevaCategoria);
+    return nuevaCategoria;
+  }
+
+  /**
+   * Modifica la descripción de una categoría existente.
+   * @param id Identificador de la categoría.
+   * @param descripcion Nueva descripción.
+   * @throws NotFoundException si el ID no existe.
+   */
+  @Transactional()
+  public async actualizar(id: string, descripcion: string): Promise<void> {
+    const categoria = await this.obtenerPorIdOError(id);
+    categoria.actualizar(descripcion);
+    await this.repository.guardarCategoria(categoria);
+  }
+
+  /**
+   * Desactiva una categoría para que no pueda ser asignada a nuevas comunidades.
+   * @param id Identificador de la categoría.
+   * @throws NotFoundException si el ID no existe.
+   */
+  @Transactional()
+  public async desactivar(id: string): Promise<void> {
+    const categoria = await this.obtenerPorIdOError(id);
+    categoria.desactivar();
+    await this.repository.guardarCategoria(categoria);
+  }
+
+  /**
+   * Comprueba si una categoría existe por su ID.
+   * @param id Identificador a buscar.
+   * @returns True si existe, false en caso contrario.
    */
   public async existeCategoria(id: string): Promise<boolean> {
-    return this.repository.existe(id);
+    return this.repository.existeCategoria(id);
+  }
+
+  /**
+   * Método auxiliar para recuperar una categoría o lanzar error si no existe.
+   * @param id Identificador de la categoría.
+   * @returns La entidad CategoríaComunidad.
+   * @throws NotFoundException si no se encuentra.
+   */
+  private async obtenerPorIdOError(id: string): Promise<CategoriaComunidad> {
+    const categoria = await this.repository.buscarCategoriaPorId(id);
+    if (!categoria) {
+      throw new NotFoundException(`Categoría con ID ${id} no encontrada`);
+    }
+    return categoria;
   }
 }
 

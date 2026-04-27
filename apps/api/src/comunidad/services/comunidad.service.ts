@@ -70,7 +70,7 @@ export class ComunidadService implements IComunidadService {
         command.portada_url,
       );
 
-      const nuevaComunidad = await this.comunidadRepository.guardar(comunidad);
+      const nuevaComunidad = await this.comunidadRepository.guardarComunidad(comunidad);
 
       await this.miembroService.agregarMiembro({
         id_usuario: idCreador,
@@ -94,7 +94,7 @@ export class ComunidadService implements IComunidadService {
    * @returns Una promesa que resuelve con un arreglo de objetos IComunidad.
    */
   public async getComunidades(): Promise<Comunidad[]> {
-    return this.comunidadRepository.buscarTodasActivas();
+    return this.comunidadRepository.buscarComunidadesActivas();
   }
 
   /**
@@ -105,7 +105,7 @@ export class ComunidadService implements IComunidadService {
    * @returns Una promesa que resuelve con un arreglo de comunidades asociadas al creador.
    */
   public async getMisComunidades(idCreador: string): Promise<Comunidad[]> {
-    return this.comunidadRepository.buscarPorCreador(idCreador, ROLES.CREADOR);
+    return this.comunidadRepository.buscarComunidadesPorCreador(idCreador, ROLES.CREADOR);
   }
 
   /**
@@ -116,7 +116,7 @@ export class ComunidadService implements IComunidadService {
    * @throws {NotFoundException} Si no se encuentra ninguna comunidad con el ID proporcionado.
    */
   public async getComunidad(id: string): Promise<Comunidad> {
-    const comunidad = await this.comunidadRepository.buscarPorId(id);
+    const comunidad = await this.comunidadRepository.buscarComunidadPorId(id);
     if (!comunidad) {
       throw new NotFoundException(`La comunidad no fue encontrada`);
     }
@@ -132,7 +132,7 @@ export class ComunidadService implements IComunidadService {
    * @throws {NotFoundException} Si no se encuentra ninguna comunidad con el slug proporcionado.
    */
   public async getComunidadPorSlug(slug: string): Promise<Comunidad> {
-    const comunidad = await this.comunidadRepository.buscarPorSlug(slug);
+    const comunidad = await this.comunidadRepository.buscarComunidadPorSlug(slug);
     if (!comunidad) {
       throw new NotFoundException(`La comunidad no fue encontrada`);
     }
@@ -176,7 +176,7 @@ export class ComunidadService implements IComunidadService {
       command.id_categoria_comunidad,
     );
 
-    return this.comunidadRepository.guardar(comunidad);
+    return this.comunidadRepository.guardarComunidad(comunidad);
   }
 
   /**
@@ -191,7 +191,7 @@ export class ComunidadService implements IComunidadService {
   public async desactivarComunidad(id: string): Promise<void> {
     const comunidad = await this.getComunidad(id);
     comunidad.desactivarComunidad();
-    await this.comunidadRepository.guardar(comunidad);
+    await this.comunidadRepository.guardarComunidad(comunidad);
   }
 
 
@@ -206,7 +206,7 @@ export class ComunidadService implements IComunidadService {
   public async reactivarComunidad(id: string): Promise<void> {
     const comunidad = await this.getComunidad(id);
     comunidad.reactivarComunidad();
-    await this.comunidadRepository.guardar(comunidad);
+    await this.comunidadRepository.guardarComunidad(comunidad);
   }
 
   /**
@@ -222,7 +222,7 @@ export class ComunidadService implements IComunidadService {
     let slug = base;
     let contador = 2;
 
-    while (await this.comunidadRepository.buscarPorSlug(slug)) {
+    while (await this.comunidadRepository.buscarComunidadPorSlug(slug)) {
       slug = `${base}-${contador}`;
       contador++;
     }

@@ -29,4 +29,19 @@ export abstract class IUsuariosService {
    * @returns Una promesa que resuelve con el usuario encontrado o null si no existe.
    */
   public abstract buscarPorId(id: string): Promise<Usuario | null>;
+
+  /**
+   * Actualiza los datos personales de un usuario.
+   */
+  public abstract actualizarDatosPersonales(id: string, nombre: string, apellido: string): Promise<void>;
+
+  /**
+   * Desactiva un usuario.
+   */
+  public abstract desactivarUsuario(id: string): Promise<void>;
+
+  /**
+   * Reactiva un usuario.
+   */
+  public abstract reactivarUsuario(id: string): Promise<void>;
 }

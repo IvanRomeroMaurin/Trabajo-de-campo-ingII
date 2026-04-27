@@ -7,6 +7,7 @@ import type { IRespuestaAuth } from '@repo/types';
 import { Usuario } from '../../usuarios/models/usuario.entity';
 import { IAuthService } from './auth.service.interface';
 import { RegistrarUsuarioCommand } from './auth.commands';
+import { UsuarioResponseDto } from '../../usuarios/dto/usuario-response.dto';
 
 /**
  * Servicio de Autenticación
@@ -29,15 +30,14 @@ export class AuthService implements IAuthService {
   public async validarUsuario(
     email: string,
     pass: string,
-  ): Promise<Omit<Usuario, 'password_hash'> | null> {
+  ): Promise<UsuarioResponseDto | null> {
     const usuario = await this.usuariosService.buscarPorCorreo(email);
     if (
       usuario &&
       usuario.password_hash &&
       (await bcrypt.compare(pass, usuario.password_hash))
     ) {
-      const { password_hash, ...result } = usuario;
-      return result;
+      return UsuarioResponseDto.fromEntity(usuario);
     }
     return null;
   }
@@ -48,7 +48,7 @@ export class AuthService implements IAuthService {
    * @returns Un token JWT con la expiración que haya sido configurada en la importación.
    */
   public iniciarSesion(
-    usuario: Omit<Usuario, 'password_hash'>,
+    usuario: UsuarioResponseDto,
   ): IRespuestaAuth {
     const payload = {
       email: usuario.email,
@@ -69,7 +69,7 @@ export class AuthService implements IAuthService {
    */
   public async registrarUsuario(
     command: RegistrarUsuarioCommand,
-  ): Promise<Omit<Usuario, 'password_hash'>> {
+  ): Promise<UsuarioResponseDto> {
     const usuarioExistente = await this.usuariosService.buscarPorCorreo(
       command.email,
     );
@@ -88,7 +88,6 @@ export class AuthService implements IAuthService {
       password_hash: passwordHash,
     });
 
-    const { password_hash, ...usuarioRestante } = nuevoUsuario;
-    return usuarioRestante;
+    return UsuarioResponseDto.fromEntity(nuevoUsuario);
   }
 }

@@ -42,12 +42,11 @@ export class ComunidadMapper {
    */
   public static toICategoriaComunidad(
     categoria: categoria_comunidad,
-  ): ICategoriaComunidad {
-    return new CategoriaComunidad(
-      categoria.id_categoria_comunidad,
-      categoria.descripcion,
-      categoria.activa,
-    );
-
+  ): CategoriaComunidad {
+    return CategoriaComunidad.reconstituirCategoria({
+      id_categoria_comunidad: categoria.id_categoria_comunidad,
+      descripcion: categoria.descripcion,
+      activa: categoria.activa,
+    });
   }
 }

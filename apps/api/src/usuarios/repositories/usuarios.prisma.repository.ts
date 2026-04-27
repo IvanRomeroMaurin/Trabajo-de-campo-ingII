@@ -2,26 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
   IUsuariosRepository,
-  CrearUsuarioData,
-} from './usuarios.repository.interface';
+} from '../infrastructure/usuarios.repository.interface';
 import { UsuariosMapper } from '../infrastructure/usuarios.mapper';
 import { Usuario } from '../models/usuario.entity';
 
 
 /**
  * Implementación del repositorio de usuarios utilizando Prisma como ORM.
+ * Encapsula las operaciones CRUD y consultas específicas sobre la tabla 'usuario'.
  */
 @Injectable()
 export class PrismaUsuariosRepository implements IUsuariosRepository {
   public constructor(private readonly prisma: PrismaService) { }
 
   /**
-   * Busca un usuario por email utilizando el cliente de Prisma.
-   *
-   * @param email - Email del usuario a buscar.
-   * @returns El usuario mapeado al dominio o null.
+   * Ejecuta una consulta única para encontrar un usuario por su email.
+   * @param email Correo electrónico.
+   * @returns Entidad de dominio mapeada o null.
    */
-  public async buscarPorEmail(email: string): Promise<Usuario | null> {
+  public async buscarUsuarioPorEmail(email: string): Promise<Usuario | null> {
     const user = await this.prisma.usuario.findUnique({
       where: { email },
     });
@@ -29,28 +28,40 @@ export class PrismaUsuariosRepository implements IUsuariosRepository {
   }
 
   /**
-   * Crea un nuevo registro de usuario en la base de datos de Prisma.
-   *
-   * @param data - Datos con la información del usuario.
-   * @returns El usuario creado y mapeado.
+   * Realiza un Upsert (insertar o actualizar) basado en el id_usuario.
+   * Mapea los campos del dominio a las columnas de la base de datos.
+   * @param usuario Entidad a persistir.
+   * @returns Entidad persistida y re-mapeada desde la DB.
    */
-  public async guardar(data: CrearUsuarioData): Promise<Usuario> {
-    const user = await this.prisma.usuario.create({
-      data: {
-        ...data,
-        activa: true,
+  public async guardarUsuario(usuario: Usuario): Promise<Usuario> {
+    const user = await this.prisma.usuario.upsert({
+      where: { id_usuario: usuario.id_usuario },
+      update: {
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        email: usuario.email,
+        activa: usuario.activa,
+        password_hash: usuario.password_hash,
+      },
+      create: {
+        id_usuario: usuario.id_usuario,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        email: usuario.email,
+        fecha_alta: usuario.fecha_alta,
+        activa: usuario.activa,
+        password_hash: usuario.password_hash!,
       },
     });
     return UsuariosMapper.toIUsuario(user);
   }
 
   /**
-   * Busca un usuario por su identificador primario (id_usuario) en Prisma.
-   *
-   * @param id - Identificador único.
-   * @returns El usuario mapeado o null.
+   * Recupera un usuario por su clave primaria UUID.
+   * @param id Identificador único.
+   * @returns Entidad de dominio mapeada o null.
    */
-  public async buscarPorId(id: string): Promise<Usuario | null> {
+  public async buscarUsuarioPorId(id: string): Promise<Usuario | null> {
     const user = await this.prisma.usuario.findUnique({
       where: { id_usuario: id },
     });

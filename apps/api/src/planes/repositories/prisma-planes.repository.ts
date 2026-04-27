@@ -3,7 +3,7 @@ import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
-import { IPlanesRepository } from './planes.repository.interface';
+import { IPlanesRepository } from '../infrastructure/planes.repository.interface';
 import { PlanesMapper } from '../infrastructure/planes.mapper';
 
 /**
@@ -22,7 +22,7 @@ export class PrismaPlanesRepository implements IPlanesRepository {
    * @param plan - La entidad plan a persistir.
    * @returns El plan mapeado al dominio de la aplicación.
    */
-  public async guardar(plan: PlanComunidad): Promise<PlanComunidad> {
+  public async guardarPlan(plan: PlanComunidad): Promise<PlanComunidad> {
     const persistido = await this.txHost.tx.plan_comunidad.upsert({
       where: { id_plan_comunidad: plan.id_plan_comunidad },
       update: {
@@ -56,9 +56,9 @@ export class PrismaPlanesRepository implements IPlanesRepository {
    * Recupera un plan por su ID único.
    *
    * @param id_plan - UUID del plan.
-   * @returns La entidad PlanComunidad o null.
+   * @returns La entidad PlanComunidad or null.
    */
-  public async buscarPorId(id_plan: string): Promise<PlanComunidad | null> {
+  public async buscarPlanPorId(id_plan: string): Promise<PlanComunidad | null> {
     const plan = await this.txHost.tx.plan_comunidad.findUnique({
       where: { id_plan_comunidad: id_plan },
       include: {
@@ -71,8 +71,6 @@ export class PrismaPlanesRepository implements IPlanesRepository {
     return PlanesMapper.toIPlanComunidad(plan);
   }
 
-
-
   /**
    * Recupera todos los planes de una comunidad desde la base de datos.
    * Realiza un join con las tablas de ciclo de pago y moneda.
@@ -80,7 +78,7 @@ export class PrismaPlanesRepository implements IPlanesRepository {
    * @param id_comunidad - ID de la comunidad propietaria de los planes.
    * @returns Lista de planes ordenados por fecha de creación descendente.
    */
-  public async buscarPorComunidad(
+  public async buscarPlanesPorComunidad(
     id_comunidad: string,
   ): Promise<PlanComunidad[]> {
     const planes = await this.txHost.tx.plan_comunidad.findMany({
@@ -100,7 +98,7 @@ export class PrismaPlanesRepository implements IPlanesRepository {
    *
    * @returns Lista de ciclos de pago mapeados.
    */
-  public async buscarCiclosPago(): Promise<CicloPago[]> {
+  public async buscarCiclosDePago(): Promise<CicloPago[]> {
     const ciclos = await this.txHost.tx.ciclo_pago.findMany({
       orderBy: [{ tipo_frecuencia: 'asc' }, { frecuencia: 'asc' }],
     });

@@ -12,7 +12,7 @@ export abstract class IPlanesRepository {
    * @param plan - La entidad plan a persistir.
    * @returns Una promesa que resuelve con el plan persistido.
    */
-  public abstract guardar(plan: PlanComunidad): Promise<PlanComunidad>;
+  public abstract guardarPlan(plan: PlanComunidad): Promise<PlanComunidad>;
 
   /**
    * Busca un plan por su identificador único.
@@ -20,7 +20,7 @@ export abstract class IPlanesRepository {
    * @param id_plan - Identificador del plan.
    * @returns El plan encontrado o null.
    */
-  public abstract buscarPorId(id_plan: string): Promise<PlanComunidad | null>;
+  public abstract buscarPlanPorId(id_plan: string): Promise<PlanComunidad | null>;
 
   /**
    * Obtiene todos los planes de suscripción asociados a una comunidad específica.
@@ -29,7 +29,7 @@ export abstract class IPlanesRepository {
    * @param id_comunidad - Identificador único de la comunidad.
    * @returns Una promesa con el listado de planes encontrados.
    */
-  public abstract buscarPorComunidad(
+  public abstract buscarPlanesPorComunidad(
     id_comunidad: string,
   ): Promise<PlanComunidad[]>;
 
@@ -38,6 +38,6 @@ export abstract class IPlanesRepository {
    *
    * @returns Una promesa con el listado de ciclos de pago.
    */
-  public abstract buscarCiclosPago(): Promise<CicloPago[]>;
+  public abstract buscarCiclosDePago(): Promise<CicloPago[]>;
 }
 
