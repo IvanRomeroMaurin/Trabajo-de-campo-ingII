@@ -31,8 +31,7 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
   @Transactional()
   public async crear(descripcion: string): Promise<CategoriaComunidad> {
     const nuevaCategoria = CategoriaComunidad.crearCategoria(descripcion);
-    await this.repository.guardarCategoria(nuevaCategoria);
-    return nuevaCategoria;
+    return this.repository.crearCategoria(nuevaCategoria);
   }
 
   /**
@@ -42,10 +41,10 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
    * @throws NotFoundException si el ID no existe.
    */
   @Transactional()
-  public async actualizar(id: string, descripcion: string): Promise<void> {
+  public async actualizarDescripcion(id: string, descripcion: string): Promise<void> {
     const categoria = await this.obtenerPorIdOError(id);
-    categoria.actualizar(descripcion);
-    await this.repository.guardarCategoria(categoria);
+    categoria.actualizarDescripcion(descripcion);
+    await this.repository.actualizarCategoria(categoria);
   }
 
   /**
@@ -54,10 +53,10 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
    * @throws NotFoundException si el ID no existe.
    */
   @Transactional()
-  public async desactivar(id: string): Promise<void> {
+  public async desactivarCategoria(id: string): Promise<void> {
     const categoria = await this.obtenerPorIdOError(id);
-    categoria.desactivar();
-    await this.repository.guardarCategoria(categoria);
+    categoria.desactivarCategoria();
+    await this.repository.actualizarCategoria(categoria);
   }
 
   /**

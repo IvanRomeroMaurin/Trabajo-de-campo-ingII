@@ -15,14 +15,14 @@ export abstract class ICategoriaComunidadService {
   public abstract crear(descripcion: string): Promise<CategoriaComunidad>;
 
   /**
-   * Actualiza una categoría existente.
+   * Actualiza la descripción de una categoría existente.
    */
-  public abstract actualizar(id: string, descripcion: string): Promise<void>;
+  public abstract actualizarDescripcion(id: string, descripcion: string): Promise<void>;
 
   /**
    * Desactiva una categoría.
    */
-  public abstract desactivar(id: string): Promise<void>;
+  public abstract desactivarCategoria(id: string): Promise<void>;
 
   /**
    * Verifica la existencia de una categoría.

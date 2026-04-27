@@ -17,24 +17,14 @@ export class PrismaPlanesRepository implements IPlanesRepository {
   ) { }
 
   /**
-   * Registra o actualiza un plan de suscripción utilizando Prisma (Upsert).
+   * Registra un nuevo plan de suscripción en la base de datos.
    *
    * @param plan - La entidad plan a persistir.
    * @returns El plan mapeado al dominio de la aplicación.
    */
-  public async guardarPlan(plan: PlanComunidad): Promise<PlanComunidad> {
-    const persistido = await this.txHost.tx.plan_comunidad.upsert({
-      where: { id_plan_comunidad: plan.id_plan_comunidad },
-      update: {
-        precio: plan.precio,
-        titulo: plan.titulo,
-        activa: plan.activa,
-        descripcion: plan.descripcion,
-        id_ciclo_pago: plan.id_ciclo_pago,
-        id_moneda: plan.id_moneda,
-        mp_preapproval_plan_id: plan.mp_preapproval_plan_id,
-      },
-      create: {
+  public async crearPlan(plan: PlanComunidad): Promise<PlanComunidad> {
+    const persistido = await this.txHost.tx.plan_comunidad.create({
+      data: {
         id_plan_comunidad: plan.id_plan_comunidad,
         precio: plan.precio,
         titulo: plan.titulo,
@@ -48,7 +38,29 @@ export class PrismaPlanesRepository implements IPlanesRepository {
       },
       include: { ciclo_pago: true, moneda: true },
     });
+    return PlanesMapper.toIPlanComunidad(persistido);
+  }
 
+  /**
+   * Actualiza los datos de un plan de suscripción existente.
+   *
+   * @param plan - La entidad plan con los cambios.
+   * @returns El plan actualizado mapeado al dominio.
+   */
+  public async actualizarPlan(plan: PlanComunidad): Promise<PlanComunidad> {
+    const persistido = await this.txHost.tx.plan_comunidad.update({
+      where: { id_plan_comunidad: plan.id_plan_comunidad },
+      data: {
+        precio: plan.precio,
+        titulo: plan.titulo,
+        activa: plan.activa,
+        descripcion: plan.descripcion,
+        id_ciclo_pago: plan.id_ciclo_pago,
+        id_moneda: plan.id_moneda,
+        mp_preapproval_plan_id: plan.mp_preapproval_plan_id,
+      },
+      include: { ciclo_pago: true, moneda: true },
+    });
     return PlanesMapper.toIPlanComunidad(persistido);
   }
 

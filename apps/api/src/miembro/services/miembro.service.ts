@@ -50,7 +50,7 @@ export class MiembroService implements IMiembroService {
       id_rol_comunidad: id_rol,
     });
 
-    await this.repository.guardarMiembro(miembro);
+    await this.repository.crearMiembro(miembro);
   }
 
   /**
@@ -73,7 +73,7 @@ export class MiembroService implements IMiembroService {
     }
 
     miembro.cambiarRol(id_rol_nuevo);
-    await this.repository.guardarMiembro(miembro);
+    await this.repository.actualizarMiembro(miembro);
   }
 
   /**

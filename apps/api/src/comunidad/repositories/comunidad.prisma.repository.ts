@@ -16,23 +16,14 @@ export class PrismaComunidadRepository implements IComunidadRepository {
   ) { }
 
   /**
-   * Persiste o actualiza una comunidad en la base de datos (Upsert).
+   * Persiste una nueva comunidad en la base de datos.
    *
-   * @param comunidad - La entidad comunidad a persistir.
-   * @returns La comunidad persistida mapeada a la interfaz de dominio.
+   * @param comunidad - La entidad comunidad a crear.
+   * @returns La comunidad persistida mapeada al dominio.
    */
-  public async guardarComunidad(comunidad: Comunidad): Promise<Comunidad> {
-    const persistida = await this.txHost.tx.comunidad.upsert({
-      where: { id_comunidad: comunidad.id_comunidad },
-      update: {
-        nombre: comunidad.nombre,
-        slug: comunidad.slug,
-        activa: comunidad.activa,
-        descripcion: comunidad.descripcion,
-        portada_url: comunidad.portada_url,
-        id_categoria_comunidad: comunidad.id_categoria_comunidad,
-      },
-      create: {
+  public async crearComunidad(comunidad: Comunidad): Promise<Comunidad> {
+    const persistida = await this.txHost.tx.comunidad.create({
+      data: {
         id_comunidad: comunidad.id_comunidad,
         nombre: comunidad.nombre,
         slug: comunidad.slug,
@@ -44,7 +35,28 @@ export class PrismaComunidadRepository implements IComunidadRepository {
       },
       include: { categoria_comunidad: true },
     });
+    return ComunidadMapper.toIComunidad(persistida);
+  }
 
+  /**
+   * Actualiza una comunidad existente en la base de datos.
+   *
+   * @param comunidad - La entidad comunidad con los datos actualizados.
+   * @returns La comunidad actualizada mapeada al dominio.
+   */
+  public async actualizarComunidad(comunidad: Comunidad): Promise<Comunidad> {
+    const persistida = await this.txHost.tx.comunidad.update({
+      where: { id_comunidad: comunidad.id_comunidad },
+      data: {
+        nombre: comunidad.nombre,
+        slug: comunidad.slug,
+        activa: comunidad.activa,
+        descripcion: comunidad.descripcion,
+        portada_url: comunidad.portada_url,
+        id_categoria_comunidad: comunidad.id_categoria_comunidad,
+      },
+      include: { categoria_comunidad: true },
+    });
     return ComunidadMapper.toIComunidad(persistida);
   }
 

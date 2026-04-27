@@ -28,22 +28,13 @@ export class PrismaUsuariosRepository implements IUsuariosRepository {
   }
 
   /**
-   * Realiza un Upsert (insertar o actualizar) basado en el id_usuario.
-   * Mapea los campos del dominio a las columnas de la base de datos.
-   * @param usuario Entidad a persistir.
+   * Persiste un nuevo usuario en la base de datos.
+   * @param usuario Entidad a crear.
    * @returns Entidad persistida y re-mapeada desde la DB.
    */
-  public async guardarUsuario(usuario: Usuario): Promise<Usuario> {
-    const user = await this.prisma.usuario.upsert({
-      where: { id_usuario: usuario.id_usuario },
-      update: {
-        nombre: usuario.nombre,
-        apellido: usuario.apellido,
-        email: usuario.email,
-        activa: usuario.activa,
-        password_hash: usuario.password_hash,
-      },
-      create: {
+  public async crearUsuario(usuario: Usuario): Promise<Usuario> {
+    const user = await this.prisma.usuario.create({
+      data: {
         id_usuario: usuario.id_usuario,
         nombre: usuario.nombre,
         apellido: usuario.apellido,
@@ -51,6 +42,25 @@ export class PrismaUsuariosRepository implements IUsuariosRepository {
         fecha_alta: usuario.fecha_alta,
         activa: usuario.activa,
         password_hash: usuario.password_hash!,
+      },
+    });
+    return UsuariosMapper.toIUsuario(user);
+  }
+
+  /**
+   * Actualiza un usuario existente en la base de datos.
+   * @param usuario Entidad a actualizar.
+   * @returns Entidad persistida y re-mapeada desde la DB.
+   */
+  public async actualizarUsuario(usuario: Usuario): Promise<Usuario> {
+    const user = await this.prisma.usuario.update({
+      where: { id_usuario: usuario.id_usuario },
+      data: {
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        email: usuario.email,
+        activa: usuario.activa,
+        password_hash: usuario.password_hash,
       },
     });
     return UsuariosMapper.toIUsuario(user);

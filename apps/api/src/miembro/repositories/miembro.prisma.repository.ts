@@ -41,26 +41,35 @@ export class PrismaMiembroRepository implements IMiembroRepository {
   }
 
   /**
-   * Registra o actualiza un miembro en la base de datos utilizando Upsert.
+   * Registra un nuevo miembro en la base de datos.
    * @param miembro Entidad Miembro a persistir.
    */
-  public async guardarMiembro(miembro: Miembro): Promise<void> {
-    await this.txHost.tx.miembro_comunidad.upsert({
+  public async crearMiembro(miembro: Miembro): Promise<void> {
+    await this.txHost.tx.miembro_comunidad.create({
+      data: {
+        id_usuario: miembro.id_usuario,
+        id_comunidad: miembro.id_comunidad,
+        id_rol_comunidad: miembro.id_rol_comunidad,
+        fecha_ingreso: miembro.fecha_ingreso,
+      },
+    });
+  }
+
+  /**
+   * Actualiza los datos de un miembro existente.
+   * @param miembro Entidad Miembro con los cambios.
+   */
+  public async actualizarMiembro(miembro: Miembro): Promise<void> {
+    await this.txHost.tx.miembro_comunidad.update({
       where: {
         id_usuario_id_comunidad: {
           id_usuario: miembro.id_usuario,
           id_comunidad: miembro.id_comunidad,
         },
       },
-      update: {
+      data: {
         id_rol_comunidad: miembro.id_rol_comunidad,
         fecha_actualizacion: miembro.fecha_actualizacion,
-      },
-      create: {
-        id_usuario: miembro.id_usuario,
-        id_comunidad: miembro.id_comunidad,
-        id_rol_comunidad: miembro.id_rol_comunidad,
-        fecha_ingreso: miembro.fecha_ingreso,
       },
     });
   }

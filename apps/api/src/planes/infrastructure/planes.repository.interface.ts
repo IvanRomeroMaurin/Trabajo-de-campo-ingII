@@ -7,12 +7,14 @@ import { CicloPago } from '../models/ciclo-pago.entity';
  */
 export abstract class IPlanesRepository {
   /**
-   * Registra o actualiza un plan de suscripción en el sistema (Upsert).
-   *
-   * @param plan - La entidad plan a persistir.
-   * @returns Una promesa que resuelve con el plan persistido.
+   * Persiste un nuevo plan en la base de datos.
    */
-  public abstract guardarPlan(plan: PlanComunidad): Promise<PlanComunidad>;
+  public abstract crearPlan(plan: PlanComunidad): Promise<PlanComunidad>;
+
+  /**
+   * Actualiza un plan existente en la base de datos.
+   */
+  public abstract actualizarPlan(plan: PlanComunidad): Promise<PlanComunidad>;
 
   /**
    * Busca un plan por su identificador único.

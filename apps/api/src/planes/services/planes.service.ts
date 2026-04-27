@@ -80,7 +80,7 @@ export class PlanesService implements IPlanesService {
       // Se asigna el ID de MP que viene de la infraestructura
       plan.actualizarPlanComunidad({ mp_preapproval_plan_id });
 
-      const nuevoPlan = await this.planesRepository.guardarPlan(plan);
+      const nuevoPlan = await this.planesRepository.crearPlan(plan);
       return { plan: nuevoPlan };
 
     } catch (error) {
@@ -144,7 +144,7 @@ export class PlanesService implements IPlanesService {
   public async desactivarPlanComunidad(id: string): Promise<void> {
     const plan = await this.getPlan(id);
     plan.desactivarPlanComunidad();
-    await this.planesRepository.guardarPlan(plan);
+    await this.planesRepository.actualizarPlan(plan);
   }
 
   /**
@@ -156,7 +156,7 @@ export class PlanesService implements IPlanesService {
   public async reactivarPlanComunidad(id: string): Promise<void> {
     const plan = await this.getPlan(id);
     plan.reactivarPlanComunidad();
-    await this.planesRepository.guardarPlan(plan);
+    await this.planesRepository.actualizarPlan(plan);
   }
 
   /**

@@ -70,7 +70,7 @@ export class ComunidadService implements IComunidadService {
         command.portada_url,
       );
 
-      const nuevaComunidad = await this.comunidadRepository.guardarComunidad(comunidad);
+      const nuevaComunidad = await this.comunidadRepository.crearComunidad(comunidad);
 
       await this.miembroService.agregarMiembro({
         id_usuario: idCreador,
@@ -176,7 +176,7 @@ export class ComunidadService implements IComunidadService {
       command.id_categoria_comunidad,
     );
 
-    return this.comunidadRepository.guardarComunidad(comunidad);
+    return this.comunidadRepository.actualizarComunidad(comunidad);
   }
 
   /**
@@ -191,7 +191,7 @@ export class ComunidadService implements IComunidadService {
   public async desactivarComunidad(id: string): Promise<void> {
     const comunidad = await this.getComunidad(id);
     comunidad.desactivarComunidad();
-    await this.comunidadRepository.guardarComunidad(comunidad);
+    await this.comunidadRepository.actualizarComunidad(comunidad);
   }
 
 
@@ -206,7 +206,7 @@ export class ComunidadService implements IComunidadService {
   public async reactivarComunidad(id: string): Promise<void> {
     const comunidad = await this.getComunidad(id);
     comunidad.reactivarComunidad();
-    await this.comunidadRepository.guardarComunidad(comunidad);
+    await this.comunidadRepository.actualizarComunidad(comunidad);
   }
 
   /**

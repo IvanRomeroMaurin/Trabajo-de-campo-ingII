@@ -7,12 +7,14 @@ import { Comunidad } from '../models/comunidad.entity';
  */
 export abstract class IComunidadRepository {
   /**
-   * Persiste o actualiza una comunidad en el sistema de almacenamiento (Upsert).
-   *
-   * @param comunidad - La entidad comunidad a guardar.
-   * @returns Promesa con la comunidad persistida.
+   * Persiste una nueva comunidad en la base de datos.
    */
-  public abstract guardarComunidad(comunidad: Comunidad): Promise<Comunidad>;
+  public abstract crearComunidad(comunidad: Comunidad): Promise<Comunidad>;
+
+  /**
+   * Actualiza una comunidad existente en la base de datos.
+   */
+  public abstract actualizarComunidad(comunidad: Comunidad): Promise<Comunidad>;
 
   /**
    * Busca una comunidad por su identificador único primario.

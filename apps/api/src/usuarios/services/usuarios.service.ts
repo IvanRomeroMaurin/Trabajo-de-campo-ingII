@@ -37,7 +37,7 @@ export class UsuariosService implements IUsuariosService {
       password_hash: data.password_hash,
     });
 
-    return this.repository.guardarUsuario(usuario);
+    return this.repository.crearUsuario(usuario);
   }
 
   /**
@@ -61,7 +61,7 @@ export class UsuariosService implements IUsuariosService {
   public async actualizarDatosPersonales(id: string, nombre: string, apellido: string): Promise<void> {
     const usuario = await this.obtenerPorIdOError(id);
     usuario.actualizarDatosPersonales(nombre, apellido);
-    await this.repository.guardarUsuario(usuario);
+    await this.repository.actualizarUsuario(usuario);
   }
 
   /**
@@ -73,7 +73,7 @@ export class UsuariosService implements IUsuariosService {
   public async desactivarUsuario(id: string): Promise<void> {
     const usuario = await this.obtenerPorIdOError(id);
     usuario.desactivarUsuario();
-    await this.repository.guardarUsuario(usuario);
+    await this.repository.actualizarUsuario(usuario);
   }
 
   /**
@@ -85,7 +85,7 @@ export class UsuariosService implements IUsuariosService {
   public async reactivarUsuario(id: string): Promise<void> {
     const usuario = await this.obtenerPorIdOError(id);
     usuario.reactivarUsuario();
-    await this.repository.guardarUsuario(usuario);
+    await this.repository.actualizarUsuario(usuario);
   }
 
   /**

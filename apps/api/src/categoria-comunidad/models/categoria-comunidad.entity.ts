@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import { IComunidad } from '@repo/types';
 import { DomainException } from '../../common/exceptions/domain.exception';
 
 /**
@@ -10,7 +9,6 @@ export class CategoriaComunidad {
   private _id_categoria_comunidad: string;
   private _descripcion: string;
   private _activa: boolean;
-  private _comunidad?: IComunidad[];
 
   private constructor(
     id_categoria_comunidad: string,
@@ -29,8 +27,6 @@ export class CategoriaComunidad {
   public get descripcion(): string { return this._descripcion; }
   /** Indica si la categoría está disponible para ser usada por nuevas comunidades. */
   public get activa(): boolean { return this._activa; }
-  /** Listado opcional de comunidades pertenecientes a esta categoría. */
-  public get comunidad(): IComunidad[] | undefined { return this._comunidad; }
 
   // Setters privados con validación
   private set descripcion(value: string) {
@@ -63,13 +59,11 @@ export class CategoriaComunidad {
     id_categoria_comunidad: string;
     descripcion: string;
     activa: boolean;
-    comunidad?: IComunidad[];
   }): CategoriaComunidad {
     const categoria = Object.create(CategoriaComunidad.prototype) as CategoriaComunidad;
     categoria._id_categoria_comunidad = props.id_categoria_comunidad;
     categoria._descripcion = props.descripcion;
     categoria._activa = props.activa;
-    categoria._comunidad = props.comunidad;
     return categoria;
   }
 
@@ -78,7 +72,7 @@ export class CategoriaComunidad {
    * Marca la categoría como inactiva.
    * @throws DomainException si la categoría ya estaba inactiva.
    */
-  public desactivar(): void {
+  public desactivarCategoria(): void {
     if (!this._activa) throw new DomainException('La categoría ya está inactiva');
     this._activa = false;
   }
@@ -87,7 +81,7 @@ export class CategoriaComunidad {
    * Marca la categoría como activa.
    * @throws DomainException si la categoría ya estaba activa.
    */
-  public reactivar(): void {
+  public reactivarCategoria(): void {
     if (this._activa) throw new DomainException('La categoría ya está activa');
     this._activa = true;
   }
@@ -96,7 +90,7 @@ export class CategoriaComunidad {
    * Actualiza la descripción de la categoría aplicando validaciones de negocio.
    * @param descripcion Nueva descripción.
    */
-  public actualizar(descripcion: string): void {
+  public actualizarDescripcion(descripcion: string): void {
     this.descripcion = descripcion;
   }
 }

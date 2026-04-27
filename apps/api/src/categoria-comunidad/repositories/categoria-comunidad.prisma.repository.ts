@@ -38,18 +38,29 @@ export class PrismaCategoriaComunidadRepository implements ICategoriaComunidadRe
   }
 
   /**
-   * Registra o actualiza el estado de una categoría en la base de datos.
-   * @param categoria Entidad de dominio con los cambios.
+   * Registra una nueva categoría en la base de datos.
+   * @param categoria Entidad de dominio con los datos.
+   * @returns La entidad persistida y mapeada.
    */
-  public async guardarCategoria(categoria: CategoriaComunidad): Promise<void> {
-    await this.prisma.categoria_comunidad.upsert({
-      where: { id_categoria_comunidad: categoria.id_categoria_comunidad },
-      update: {
+  public async crearCategoria(categoria: CategoriaComunidad): Promise<CategoriaComunidad> {
+    const persistida = await this.prisma.categoria_comunidad.create({
+      data: {
+        id_categoria_comunidad: categoria.id_categoria_comunidad,
         descripcion: categoria.descripcion,
         activa: categoria.activa,
       },
-      create: {
-        id_categoria_comunidad: categoria.id_categoria_comunidad,
+    });
+    return CategoriaComunidadMapper.toDomain(persistida);
+  }
+
+  /**
+   * Actualiza una categoría existente en la base de datos.
+   * @param categoria Entidad de dominio con los cambios.
+   */
+  public async actualizarCategoria(categoria: CategoriaComunidad): Promise<void> {
+    await this.prisma.categoria_comunidad.update({
+      where: { id_categoria_comunidad: categoria.id_categoria_comunidad },
+      data: {
         descripcion: categoria.descripcion,
         activa: categoria.activa,
       },

@@ -16,10 +16,14 @@ export abstract class IMiembroRepository {
   ): Promise<Miembro | null>;
 
   /**
-   * Registra o actualiza un miembro en la base de datos (Upsert).
-   * @param miembro Entidad a persistir.
+   * Registra un nuevo miembro en la base de datos.
    */
-  public abstract guardarMiembro(miembro: Miembro): Promise<void>;
+  public abstract crearMiembro(miembro: Miembro): Promise<void>;
+
+  /**
+   * Actualiza un miembro existente en la base de datos.
+   */
+  public abstract actualizarMiembro(miembro: Miembro): Promise<void>;
 
   /**
    * Determina si un usuario específico tiene asignado el rol de 'Creador' en una comunidad.

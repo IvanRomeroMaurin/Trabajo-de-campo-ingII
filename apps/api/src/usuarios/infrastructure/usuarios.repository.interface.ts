@@ -13,11 +13,14 @@ export abstract class IUsuariosRepository {
   public abstract buscarUsuarioPorEmail(email: string): Promise<Usuario | null>;
 
   /**
-   * Sincroniza el estado de una entidad Usuario con la base de datos (Upsert).
-   * @param usuario Entidad a guardar.
-   * @returns La entidad persistida y actualizada.
+   * Persiste un nuevo usuario en la base de datos.
    */
-  public abstract guardarUsuario(usuario: Usuario): Promise<Usuario>;
+  public abstract crearUsuario(usuario: Usuario): Promise<Usuario>;
+
+  /**
+   * Actualiza un usuario existente en la base de datos.
+   */
+  public abstract actualizarUsuario(usuario: Usuario): Promise<Usuario>;
 
   /**
    * Localiza un usuario por su identificador único (UUID).

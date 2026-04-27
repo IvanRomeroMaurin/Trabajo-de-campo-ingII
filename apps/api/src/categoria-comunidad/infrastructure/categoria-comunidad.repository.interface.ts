@@ -19,10 +19,14 @@ export abstract class ICategoriaComunidadRepository {
   public abstract buscarCategoriaPorId(id: string): Promise<CategoriaComunidad | null>;
 
   /**
-   * Registra una nueva categoría o actualiza una existente (patrón Upsert).
-   * @param categoria Entidad a persistir.
+   * Registra una nueva categoría en la base de datos.
    */
-  public abstract guardarCategoria(categoria: CategoriaComunidad): Promise<void>;
+  public abstract crearCategoria(categoria: CategoriaComunidad): Promise<CategoriaComunidad>;
+
+  /**
+   * Actualiza una categoría existente en la base de datos.
+   */
+  public abstract actualizarCategoria(categoria: CategoriaComunidad): Promise<void>;
 
   /**
    * Verifica si una categoría existe en el sistema.
