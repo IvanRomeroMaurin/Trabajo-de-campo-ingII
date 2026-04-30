@@ -81,9 +81,8 @@ export class ComunidadService implements IComunidadService {
       return nuevaComunidad;
     } catch (error) {
       if (error instanceof HttpException) throw error;
-      this.logger.error('Error al crear comunidad', error);
       throw new InternalServerErrorException(
-        'Error al configurar permisos, intentá de nuevo',
+        'Error al crear la comunidad, intentá de nuevo',
       );
     }
   }
