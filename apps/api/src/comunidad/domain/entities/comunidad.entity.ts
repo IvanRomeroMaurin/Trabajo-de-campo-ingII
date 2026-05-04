@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { ICategoriaComunidad } from '@repo/types';
 import { DomainException } from '../../../common/exceptions/domain.exception';
+import { ComunidadYaInactivaException, ComunidadYaActivaException } from '../exceptions';
 
 /**
  * Entidad de Dominio que representa una Comunidad en el sistema.
@@ -154,18 +155,18 @@ export class Comunidad {
    */
   public desactivarComunidad(): void {
     if (!this._activa) {
-      throw new DomainException('La comunidad ya está inactiva');
+      throw new ComunidadYaInactivaException(this._id_comunidad);
     }
     this._activa = false;
   }
 
   /**
    * Reactiva la comunidad, haciéndola visible nuevamente.
-   * @throws DomainException si ya estaba activa.
+   * @throws ComunidadYaActivaException si ya estaba activa.
    */
   public reactivarComunidad(): void {
     if (this._activa) {
-      throw new DomainException('La comunidad ya está activa');
+      throw new ComunidadYaActivaException(this._id_comunidad);
     }
     this._activa = true;
   }

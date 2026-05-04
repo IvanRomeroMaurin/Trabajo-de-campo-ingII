@@ -9,7 +9,6 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
-  Req,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -24,6 +23,7 @@ import { ActualizarComunidadDto } from '../dtos/actualizar-comunidad.dto';
 import type { IUsuario } from '@repo/types';
 import { ComunidadResponseDto } from '../dtos/comunidad-response.dto';
 import { ComunidadOwnerGuard } from '../../../common/guards/comunidad-owner.guard';
+import { CurrentUser } from '../decorators/current-user.decorator';
 
 /**
  * Controlador de Comunidades.
@@ -58,7 +58,7 @@ export class ComunidadController {
   @Post()
   public async crearComunidad(
     @Body() dto: CrearComunidadDto,
-    @Req() req: { user: IUsuario },
+    @CurrentUser() usuario: IUsuario,
   ): Promise<ComunidadResponseDto> {
     const resultado = await this.comunidadService.crearComunidad(
       {
@@ -67,7 +67,7 @@ export class ComunidadController {
         portada_url: dto.portada_url,
         id_categoria_comunidad: dto.id_categoria_comunidad,
       },
-      req.user.id_usuario.toString(),
+      usuario.id_usuario.toString(),
     );
     return ComunidadResponseDto.fromEntity(resultado);
   }
@@ -98,10 +98,10 @@ export class ComunidadController {
   @UseGuards(AuthGuard('jwt'))
   @Get('mis-comunidades')
   public async getMisComunidades(
-    @Req() req: { user: IUsuario },
+    @CurrentUser() usuario: IUsuario,
   ): Promise<ComunidadResponseDto[]> {
     const comunidades = await this.comunidadService.getMisComunidades(
-      req.user.id_usuario.toString(),
+      usuario.id_usuario.toString(),
     );
     return comunidades.map((c) => ComunidadResponseDto.fromEntity(c));
   }

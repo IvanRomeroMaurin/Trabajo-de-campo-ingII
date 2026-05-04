@@ -41,14 +41,13 @@ export abstract class IComunidadRepository {
 
   /**
    * Obtiene la lista de comunidades donde un usuario específico tiene el rol de creador.
+   * El detalle del rol de creador es un concepto de infraestructura, encapsulado en el repositorio.
    *
-   * @param id_usuario - UUID del usuario.
-   * @param id_rol_creador - UUID del rol que identifica al creador.
+   * @param id_usuario - UUID del usuario creador.
    * @returns Lista de comunidades vinculadas al usuario como creador.
    */
-  public abstract buscarComunidadesPorCreador(
+  public abstract buscarComunidadesDelCreador(
     id_usuario: string,
-    id_rol_creador: string,
   ): Promise<Comunidad[]>;
 }
 

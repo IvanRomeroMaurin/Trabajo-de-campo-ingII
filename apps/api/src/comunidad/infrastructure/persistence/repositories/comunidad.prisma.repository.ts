@@ -4,6 +4,7 @@ import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-pr
 import { Comunidad } from '../../../domain/entities/comunidad.entity';
 import { IComunidadRepository } from '../../../domain/ports/comunidad.repository.interface';
 import { ComunidadMapper } from '../mappers/comunidad.mapper';
+import { ROLES } from '../../../../common/constants/roles';
 
 /**
  * Adaptador de persistencia para Comunidades usando Prisma.
@@ -110,19 +111,18 @@ export class PrismaComunidadRepository implements IComunidadRepository {
 
   /**
    * Busca en la tabla asociativa de miembros para encontrar comunidades creadas por el usuario.
+   * El rol de creador es un detalle de infraestructura encapsulado aquí.
    *
    * @param id_usuario - UUID del usuario.
-   * @param id_rol_creador - UUID del rol de creador.
    * @returns Lista de comunidades encontradas.
    */
-  public async buscarComunidadesPorCreador(
+  public async buscarComunidadesDelCreador(
     id_usuario: string,
-    id_rol_creador: string,
   ): Promise<Comunidad[]> {
     const miembros = await this.txHost.tx.miembro_comunidad.findMany({
       where: {
         id_usuario,
-        id_rol_comunidad: id_rol_creador,
+        id_rol_comunidad: ROLES.CREADOR,
       },
       include: {
         comunidad: {

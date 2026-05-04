@@ -1,11 +1,15 @@
 import {
   Injectable,
-  NotFoundException,
   InternalServerErrorException,
   Logger,
   HttpException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
+import {
+  ComunidadNotFoundException,
+  CategoriaNotFoundException,
+} from '../../domain/exceptions';
 import { IMiembroService } from '../../../miembro/services/miembro.service.interface';
 import { stringToSlug } from '../../../common/utils/slug.utils';
 import { Comunidad } from '../../domain/entities/comunidad.entity';
@@ -56,9 +60,7 @@ export class ComunidadService implements IComunidadService {
       command.id_categoria_comunidad,
     );
     if (!existeCategoria) {
-      throw new NotFoundException(
-        `La categoría con id ${command.id_categoria_comunidad} no existe`,
-      );
+      throw new CategoriaNotFoundException(command.id_categoria_comunidad);
     }
 
     try {
@@ -104,7 +106,7 @@ export class ComunidadService implements IComunidadService {
    * @returns Una promesa que resuelve con un arreglo de comunidades asociadas al creador.
    */
   public async getMisComunidades(idCreador: string): Promise<Comunidad[]> {
-    return this.comunidadRepository.buscarComunidadesPorCreador(idCreador, ROLES.CREADOR);
+    return this.comunidadRepository.buscarComunidadesDelCreador(idCreador);
   }
 
   /**
@@ -117,7 +119,7 @@ export class ComunidadService implements IComunidadService {
   public async getComunidad(id: string): Promise<Comunidad> {
     const comunidad = await this.comunidadRepository.buscarComunidadPorId(id);
     if (!comunidad) {
-      throw new NotFoundException(`La comunidad no fue encontrada`);
+      throw new ComunidadNotFoundException(id, 'ID');
     }
     return comunidad;
   }
@@ -133,7 +135,7 @@ export class ComunidadService implements IComunidadService {
   public async getComunidadPorSlug(slug: string): Promise<Comunidad> {
     const comunidad = await this.comunidadRepository.buscarComunidadPorSlug(slug);
     if (!comunidad) {
-      throw new NotFoundException(`La comunidad no fue encontrada`);
+      throw new ComunidadNotFoundException(slug, 'slug');
     }
     return comunidad;
   }
@@ -164,7 +166,9 @@ export class ComunidadService implements IComunidadService {
       const existeCat = await this.categoriaComunidadService.existeCategoria(
         command.id_categoria_comunidad,
       );
-      if (!existeCat) throw new NotFoundException(`La categoría no existe`);
+      if (!existeCat) {
+        throw new CategoriaNotFoundException(command.id_categoria_comunidad);
+      }
     }
 
     comunidad.actualizarComunidad(
