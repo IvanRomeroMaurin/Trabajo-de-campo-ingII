@@ -18,12 +18,12 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { IComunidadService } from '../services/comunidad.service.interface';
-import { CrearComunidadDto } from '../dto/crear-comunidad.dto';
-import { ActualizarComunidadDto } from '../dto/actualizar-comunidad.dto';
+import { IComunidadService } from '../../application/services/comunidad.service.interface';
+import { CrearComunidadDto } from '../dtos/crear-comunidad.dto';
+import { ActualizarComunidadDto } from '../dtos/actualizar-comunidad.dto';
 import type { IUsuario } from '@repo/types';
-import { ComunidadResponseDto } from '../dto/comunidad-response.dto';
-import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
+import { ComunidadResponseDto } from '../dtos/comunidad-response.dto';
+import { ComunidadOwnerGuard } from '../../../common/guards/comunidad-owner.guard';
 
 /**
  * Controlador de Comunidades.

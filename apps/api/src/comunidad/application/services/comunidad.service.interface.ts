@@ -1,8 +1,8 @@
-import { Comunidad } from '../models/comunidad.entity';
+import { Comunidad } from '../../domain/entities/comunidad.entity';
 import {
   CrearComunidadCommand,
   ActualizarComunidadCommand,
-} from './comunidad.commands';
+} from '../commands/comunidad.commands';
 
 /**
  * Interfaz que define el contrato para el servicio de Comunidades.

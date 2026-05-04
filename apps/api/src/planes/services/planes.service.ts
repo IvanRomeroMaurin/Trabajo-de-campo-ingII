@@ -75,10 +75,8 @@ export class PlanesService implements IPlanesService {
         id_ciclo_pago,
         id_moneda,
         id_comunidad: command.id_comunidad,
+        mp_preapproval_plan_id,
       });
-
-      // Se asigna el ID de MP que viene de la infraestructura
-      plan.actualizarPlanComunidad({ mp_preapproval_plan_id });
 
       const nuevoPlan = await this.planesRepository.crearPlan(plan);
       return { plan: nuevoPlan };

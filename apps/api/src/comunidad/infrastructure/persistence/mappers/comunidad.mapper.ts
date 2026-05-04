@@ -1,7 +1,7 @@
 import { comunidad, categoria_comunidad } from '@prisma/client';
 import { ICategoriaComunidad } from '@repo/types';
-import { Comunidad } from '../models/comunidad.entity';
-import { CategoriaComunidad } from '../../categoria-comunidad/models/categoria-comunidad.entity';
+import { Comunidad } from '../../../domain/entities/comunidad.entity';
+import { CategoriaComunidad } from '../../../../categoria-comunidad/models/categoria-comunidad.entity';
 
 /**
  * Mapper para transformar modelos de Prisma de Comunidad a interfaces de dominio.

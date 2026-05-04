@@ -96,6 +96,7 @@ export class PlanComunidad {
     id_ciclo_pago: string;
     id_moneda: string;
     descripcion?: string | null;
+    mp_preapproval_plan_id?: string | null;
   }): PlanComunidad {
     return new PlanComunidad(
       crypto.randomUUID(),
@@ -107,6 +108,7 @@ export class PlanComunidad {
       props.id_ciclo_pago,
       props.id_moneda,
       props.descripcion,
+      props.mp_preapproval_plan_id,
     );
   }
 

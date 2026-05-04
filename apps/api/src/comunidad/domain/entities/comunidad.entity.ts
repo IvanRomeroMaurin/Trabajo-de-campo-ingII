@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { ICategoriaComunidad } from '@repo/types';
-import { DomainException } from '../../common/exceptions/domain.exception';
+import { DomainException } from '../../../common/exceptions/domain.exception';
 
 /**
  * Entidad de Dominio que representa una Comunidad en el sistema.

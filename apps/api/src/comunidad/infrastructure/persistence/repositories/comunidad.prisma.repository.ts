@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
-import { Comunidad } from '../models/comunidad.entity';
-import { IComunidadRepository } from '../infrastructure/comunidad.repository.interface';
-import { ComunidadMapper } from '../infrastructure/comunidad.mapper';
+import { Comunidad } from '../../../domain/entities/comunidad.entity';
+import { IComunidadRepository } from '../../../domain/ports/comunidad.repository.interface';
+import { ComunidadMapper } from '../mappers/comunidad.mapper';
 
 /**
  * Adaptador de persistencia para Comunidades usando Prisma.

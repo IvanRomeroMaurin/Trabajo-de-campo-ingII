@@ -1,4 +1,4 @@
-import { Comunidad } from '../models/comunidad.entity';
+import { Comunidad } from '../entities/comunidad.entity';
 
 /**
  * Puerto (Interfaz) para la persistencia de Comunidades.

@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   ForbiddenException
 } from '@nestjs/common';
-import { IComunidadService } from '../../comunidad/services/comunidad.service.interface';
+import { IComunidadService } from '../../comunidad/application/services/comunidad.service.interface';
 import { IMiembroService } from '../../miembro/services/miembro.service.interface';
 import type { IUsuario } from '@repo/types';
 

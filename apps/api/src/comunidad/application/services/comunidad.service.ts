@@ -6,20 +6,20 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
-import { IMiembroService } from '../../miembro/services/miembro.service.interface';
-import { stringToSlug } from '../../common/utils/slug.utils';
-import { Comunidad } from '../models/comunidad.entity';
-import { ROLES } from '../../common/constants/roles';
+import { IMiembroService } from '../../../miembro/services/miembro.service.interface';
+import { stringToSlug } from '../../../common/utils/slug.utils';
+import { Comunidad } from '../../domain/entities/comunidad.entity';
+import { ROLES } from '../../../common/constants/roles';
 import {
   IComunidadRepository,
-} from '../infrastructure/comunidad.repository.interface';
+} from '../../domain/ports/comunidad.repository.interface';
 import type {
   CrearComunidadCommand,
   ActualizarComunidadCommand,
-} from './comunidad.commands';
+} from '../commands/comunidad.commands';
 
 import { IComunidadService } from './comunidad.service.interface';
-import { ICategoriaComunidadService } from '../../categoria-comunidad/services/categoria-comunidad.service.interface';
+import { ICategoriaComunidadService } from '../../../categoria-comunidad/services/categoria-comunidad.service.interface';
 
 /**
  * Servicio encargado de la lógica de negocio de Comunidades.

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Comunidad } from '../models/comunidad.entity';
+import { Comunidad } from '../../domain/entities/comunidad.entity';
 
 export class ComunidadResponseDto {
   @ApiProperty() id_comunidad: string;
