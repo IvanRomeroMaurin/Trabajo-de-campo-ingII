@@ -1,5 +1,4 @@
 import { comunidad, categoria_comunidad } from '@prisma/client';
-import { ICategoriaComunidad } from '@repo/types';
 import { Comunidad } from '../../../domain/entities/comunidad.entity';
 import { CategoriaComunidad } from '../../../../categoria-comunidad/models/categoria-comunidad.entity';
 

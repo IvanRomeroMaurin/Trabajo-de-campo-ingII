@@ -11,7 +11,6 @@ import {
   CategoriaNotFoundException,
 } from '../../domain/exceptions';
 import { IMiembroService } from '../../../miembro/services/miembro.service.interface';
-import { stringToSlug } from '../../../common/utils/slug.utils';
 import { Comunidad } from '../../domain/entities/comunidad.entity';
 import { ROLES } from '../../../common/constants/roles';
 import {
@@ -54,8 +53,6 @@ export class ComunidadService implements IComunidadService {
     command: CrearComunidadCommand,
     idCreador: string,
   ): Promise<Comunidad> {
-    const slug = await this.generarSlugUnico(command.nombre);
-
     const existeCategoria = await this.categoriaComunidadService.existeCategoria(
       command.id_categoria_comunidad,
     );
@@ -64,10 +61,10 @@ export class ComunidadService implements IComunidadService {
     }
 
     try {
-      const comunidad = Comunidad.crearComunidad(
+      const comunidad = await Comunidad.crearComunidad(
         command.nombre,
-        slug,
         command.id_categoria_comunidad,
+        (slug) => this.comunidadRepository.buscarComunidadPorSlug(slug).then((c) => !!c),
         command.descripcion,
         command.portada_url,
       );
@@ -159,7 +156,10 @@ export class ComunidadService implements IComunidadService {
 
     let slug: string | undefined;
     if (command.nombre !== undefined) {
-      slug = await this.generarSlugUnico(command.nombre);
+      slug = await Comunidad.generarSlugUnico(
+        command.nombre,
+        (s) => this.comunidadRepository.buscarComunidadPorSlug(s).then((c) => !!c),
+      );
     }
 
     if (command.id_categoria_comunidad !== undefined) {
@@ -210,26 +210,5 @@ export class ComunidadService implements IComunidadService {
     const comunidad = await this.getComunidad(id);
     comunidad.reactivarComunidad();
     await this.comunidadRepository.actualizarComunidad(comunidad);
-  }
-
-  /**
-   * Genera un slug único basado en el nombre de la comunidad.
-   * Si el slug base ya existe, añade un sufijo numérico incremental hasta encontrar uno disponible.
-   *
-   * @param nombre - El nombre de la comunidad para generar el slug.
-   * @returns Una promesa que resuelve con el slug único generado.
-   * @private
-   */
-  private async generarSlugUnico(nombre: string): Promise<string> {
-    const base = stringToSlug(nombre);
-    let slug = base;
-    let contador = 2;
-
-    while (await this.comunidadRepository.buscarComunidadPorSlug(slug)) {
-      slug = `${base}-${contador}`;
-      contador++;
-    }
-
-    return slug;
   }
 }

@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import { ICategoriaComunidad } from '@repo/types';
 import { DomainException } from '../../../common/exceptions/domain.exception';
 import { ComunidadYaInactivaException, ComunidadYaActivaException } from '../exceptions';
+import { stringToSlug } from '../../../common/utils/slug.utils';
 
 /**
  * Entidad de Dominio que representa una Comunidad en el sistema.
@@ -100,13 +101,26 @@ export class Comunidad {
    * @param portada_url Imagen de portada opcional.
    * @returns Una nueva entidad Comunidad.
    */
-  public static crearComunidad(
+  /**
+   * Crea una nueva instancia de Comunidad con un slug único generado automáticamente.
+   * Valida la unicidad del slug usando un callback que consulta el repositorio.
+   * 
+   * @param nombre - Nombre de la comunidad.
+   * @param id_categoria_comunidad - ID de la categoría inicial.
+   * @param slugRepository - Callback async que retorna true si el slug ya existe.
+   * @param descripcion - Descripción opcional.
+   * @param portada_url - Imagen de portada opcional.
+   * @returns Una promesa con la nueva entidad Comunidad.
+   */
+  public static async crearComunidad(
     nombre: string,
-    slug: string,
     id_categoria_comunidad: string,
+    slugRepository: (slug: string) => Promise<boolean>,
     descripcion?: string | null,
     portada_url?: string | null,
-  ): Comunidad {
+  ): Promise<Comunidad> {
+    const slug = await Comunidad.generarSlugUnico(nombre, slugRepository);
+
     return new Comunidad(
       crypto.randomUUID(),
       nombre,
@@ -117,6 +131,26 @@ export class Comunidad {
       descripcion,
       portada_url,
     );
+  }
+
+  /**
+   * Genera un slug único basado en el nombre de la comunidad.
+   * @public
+   */
+  public static async generarSlugUnico(
+    nombre: string,
+    slugRepository: (slug: string) => Promise<boolean>,
+  ): Promise<string> {
+    const baseSlug = stringToSlug(nombre);
+    let slug = baseSlug;
+    let contador = 2;
+
+    while (await slugRepository(slug)) {
+      slug = `${baseSlug}-${contador}`;
+      contador++;
+    }
+
+    return slug;
   }
 
   /**
