@@ -1,10 +1,10 @@
 import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import {
   ComunidadNotFoundException,
-  CategoriaNotFoundException,
   ComunidadYaActivaException,
   ComunidadYaInactivaException,
 } from '../../domain/exceptions';
+import { CategoriaNotFoundException } from '../../../categoria-comunidad/domain/exceptions';
 
 @Catch(
   ComunidadNotFoundException,

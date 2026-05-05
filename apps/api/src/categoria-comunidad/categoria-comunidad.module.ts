@@ -6,6 +6,7 @@ import { CategoriaComunidadService } from './services/categoria-comunidad.servic
 import { ICategoriaComunidadRepository } from './infrastructure/categoria-comunidad.repository.interface';
 import { PrismaCategoriaComunidadRepository } from './repositories/categoria-comunidad.prisma.repository';
 import { PrismaModule } from '../prisma/prisma.module';
+import { CategoriaNotFoundException } from './domain/exceptions';
 
 @Module({
   imports: [PrismaModule],
@@ -20,7 +21,7 @@ import { PrismaModule } from '../prisma/prisma.module';
       useClass: PrismaCategoriaComunidadRepository,
     },
   ],
-  exports: [ICategoriaComunidadService],
+  exports: [ICategoriaComunidadService, CategoriaNotFoundException],
 })
 
 export class CategoriaComunidadModule { }
