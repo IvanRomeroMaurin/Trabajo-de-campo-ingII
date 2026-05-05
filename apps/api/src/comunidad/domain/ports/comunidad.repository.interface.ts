@@ -49,5 +49,14 @@ export abstract class IComunidadRepository {
   public abstract buscarComunidadesDelCreador(
     id_usuario: string,
   ): Promise<Comunidad[]>;
+
+  /**
+   * Comprueba si un slug ya está siendo utilizado por alguna comunidad existente.
+   * Útil para validaciones de unicidad de forma eficiente (solo conteo).
+   * 
+   * @param slug - El slug a verificar.
+   * @returns True si el slug ya existe, false en caso contrario.
+   */
+  public abstract verificarSiSlugEstaEnUso(slug: string): Promise<boolean>;
 }
 

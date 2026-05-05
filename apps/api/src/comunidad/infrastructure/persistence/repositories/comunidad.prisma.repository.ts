@@ -133,4 +133,16 @@ export class PrismaComunidadRepository implements IComunidadRepository {
 
     return miembros.map((m) => ComunidadMapper.toIComunidad(m.comunidad));
   }
+
+  /**
+   * Comprueba si un slug ya está siendo utilizado por alguna comunidad.
+   * @param slug - Slug a verificar.
+   * @returns True si existe, false en caso contrario.
+   */
+  public async verificarSiSlugEstaEnUso(slug: string): Promise<boolean> {
+    const count = await this.txHost.tx.comunidad.count({
+      where: { slug },
+    });
+    return count > 0;
+  }
 }

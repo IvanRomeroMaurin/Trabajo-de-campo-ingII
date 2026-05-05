@@ -59,7 +59,7 @@ export class ComunidadService implements IComunidadService {
       const comunidad = await Comunidad.crearComunidad(
         command.nombre,
         command.id_categoria_comunidad,
-        (slug) => this.comunidadRepository.buscarComunidadPorSlug(slug).then((c) => !!c),
+        (slug) => this.comunidadRepository.verificarSiSlugEstaEnUso(slug),
         command.descripcion,
         command.portada_url,
       );
@@ -153,7 +153,7 @@ export class ComunidadService implements IComunidadService {
     if (command.nombre !== undefined) {
       slug = await Comunidad.generarSlugUnico(
         command.nombre,
-        (s) => this.comunidadRepository.buscarComunidadPorSlug(s).then((c) => !!c),
+        (s) => this.comunidadRepository.verificarSiSlugEstaEnUso(s),
       );
     }
 
