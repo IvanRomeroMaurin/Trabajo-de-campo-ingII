@@ -6,10 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
-import {
-  ComunidadNotFoundException,
-  CategoriaNotFoundException,
-} from '../../domain/exceptions';
+import { ComunidadNotFoundException } from '../../domain/exceptions';
 import { IMiembroService } from '../../../miembro/services/miembro.service.interface';
 import { Comunidad } from '../../domain/entities/comunidad.entity';
 import { ROLES } from '../../../common/constants/roles';
@@ -53,12 +50,10 @@ export class ComunidadService implements IComunidadService {
     command: CrearComunidadCommand,
     idCreador: string,
   ): Promise<Comunidad> {
-    const existeCategoria = await this.categoriaComunidadService.existeCategoria(
+
+    await this.categoriaComunidadService.validarExistencia(
       command.id_categoria_comunidad,
     );
-    if (!existeCategoria) {
-      throw new CategoriaNotFoundException(command.id_categoria_comunidad);
-    }
 
     try {
       const comunidad = await Comunidad.crearComunidad(
@@ -163,12 +158,9 @@ export class ComunidadService implements IComunidadService {
     }
 
     if (command.id_categoria_comunidad !== undefined) {
-      const existeCat = await this.categoriaComunidadService.existeCategoria(
+      await this.categoriaComunidadService.validarExistencia(
         command.id_categoria_comunidad,
       );
-      if (!existeCat) {
-        throw new CategoriaNotFoundException(command.id_categoria_comunidad);
-      }
     }
 
     comunidad.actualizarComunidad(

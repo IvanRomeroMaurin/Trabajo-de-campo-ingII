@@ -28,4 +28,11 @@ export abstract class ICategoriaComunidadService {
    * Verifica la existencia de una categoría.
    */
   public abstract existeCategoria(id: string): Promise<boolean>;
+
+  /**
+   * Valida que una categoría exista. Lanza CategoriaNotFoundException si no existe.
+   * @param id ID de la categoría a validar.
+   * @throws {CategoriaNotFoundException} Si la categoría no existe.
+   */
+  public abstract validarExistencia(id: string): Promise<void>;
 }

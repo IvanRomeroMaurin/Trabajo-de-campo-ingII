@@ -3,6 +3,7 @@ import { Transactional } from '@nestjs-cls/transactional';
 import { ICategoriaComunidadRepository } from '../infrastructure/categoria-comunidad.repository.interface';
 import { ICategoriaComunidadService } from './categoria-comunidad.service.interface';
 import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
+import { CategoriaNotFoundException } from '../domain/exceptions';
 
 /**
  * Implementación del servicio de categorías de comunidad.
@@ -59,25 +60,26 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
     await this.repository.actualizarCategoria(categoria);
   }
 
-  /**
-   * Comprueba si una categoría existe por su ID.
-   * @param id Identificador a buscar.
-   * @returns True si existe, false en caso contrario.
-   */
   public async existeCategoria(id: string): Promise<boolean> {
     return this.repository.existeCategoria(id);
   }
 
   /**
-   * Método auxiliar para recuperar una categoría o lanzar error si no existe.
-   * @param id Identificador de la categoría.
-   * @returns La entidad CategoríaComunidad.
-   * @throws NotFoundException si no se encuentra.
+   * Valida que una categoría exista. Lanza CategoriaNotFoundException si no existe.
+   * @param id ID de la categoría a validar.
+   * @throws {CategoriaNotFoundException} Si la categoría no existe.
    */
+  public async validarExistencia(id: string): Promise<void> {
+    const existe = await this.existeCategoria(id);
+    if (!existe) {
+      throw new CategoriaNotFoundException(id);
+    }
+  }
+
   private async obtenerPorIdOError(id: string): Promise<CategoriaComunidad> {
     const categoria = await this.repository.buscarCategoriaPorId(id);
     if (!categoria) {
-      throw new NotFoundException(`Categoría con ID ${id} no encontrada`);
+      throw new CategoriaNotFoundException(id);
     }
     return categoria;
   }
