@@ -149,26 +149,23 @@ export class ComunidadService implements IComunidadService {
   ): Promise<Comunidad> {
     const comunidad = await this.getComunidad(id);
 
-    let slug: string | undefined;
-    if (command.nombre !== undefined) {
-      slug = await Comunidad.generarSlugUnico(
-        command.nombre,
-        (s) => this.comunidadRepository.verificarSiSlugEstaEnUso(s),
-      );
-    }
-
-    if (command.id_categoria_comunidad !== undefined) {
+    // 1. Optimización: Solo validar categoría si realmente está cambiando
+    if (
+      command.id_categoria_comunidad !== undefined &&
+      command.id_categoria_comunidad !== comunidad.id_categoria_comunidad
+    ) {
       await this.categoriaComunidadService.validarExistencia(
         command.id_categoria_comunidad,
       );
     }
 
-    comunidad.actualizarComunidad(
+    // 2. Delegar actualización a la entidad (ella decide si regenera el slug)
+    await comunidad.actualizarComunidad(
       command.nombre,
-      slug,
       command.descripcion,
       command.portada_url,
       command.id_categoria_comunidad,
+      (s) => this.comunidadRepository.verificarSiSlugEstaEnUso(s),
     );
 
     return this.comunidadRepository.actualizarComunidad(comunidad);

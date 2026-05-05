@@ -207,24 +207,33 @@ export class Comunidad {
 
   /**
    * Actualiza el perfil de la comunidad aplicando las validaciones correspondientes.
+   * Solo regenera el slug si el nombre ha cambiado realmente.
+   * 
    * @param nombre Nuevo nombre (opcional).
-   * @param slug Nuevo slug (opcional).
    * @param descripcion Nueva descripción (opcional).
    * @param portada_url Nueva imagen (opcional).
    * @param id_categoria_comunidad Nueva categoría (opcional).
+   * @param slugRepository Callback para validar unicidad de slug (obligatorio si cambia el nombre).
    */
-  public actualizarComunidad(
+  public async actualizarComunidad(
     nombre?: string,
-    slug?: string,
     descripcion?: string | null,
     portada_url?: string | null,
     id_categoria_comunidad?: string,
-  ): void {
-    if (nombre) this.nombre = nombre;
-    if (slug) this.slug = slug;
-    if (descripcion !== undefined) this.descripcion = descripcion;
-    if (portada_url !== undefined) this.portada_url = portada_url;
-    if (id_categoria_comunidad) this.id_categoria_comunidad = id_categoria_comunidad;
+    slugRepository?: (slug: string) => Promise<boolean>,
+  ): Promise<void> {
+    // 1. Solo regeneramos el slug si el nombre cambió y nos pasaron el repositorio
+    if (nombre && nombre !== this._nombre && slugRepository) {
+      this._nombre = nombre;
+      this._slug = await Comunidad.generarSlugUnico(nombre, slugRepository);
+    }
+
+    if (descripcion !== undefined) this._descripcion = descripcion;
+    if (portada_url !== undefined) this._portada_url = portada_url;
+    
+    if (id_categoria_comunidad) {
+      this._id_categoria_comunidad = id_categoria_comunidad;
+    }
   }
 }
 
