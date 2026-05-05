@@ -8,4 +8,3 @@ export interface CrearUsuarioCommand {
   readonly email: string;
   readonly password_hash: string;
 }
-

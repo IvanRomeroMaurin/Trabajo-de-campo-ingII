@@ -2,7 +2,7 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  ForbiddenException
+  ForbiddenException,
 } from '@nestjs/common';
 import { IComunidadService } from '../../comunidad/application/services/comunidad.service.interface';
 import { IMiembroService } from '../../miembro/services/miembro.service.interface';
@@ -17,7 +17,7 @@ export class ComunidadOwnerGuard implements CanActivate {
   public constructor(
     private readonly comunidadService: IComunidadService,
     private readonly miembroService: IMiembroService,
-  ) { }
+  ) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<{
@@ -56,4 +56,3 @@ export class ComunidadOwnerGuard implements CanActivate {
     return true;
   }
 }
-

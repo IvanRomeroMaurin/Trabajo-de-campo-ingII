@@ -11,7 +11,7 @@ import { Transactional } from '@nestjs-cls/transactional';
  */
 @Injectable()
 export class UsuariosService implements IUsuariosService {
-  public constructor(private readonly repository: IUsuariosRepository) { }
+  public constructor(private readonly repository: IUsuariosRepository) {}
 
   /**
    * Localiza un usuario por su dirección de correo electrónico.
@@ -58,7 +58,11 @@ export class UsuariosService implements IUsuariosService {
    * @throws NotFoundException si el usuario no existe.
    */
   @Transactional()
-  public async actualizarDatosPersonales(id: string, nombre: string, apellido: string): Promise<void> {
+  public async actualizarDatosPersonales(
+    id: string,
+    nombre: string,
+    apellido: string,
+  ): Promise<void> {
     const usuario = await this.obtenerPorIdOError(id);
     usuario.actualizarDatosPersonales(nombre, apellido);
     await this.repository.actualizarUsuario(usuario);

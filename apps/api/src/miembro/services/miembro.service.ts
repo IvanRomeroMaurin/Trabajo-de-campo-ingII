@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
 import { IMiembroRepository } from '../infrastructure/miembro.repository.interface';
 import { IMiembroService } from './miembro.service.interface';
@@ -15,11 +19,10 @@ import type {
  */
 @Injectable()
 export class MiembroService implements IMiembroService {
-
   public constructor(
     private readonly repository: IMiembroRepository,
     private readonly usuariosService: IUsuariosService,
-  ) { }
+  ) {}
 
   /**
    * Une a un usuario a una comunidad.
@@ -39,7 +42,10 @@ export class MiembroService implements IMiembroService {
       throw new NotFoundException('Comunidad no encontrada');
     }
 
-    const existe = await this.repository.buscarMiembroPorId(id_usuario, id_comunidad);
+    const existe = await this.repository.buscarMiembroPorId(
+      id_usuario,
+      id_comunidad,
+    );
     if (existe) {
       throw new ConflictException('El usuario ya es miembro de esta comunidad');
     }
@@ -63,7 +69,10 @@ export class MiembroService implements IMiembroService {
   ): Promise<void> {
     const { id_usuario, id_comunidad, id_rol_nuevo } = command;
 
-    const miembro = await this.repository.buscarMiembroPorId(id_usuario, id_comunidad);
+    const miembro = await this.repository.buscarMiembroPorId(
+      id_usuario,
+      id_comunidad,
+    );
     if (!miembro) {
       throw new NotFoundException(`El usuario no es miembro de esta comunidad`);
     }

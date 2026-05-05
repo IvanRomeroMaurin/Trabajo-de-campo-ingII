@@ -39,5 +39,4 @@ import { EstrategiaJwt } from './estrategias/estrategia-jwt';
   ],
   controllers: [AuthController],
 })
-
 export class AuthModule {}

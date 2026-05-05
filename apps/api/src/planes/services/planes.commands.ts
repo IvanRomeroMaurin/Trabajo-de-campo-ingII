@@ -12,4 +12,3 @@ export interface CrearPlanCommand {
   readonly moneda: 'ARS' | 'USD';
   readonly id_comunidad: string;
 }
-

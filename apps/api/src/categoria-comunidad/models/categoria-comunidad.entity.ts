@@ -22,11 +22,17 @@ export class CategoriaComunidad {
 
   // Getters
   /** Identificador único de la categoría. */
-  public get id_categoria_comunidad(): string { return this._id_categoria_comunidad; }
+  public get id_categoria_comunidad(): string {
+    return this._id_categoria_comunidad;
+  }
   /** Descripción o nombre de la categoría. */
-  public get descripcion(): string { return this._descripcion; }
+  public get descripcion(): string {
+    return this._descripcion;
+  }
   /** Indica si la categoría está disponible para ser usada por nuevas comunidades. */
-  public get activa(): boolean { return this._activa; }
+  public get activa(): boolean {
+    return this._activa;
+  }
 
   // Setters privados con validación
   private set descripcion(value: string) {
@@ -60,7 +66,9 @@ export class CategoriaComunidad {
     descripcion: string;
     activa: boolean;
   }): CategoriaComunidad {
-    const categoria = Object.create(CategoriaComunidad.prototype) as CategoriaComunidad;
+    const categoria = Object.create(
+      CategoriaComunidad.prototype,
+    ) as CategoriaComunidad;
     categoria._id_categoria_comunidad = props.id_categoria_comunidad;
     categoria._descripcion = props.descripcion;
     categoria._activa = props.activa;
@@ -73,7 +81,8 @@ export class CategoriaComunidad {
    * @throws DomainException si la categoría ya estaba inactiva.
    */
   public desactivarCategoria(): void {
-    if (!this._activa) throw new DomainException('La categoría ya está inactiva');
+    if (!this._activa)
+      throw new DomainException('La categoría ya está inactiva');
     this._activa = false;
   }
 
@@ -94,4 +103,3 @@ export class CategoriaComunidad {
     this.descripcion = descripcion;
   }
 }
-

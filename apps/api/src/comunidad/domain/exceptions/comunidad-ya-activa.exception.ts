@@ -6,9 +6,7 @@ import { DomainException } from '../../../common/exceptions/domain.exception';
  */
 export class ComunidadYaActivaException extends DomainException {
   constructor(idComunidad: string) {
-    super(
-      `La comunidad ya está activa (ID: ${idComunidad})`
-    );
+    super(`La comunidad ya está activa (ID: ${idComunidad})`);
     this.name = 'ComunidadYaActivaException';
   }
 }

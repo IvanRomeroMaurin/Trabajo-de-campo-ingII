@@ -4,14 +4,13 @@ import { ICategoriaComunidadRepository } from '../infrastructure/categoria-comun
 import { CategoriaComunidad } from '../models/categoria-comunidad.entity';
 import { CategoriaComunidadMapper } from '../infrastructure/categoria-comunidad.mapper';
 
-
 /**
  * Implementación del repositorio de categorías utilizando Prisma.
  * Gestiona la persistencia física de las categorías de comunidad.
  */
 @Injectable()
 export class PrismaCategoriaComunidadRepository implements ICategoriaComunidadRepository {
-  public constructor(private readonly prisma: PrismaService) { }
+  public constructor(private readonly prisma: PrismaService) {}
 
   /**
    * Recupera todas las categorías activas de la base de datos.
@@ -30,7 +29,9 @@ export class PrismaCategoriaComunidadRepository implements ICategoriaComunidadRe
    * @param id ID de la categoría.
    * @returns Entidad de dominio o null si no se encuentra.
    */
-  public async buscarCategoriaPorId(id: string): Promise<CategoriaComunidad | null> {
+  public async buscarCategoriaPorId(
+    id: string,
+  ): Promise<CategoriaComunidad | null> {
     const categoria = await this.prisma.categoria_comunidad.findUnique({
       where: { id_categoria_comunidad: id },
     });
@@ -42,7 +43,9 @@ export class PrismaCategoriaComunidadRepository implements ICategoriaComunidadRe
    * @param categoria Entidad de dominio con los datos.
    * @returns La entidad persistida y mapeada.
    */
-  public async crearCategoria(categoria: CategoriaComunidad): Promise<CategoriaComunidad> {
+  public async crearCategoria(
+    categoria: CategoriaComunidad,
+  ): Promise<CategoriaComunidad> {
     const persistida = await this.prisma.categoria_comunidad.create({
       data: {
         id_categoria_comunidad: categoria.id_categoria_comunidad,
@@ -57,7 +60,9 @@ export class PrismaCategoriaComunidadRepository implements ICategoriaComunidadRe
    * Actualiza una categoría existente en la base de datos.
    * @param categoria Entidad de dominio con los cambios.
    */
-  public async actualizarCategoria(categoria: CategoriaComunidad): Promise<void> {
+  public async actualizarCategoria(
+    categoria: CategoriaComunidad,
+  ): Promise<void> {
     await this.prisma.categoria_comunidad.update({
       where: { id_categoria_comunidad: categoria.id_categoria_comunidad },
       data: {

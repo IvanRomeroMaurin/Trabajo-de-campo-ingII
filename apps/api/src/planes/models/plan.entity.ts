@@ -45,27 +45,53 @@ export class PlanComunidad {
   }
 
   // Getters
-  public get id_plan_comunidad(): string { return this._id_plan_comunidad; }
-  public get precio(): number { return this._precio; }
-  public get titulo(): string { return this._titulo; }
-  public get activa(): boolean { return this._activa; }
-  public get fecha_creacion(): Date { return this._fecha_creacion; }
-  public get id_comunidad(): string { return this._id_comunidad; }
-  public get id_ciclo_pago(): string { return this._id_ciclo_pago; }
-  public get id_moneda(): string { return this._id_moneda; }
-  public get descripcion(): string | null | undefined { return this._descripcion; }
-  public get mp_preapproval_plan_id(): string | null | undefined { return this._mp_preapproval_plan_id; }
-  public get ciclo_pago(): ICicloPago | undefined { return this._ciclo_pago; }
-  public get moneda(): IMoneda | undefined { return this._moneda; }
+  public get id_plan_comunidad(): string {
+    return this._id_plan_comunidad;
+  }
+  public get precio(): number {
+    return this._precio;
+  }
+  public get titulo(): string {
+    return this._titulo;
+  }
+  public get activa(): boolean {
+    return this._activa;
+  }
+  public get fecha_creacion(): Date {
+    return this._fecha_creacion;
+  }
+  public get id_comunidad(): string {
+    return this._id_comunidad;
+  }
+  public get id_ciclo_pago(): string {
+    return this._id_ciclo_pago;
+  }
+  public get id_moneda(): string {
+    return this._id_moneda;
+  }
+  public get descripcion(): string | null | undefined {
+    return this._descripcion;
+  }
+  public get mp_preapproval_plan_id(): string | null | undefined {
+    return this._mp_preapproval_plan_id;
+  }
+  public get ciclo_pago(): ICicloPago | undefined {
+    return this._ciclo_pago;
+  }
+  public get moneda(): IMoneda | undefined {
+    return this._moneda;
+  }
 
   // Setters privados
   private set precio(value: number) {
-    if (value <= 0) throw new DomainException('El precio debe ser mayor a cero');
+    if (value <= 0)
+      throw new DomainException('El precio debe ser mayor a cero');
     this._precio = value;
   }
 
   private set titulo(value: string) {
-    if (!value || value.length > 100) throw new DomainException('El título es inválido');
+    if (!value || value.length > 100)
+      throw new DomainException('El título es inválido');
     this._titulo = value;
   }
 
@@ -165,9 +191,10 @@ export class PlanComunidad {
     if (props.precio !== undefined) this.precio = props.precio;
     if (props.titulo !== undefined) this.titulo = props.titulo;
     if (props.descripcion !== undefined) this.descripcion = props.descripcion;
-    if (props.id_ciclo_pago !== undefined) this.id_ciclo_pago = props.id_ciclo_pago;
+    if (props.id_ciclo_pago !== undefined)
+      this.id_ciclo_pago = props.id_ciclo_pago;
     if (props.id_moneda !== undefined) this.id_moneda = props.id_moneda;
-    if (props.mp_preapproval_plan_id !== undefined) this._mp_preapproval_plan_id = props.mp_preapproval_plan_id;
+    if (props.mp_preapproval_plan_id !== undefined)
+      this._mp_preapproval_plan_id = props.mp_preapproval_plan_id;
   }
 }
-

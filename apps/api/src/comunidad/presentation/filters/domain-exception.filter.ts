@@ -1,10 +1,17 @@
-import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import {
+  Catch,
+  ExceptionFilter,
+  ArgumentsHost,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ComunidadNotFoundException,
   ComunidadYaActivaException,
   ComunidadYaInactivaException,
 } from '../../domain/exceptions';
 import { CategoriaNotFoundException } from '../../../categoria-comunidad/domain/exceptions';
+
+import { Response } from 'express';
 
 @Catch(
   ComunidadNotFoundException,
@@ -15,7 +22,7 @@ import { CategoriaNotFoundException } from '../../../categoria-comunidad/domain/
 export class DomainExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
+    const response = ctx.getResponse<Response>();
 
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     const message = exception.message;

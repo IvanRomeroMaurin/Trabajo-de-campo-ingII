@@ -14,7 +14,7 @@ import { ROLES } from '../../../../common/constants/roles';
 export class PrismaComunidadRepository implements IComunidadRepository {
   public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
-  ) { }
+  ) {}
 
   /**
    * Persiste una nueva comunidad en la base de datos.
@@ -61,14 +61,15 @@ export class PrismaComunidadRepository implements IComunidadRepository {
     return ComunidadMapper.toIComunidad(persistida);
   }
 
-
   /**
    * Recupera una comunidad por su ID incluyendo su categoría.
    *
    * @param id_comunidad - UUID de la comunidad.
    * @returns IComunidad o null si no se encuentra.
    */
-  public async buscarComunidadPorId(id_comunidad: string): Promise<Comunidad | null> {
+  public async buscarComunidadPorId(
+    id_comunidad: string,
+  ): Promise<Comunidad | null> {
     const comunidad = await this.txHost.tx.comunidad.findUnique({
       where: { id_comunidad },
       include: { categoria_comunidad: true },

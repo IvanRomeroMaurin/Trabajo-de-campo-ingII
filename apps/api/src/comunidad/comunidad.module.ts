@@ -30,5 +30,4 @@ import { DomainExceptionFilter } from './presentation/filters/domain-exception.f
   ],
   exports: [IComunidadService, ComunidadOwnerGuard, MiembroModule],
 })
-export class ComunidadModule { }
-
+export class ComunidadModule {}

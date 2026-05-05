@@ -162,7 +162,6 @@ export class ComunidadController {
     return ComunidadResponseDto.fromEntity(resultado);
   }
 
-
   /**
    * Realiza una desactivación lógica de la comunidad (baja lógica).
    * Solo el creador de la comunidad puede realizar esta acción.
@@ -179,7 +178,9 @@ export class ComunidadController {
     @Param('id') id: string,
   ): Promise<{ mensaje: string }> {
     await this.comunidadService.desactivarComunidad(id);
-    return { mensaje: `La comunidad con id ${id} fue desactivada correctamente` };
+    return {
+      mensaje: `La comunidad con id ${id} fue desactivada correctamente`,
+    };
   }
 
   /**
@@ -198,6 +199,8 @@ export class ComunidadController {
     @Param('id') id: string,
   ): Promise<{ mensaje: string }> {
     await this.comunidadService.reactivarComunidad(id);
-    return { mensaje: `La comunidad con id ${id} fue reactivada correctamente` };
+    return {
+      mensaje: `La comunidad con id ${id} fue reactivada correctamente`,
+    };
   }
 }

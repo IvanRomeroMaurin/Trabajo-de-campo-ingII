@@ -30,7 +30,9 @@ export class PlanesMapper {
       id_moneda: p.id_moneda,
       descripcion: p.descripcion ?? undefined,
       mp_preapproval_plan_id: p.mp_preapproval_plan_id ?? undefined,
-      ciclo_pago: p.ciclo_pago ? PlanesMapper.toICicloPago(p.ciclo_pago) : undefined,
+      ciclo_pago: p.ciclo_pago
+        ? PlanesMapper.toICicloPago(p.ciclo_pago)
+        : undefined,
       moneda: p.moneda
         ? {
             ...p.moneda,

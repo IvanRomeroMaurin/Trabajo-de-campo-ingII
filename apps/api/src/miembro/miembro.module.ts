@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { IMiembroService } from './services/miembro.service.interface';
 import { MiembroService } from './services/miembro.service';
 
-
 import { IMiembroRepository } from './infrastructure/miembro.repository.interface';
 import { PrismaMiembroRepository } from './repositories/miembro.prisma.repository';
 import { UsuariosModule } from '../usuarios/usuarios.module';
@@ -13,7 +12,6 @@ import { UsuariosModule } from '../usuarios/usuarios.module';
 @Module({
   imports: [UsuariosModule],
   providers: [
-
     {
       provide: IMiembroService,
       useClass: MiembroService,
@@ -25,5 +23,4 @@ import { UsuariosModule } from '../usuarios/usuarios.module';
   ],
   exports: [IMiembroService],
 })
-
-export class MiembroModule { }
+export class MiembroModule {}

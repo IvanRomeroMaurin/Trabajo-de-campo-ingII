@@ -29,7 +29,7 @@ export class PlanesService implements IPlanesService {
     private readonly planesRepository: IPlanesRepository,
     private readonly mercadoPagoService: IMercadoPagoService,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
@@ -80,7 +80,6 @@ export class PlanesService implements IPlanesService {
 
       const nuevoPlan = await this.planesRepository.crearPlan(plan);
       return { plan: nuevoPlan };
-
     } catch (error) {
       this.logger.error('Error al guardar el plan en BD', error);
       try {
@@ -173,7 +172,6 @@ export class PlanesService implements IPlanesService {
       throw new BadRequestException('La frecuencia debe ser mayor a cero');
     }
   }
-
 
   /**
    * Determina el identificador único del ciclo de pago basado en la lógica de negocio.

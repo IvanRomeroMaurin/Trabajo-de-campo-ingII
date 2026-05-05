@@ -40,5 +40,4 @@ export abstract class IMiembroService {
     id_usuario: string,
     id_comunidad: string,
   ): Promise<boolean>;
-
 }

@@ -31,22 +31,38 @@ export class Miembro {
 
   // Getters
   /** ID del usuario miembro. */
-  public get id_usuario(): string { return this._id_usuario; }
+  public get id_usuario(): string {
+    return this._id_usuario;
+  }
   /** ID de la comunidad a la que pertenece. */
-  public get id_comunidad(): string { return this._id_comunidad; }
+  public get id_comunidad(): string {
+    return this._id_comunidad;
+  }
   /** ID del rol asignado dentro de la comunidad. */
-  public get id_rol_comunidad(): string { return this._id_rol_comunidad; }
+  public get id_rol_comunidad(): string {
+    return this._id_rol_comunidad;
+  }
   /** Fecha exacta en la que se unió a la comunidad. */
-  public get fecha_ingreso(): Date { return this._fecha_ingreso; }
+  public get fecha_ingreso(): Date {
+    return this._fecha_ingreso;
+  }
   /** Fecha de la última actualización de sus datos o rol. */
-  public get fecha_actualizacion(): Date | null | undefined { return this._fecha_actualizacion; }
-  
+  public get fecha_actualizacion(): Date | null | undefined {
+    return this._fecha_actualizacion;
+  }
+
   /** Información extendida de la comunidad (opcional, cargada por persistencia). */
-  public get comunidad(): IComunidad | undefined { return this._comunidad; }
+  public get comunidad(): IComunidad | undefined {
+    return this._comunidad;
+  }
   /** Información extendida del rol (opcional, cargada por persistencia). */
-  public get rol(): IRol | undefined { return this._rol; }
+  public get rol(): IRol | undefined {
+    return this._rol;
+  }
   /** Información extendida del usuario (opcional, cargada por persistencia). */
-  public get usuario(): IUsuario | undefined { return this._usuario; }
+  public get usuario(): IUsuario | undefined {
+    return this._usuario;
+  }
 
   // Setters privados
   private set id_rol_comunidad(value: string) {
@@ -110,4 +126,3 @@ export class Miembro {
     this._fecha_actualizacion = new Date();
   }
 }
-

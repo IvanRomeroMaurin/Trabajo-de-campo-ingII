@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
-import {
-  IMiembroRepository,
-} from '../infrastructure/miembro.repository.interface';
+import { IMiembroRepository } from '../infrastructure/miembro.repository.interface';
 
 import { Miembro } from '../models/miembro.entity';
 import { ROLES } from '../../common/constants/roles';
@@ -17,7 +15,7 @@ import { MiembroMapper } from '../infrastructure/miembro.mapper';
 export class PrismaMiembroRepository implements IMiembroRepository {
   public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
-  ) { }
+  ) {}
 
   /**
    * Busca un registro de membresía específico por su PK compuesta (id_usuario + id_comunidad).
@@ -120,4 +118,3 @@ export class PrismaMiembroRepository implements IMiembroRepository {
     return count > 0;
   }
 }
-

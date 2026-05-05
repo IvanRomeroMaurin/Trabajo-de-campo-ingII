@@ -4,7 +4,6 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import type { IRespuestaAuth } from '@repo/types';
 
-import { Usuario } from '../../usuarios/models/usuario.entity';
 import { IAuthService } from './auth.service.interface';
 import { RegistrarUsuarioCommand } from './auth.commands';
 import { UsuarioResponseDto } from '../../usuarios/dto/usuario-response.dto';
@@ -47,9 +46,7 @@ export class AuthService implements IAuthService {
    * @param usuario El objeto usuario (sin hash) validado por la Estrategia Local anteriormente.
    * @returns Un token JWT con la expiración que haya sido configurada en la importación.
    */
-  public iniciarSesion(
-    usuario: UsuarioResponseDto,
-  ): IRespuestaAuth {
+  public iniciarSesion(usuario: UsuarioResponseDto): IRespuestaAuth {
     const payload = {
       email: usuario.email,
       sub: usuario.id_usuario,

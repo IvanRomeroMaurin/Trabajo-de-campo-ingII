@@ -17,7 +17,10 @@ export abstract class ICategoriaComunidadService {
   /**
    * Actualiza la descripción de una categoría existente.
    */
-  public abstract actualizarDescripcion(id: string, descripcion: string): Promise<void>;
+  public abstract actualizarDescripcion(
+    id: string,
+    descripcion: string,
+  ): Promise<void>;
 
   /**
    * Desactiva una categoría.

@@ -1,7 +1,10 @@
 import crypto from 'crypto';
 import { ICategoriaComunidad } from '@repo/types';
 import { DomainException } from '../../../common/exceptions/domain.exception';
-import { ComunidadYaInactivaException, ComunidadYaActivaException } from '../exceptions';
+import {
+  ComunidadYaInactivaException,
+  ComunidadYaActivaException,
+} from '../exceptions';
 import { stringToSlug } from '../../../common/utils/slug.utils';
 
 /**
@@ -43,23 +46,41 @@ export class Comunidad {
 
   // Getters
   /** Identificador único (UUID) de la comunidad. */
-  public get id_comunidad(): string { return this._id_comunidad; }
+  public get id_comunidad(): string {
+    return this._id_comunidad;
+  }
   /** Nombre público de la comunidad. */
-  public get nombre(): string { return this._nombre; }
+  public get nombre(): string {
+    return this._nombre;
+  }
   /** Identificador amigable para URLs (slug). */
-  public get slug(): string { return this._slug; }
+  public get slug(): string {
+    return this._slug;
+  }
   /** Indica si la comunidad es visible y permite interacciones. */
-  public get activa(): boolean { return this._activa; }
+  public get activa(): boolean {
+    return this._activa;
+  }
   /** Fecha en la que la comunidad fue registrada inicialmente. */
-  public get fecha_creacion(): Date { return this._fecha_creacion; }
+  public get fecha_creacion(): Date {
+    return this._fecha_creacion;
+  }
   /** ID de la categoría a la que pertenece la comunidad. */
-  public get id_categoria_comunidad(): string { return this._id_categoria_comunidad; }
+  public get id_categoria_comunidad(): string {
+    return this._id_categoria_comunidad;
+  }
   /** Texto descriptivo sobre los objetivos o reglas de la comunidad. */
-  public get descripcion(): string | null | undefined { return this._descripcion; }
+  public get descripcion(): string | null | undefined {
+    return this._descripcion;
+  }
   /** URL de la imagen de portada o banner. */
-  public get portada_url(): string | null | undefined { return this._portada_url; }
+  public get portada_url(): string | null | undefined {
+    return this._portada_url;
+  }
   /** Datos extendidos de la categoría (opcional, cargados desde persistencia). */
-  public get categoria_comunidad(): ICategoriaComunidad | undefined { return this._categoria_comunidad; }
+  public get categoria_comunidad(): ICategoriaComunidad | undefined {
+    return this._categoria_comunidad;
+  }
 
   // Setters privados (Validación de formato/estructura)
   private set nombre(value: string) {
@@ -104,7 +125,7 @@ export class Comunidad {
   /**
    * Crea una nueva instancia de Comunidad con un slug único generado automáticamente.
    * Valida la unicidad del slug usando un callback que consulta el repositorio.
-   * 
+   *
    * @param nombre - Nombre de la comunidad.
    * @param id_categoria_comunidad - ID de la categoría inicial.
    * @param slugRepository - Callback async que retorna true si el slug ya existe.
@@ -208,7 +229,7 @@ export class Comunidad {
   /**
    * Actualiza el perfil de la comunidad aplicando las validaciones correspondientes.
    * Solo regenera el slug si el nombre ha cambiado realmente.
-   * 
+   *
    * @param nombre Nuevo nombre (opcional).
    * @param descripcion Nueva descripción (opcional).
    * @param portada_url Nueva imagen (opcional).
@@ -230,10 +251,9 @@ export class Comunidad {
 
     if (descripcion !== undefined) this._descripcion = descripcion;
     if (portada_url !== undefined) this._portada_url = portada_url;
-    
+
     if (id_categoria_comunidad) {
       this._id_categoria_comunidad = id_categoria_comunidad;
     }
   }
 }
-

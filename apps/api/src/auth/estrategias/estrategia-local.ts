@@ -35,4 +35,3 @@ export class EstrategiaLocal extends PassportStrategy(Strategy) {
     return usuario;
   }
 }
-

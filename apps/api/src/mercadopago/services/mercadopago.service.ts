@@ -8,7 +8,6 @@ import {
 
 @Injectable()
 export class MercadoPagoService implements IMercadoPagoService {
-
   private readonly logger = new Logger(MercadoPagoService.name);
   private readonly preApprovalPlan: PreApprovalPlan;
 

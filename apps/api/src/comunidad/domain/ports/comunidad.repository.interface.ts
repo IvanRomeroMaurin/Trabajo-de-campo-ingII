@@ -22,7 +22,9 @@ export abstract class IComunidadRepository {
    * @param id_comunidad - UUID de la comunidad.
    * @returns La comunidad encontrada o null si no existe.
    */
-  public abstract buscarComunidadPorId(id_comunidad: string): Promise<Comunidad | null>;
+  public abstract buscarComunidadPorId(
+    id_comunidad: string,
+  ): Promise<Comunidad | null>;
 
   /**
    * Busca una comunidad por su slug (URL friendly name).
@@ -30,7 +32,9 @@ export abstract class IComunidadRepository {
    * @param slug - El slug único de la comunidad.
    * @returns La comunidad encontrada con su categoría o null.
    */
-  public abstract buscarComunidadPorSlug(slug: string): Promise<Comunidad | null>;
+  public abstract buscarComunidadPorSlug(
+    slug: string,
+  ): Promise<Comunidad | null>;
 
   /**
    * Recupera todas las comunidades que están marcadas como activas.
@@ -53,10 +57,9 @@ export abstract class IComunidadRepository {
   /**
    * Comprueba si un slug ya está siendo utilizado por alguna comunidad existente.
    * Útil para validaciones de unicidad de forma eficiente (solo conteo).
-   * 
+   *
    * @param slug - El slug a verificar.
    * @returns True si el slug ya existe, false en caso contrario.
    */
   public abstract verificarSiSlugEstaEnUso(slug: string): Promise<boolean>;
 }
-

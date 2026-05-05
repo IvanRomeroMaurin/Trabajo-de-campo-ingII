@@ -33,7 +33,11 @@ export abstract class IUsuariosService {
   /**
    * Actualiza los datos personales de un usuario.
    */
-  public abstract actualizarDatosPersonales(id: string, nombre: string, apellido: string): Promise<void>;
+  public abstract actualizarDatosPersonales(
+    id: string,
+    nombre: string,
+    apellido: string,
+  ): Promise<void>;
 
   /**
    * Desactiva un usuario.

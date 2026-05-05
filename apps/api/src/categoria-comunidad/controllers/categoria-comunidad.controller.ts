@@ -17,7 +17,6 @@ export class CategoriaComunidadController {
   @Get()
   public async getCategorias(): Promise<CategoriaComunidadResponseDto[]> {
     const categorias = await this.service.getCategorias();
-    return categorias.map(CategoriaComunidadResponseDto.fromEntity);
+    return categorias.map((c) => CategoriaComunidadResponseDto.fromEntity(c));
   }
 }
-

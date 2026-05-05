@@ -16,17 +16,23 @@ export abstract class ICategoriaComunidadRepository {
    * @param id ID de la categoría.
    * @returns La entidad encontrada o null.
    */
-  public abstract buscarCategoriaPorId(id: string): Promise<CategoriaComunidad | null>;
+  public abstract buscarCategoriaPorId(
+    id: string,
+  ): Promise<CategoriaComunidad | null>;
 
   /**
    * Registra una nueva categoría en la base de datos.
    */
-  public abstract crearCategoria(categoria: CategoriaComunidad): Promise<CategoriaComunidad>;
+  public abstract crearCategoria(
+    categoria: CategoriaComunidad,
+  ): Promise<CategoriaComunidad>;
 
   /**
    * Actualiza una categoría existente en la base de datos.
    */
-  public abstract actualizarCategoria(categoria: CategoriaComunidad): Promise<void>;
+  public abstract actualizarCategoria(
+    categoria: CategoriaComunidad,
+  ): Promise<void>;
 
   /**
    * Verifica si una categoría existe en el sistema.
@@ -35,4 +41,3 @@ export abstract class ICategoriaComunidadRepository {
    */
   public abstract existeCategoria(id: string): Promise<boolean>;
 }
-

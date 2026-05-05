@@ -3,7 +3,6 @@ import type { IRespuestaAuth } from '@repo/types';
 import { RegistrarUsuarioCommand } from './auth.commands';
 import { UsuarioResponseDto } from '../../usuarios/dto/usuario-response.dto';
 
-
 /**
  * Interfaz que define el contrato para el servicio de Autenticación.
  */
@@ -26,9 +25,7 @@ export abstract class IAuthService {
    * @param usuario - El objeto del usuario autenticado (sin hash).
    * @returns La respuesta de autenticación con el token y datos del usuario.
    */
-  public abstract iniciarSesion(
-    usuario: UsuarioResponseDto,
-  ): IRespuestaAuth;
+  public abstract iniciarSesion(usuario: UsuarioResponseDto): IRespuestaAuth;
 
   /**
    * Registra un nuevo usuario en el sistema.

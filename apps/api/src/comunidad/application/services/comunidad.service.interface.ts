@@ -63,7 +63,6 @@ export abstract class IComunidadService {
     command: ActualizarComunidadCommand,
   ): Promise<Comunidad>;
 
-
   /**
    * Desactiva una comunidad realizando una baja lógica.
    *
@@ -81,5 +80,4 @@ export abstract class IComunidadService {
    * @throws {NotFoundException} Si la comunidad no existe.
    */
   abstract reactivarComunidad(id: string): Promise<void>;
-
 }

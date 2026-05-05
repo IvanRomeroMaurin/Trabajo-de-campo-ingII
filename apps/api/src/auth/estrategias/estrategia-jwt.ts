@@ -30,9 +30,7 @@ export class EstrategiaJwt extends PassportStrategy(Strategy) {
    * Lo que devuelva esta función, se asignará sin problemas en el objeto `req.user` de los Controladores.
    * @param payload Contenido desencriptado de las tripas del Token.
    */
-  public async validate(
-    payload: IJwtPayload,
-  ): Promise<UsuarioResponseDto> {
+  public async validate(payload: IJwtPayload): Promise<UsuarioResponseDto> {
     const usuario = await this.usuariosService.buscarPorId(payload.sub);
 
     if (!usuario) {
@@ -42,4 +40,3 @@ export class EstrategiaJwt extends PassportStrategy(Strategy) {
     return UsuarioResponseDto.fromEntity(usuario);
   }
 }
-

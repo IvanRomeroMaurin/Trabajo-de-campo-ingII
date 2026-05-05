@@ -3,16 +3,13 @@ import {
   InternalServerErrorException,
   Logger,
   HttpException,
-  NotFoundException,
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
 import { ComunidadNotFoundException } from '../../domain/exceptions';
 import { IMiembroService } from '../../../miembro/services/miembro.service.interface';
 import { Comunidad } from '../../domain/entities/comunidad.entity';
 import { ROLES } from '../../../common/constants/roles';
-import {
-  IComunidadRepository,
-} from '../../domain/ports/comunidad.repository.interface';
+import { IComunidadRepository } from '../../domain/ports/comunidad.repository.interface';
 import type {
   CrearComunidadCommand,
   ActualizarComunidadCommand,
@@ -33,7 +30,7 @@ export class ComunidadService implements IComunidadService {
     private readonly comunidadRepository: IComunidadRepository,
     private readonly miembroService: IMiembroService,
     private readonly categoriaComunidadService: ICategoriaComunidadService,
-  ) { }
+  ) {}
 
   /**
    * Crea una nueva comunidad e inserta al creador como miembro con el rol de CREADOR.
@@ -50,7 +47,6 @@ export class ComunidadService implements IComunidadService {
     command: CrearComunidadCommand,
     idCreador: string,
   ): Promise<Comunidad> {
-
     await this.categoriaComunidadService.validarExistencia(
       command.id_categoria_comunidad,
     );
@@ -64,7 +60,8 @@ export class ComunidadService implements IComunidadService {
         command.portada_url,
       );
 
-      const nuevaComunidad = await this.comunidadRepository.crearComunidad(comunidad);
+      const nuevaComunidad =
+        await this.comunidadRepository.crearComunidad(comunidad);
 
       await this.miembroService.agregarMiembro({
         id_usuario: idCreador,
@@ -125,7 +122,8 @@ export class ComunidadService implements IComunidadService {
    * @throws {NotFoundException} Si no se encuentra ninguna comunidad con el slug proporcionado.
    */
   public async getComunidadPorSlug(slug: string): Promise<Comunidad> {
-    const comunidad = await this.comunidadRepository.buscarComunidadPorSlug(slug);
+    const comunidad =
+      await this.comunidadRepository.buscarComunidadPorSlug(slug);
     if (!comunidad) {
       throw new ComunidadNotFoundException(slug, 'slug');
     }
@@ -185,7 +183,6 @@ export class ComunidadService implements IComunidadService {
     comunidad.desactivarComunidad();
     await this.comunidadRepository.actualizarComunidad(comunidad);
   }
-
 
   /**
    * Reactiva una comunidad que fue previamente desactivada (activa: true).

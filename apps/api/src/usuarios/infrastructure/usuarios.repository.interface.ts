@@ -29,4 +29,3 @@ export abstract class IUsuariosRepository {
    */
   public abstract buscarUsuarioPorId(id: string): Promise<Usuario | null>;
 }
-

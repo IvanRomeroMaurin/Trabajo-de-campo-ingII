@@ -22,7 +22,9 @@ export abstract class IPlanesRepository {
    * @param id_plan - Identificador del plan.
    * @returns El plan encontrado o null.
    */
-  public abstract buscarPlanPorId(id_plan: string): Promise<PlanComunidad | null>;
+  public abstract buscarPlanPorId(
+    id_plan: string,
+  ): Promise<PlanComunidad | null>;
 
   /**
    * Obtiene todos los planes de suscripción asociados a una comunidad específica.
@@ -42,4 +44,3 @@ export abstract class IPlanesRepository {
    */
   public abstract buscarCiclosDePago(): Promise<CicloPago[]>;
 }
-

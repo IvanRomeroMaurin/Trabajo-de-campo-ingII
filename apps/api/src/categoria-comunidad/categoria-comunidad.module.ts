@@ -23,5 +23,4 @@ import { CategoriaNotFoundException } from './domain/exceptions';
   ],
   exports: [ICategoriaComunidadService, CategoriaNotFoundException],
 })
-
-export class CategoriaComunidadModule { }
+export class CategoriaComunidadModule {}

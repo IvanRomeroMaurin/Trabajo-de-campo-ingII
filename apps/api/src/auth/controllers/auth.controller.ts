@@ -37,7 +37,11 @@ export class AuthController {
    * @returns El usuario recién creado guardado en la base de datos.
    */
   @ApiOperation({ summary: 'Registra un nuevo usuario' })
-  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.', type: UsuarioResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Usuario registrado exitosamente.',
+    type: UsuarioResponseDto,
+  })
   @ApiResponse({
     status: 409,
     description: 'El correo electrónico ya está en uso.',
@@ -90,7 +94,11 @@ export class AuthController {
    * @param req Objeto Request de Express donde el guard inyectó al usuario validado.
    */
   @ApiOperation({ summary: 'Obtiene el perfil del usuario autenticado' })
-  @ApiResponse({ status: 200, description: 'Datos del perfil.', type: UsuarioResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Datos del perfil.',
+    type: UsuarioResponseDto,
+  })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get('perfil')
@@ -100,4 +108,3 @@ export class AuthController {
     return req.user;
   }
 }
-

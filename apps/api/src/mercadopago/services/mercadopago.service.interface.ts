@@ -35,4 +35,3 @@ export abstract class IMercadoPagoService {
     mp_preapproval_plan_id: string,
   ): Promise<void>;
 }
-

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
 import { ICategoriaComunidadRepository } from '../infrastructure/categoria-comunidad.repository.interface';
 import { ICategoriaComunidadService } from './categoria-comunidad.service.interface';
@@ -11,10 +11,9 @@ import { CategoriaNotFoundException } from '../domain/exceptions';
  */
 @Injectable()
 export class CategoriaComunidadService implements ICategoriaComunidadService {
-
   public constructor(
     private readonly repository: ICategoriaComunidadRepository,
-  ) { }
+  ) {}
 
   /**
    * Obtiene todas las categorías marcadas como activas en el sistema.
@@ -42,7 +41,10 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
    * @throws NotFoundException si el ID no existe.
    */
   @Transactional()
-  public async actualizarDescripcion(id: string, descripcion: string): Promise<void> {
+  public async actualizarDescripcion(
+    id: string,
+    descripcion: string,
+  ): Promise<void> {
     const categoria = await this.obtenerPorIdOError(id);
     categoria.actualizarDescripcion(descripcion);
     await this.repository.actualizarCategoria(categoria);
@@ -84,4 +86,3 @@ export class CategoriaComunidadService implements ICategoriaComunidadService {
     return categoria;
   }
 }
-

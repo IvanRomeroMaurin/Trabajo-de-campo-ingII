@@ -14,7 +14,7 @@ import { PlanesMapper } from '../infrastructure/planes.mapper';
 export class PrismaPlanesRepository implements IPlanesRepository {
   public constructor(
     private readonly txHost: TransactionHost<TransactionalAdapterPrisma>,
-  ) { }
+  ) {}
 
   /**
    * Registra un nuevo plan de suscripción en la base de datos.

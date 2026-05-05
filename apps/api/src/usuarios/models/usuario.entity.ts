@@ -37,32 +37,52 @@ export class Usuario {
 
   // Getters
   /** Identificador único del usuario (UUID). */
-  public get id_usuario(): string { return this._id_usuario; }
+  public get id_usuario(): string {
+    return this._id_usuario;
+  }
   /** Nombre del usuario. */
-  public get nombre(): string { return this._nombre; }
+  public get nombre(): string {
+    return this._nombre;
+  }
   /** Apellido del usuario. */
-  public get apellido(): string { return this._apellido; }
+  public get apellido(): string {
+    return this._apellido;
+  }
   /** Correo electrónico único. */
-  public get email(): string { return this._email; }
+  public get email(): string {
+    return this._email;
+  }
   /** Fecha en la que el usuario se registró en el sistema. */
-  public get fecha_alta(): Date { return this._fecha_alta; }
+  public get fecha_alta(): Date {
+    return this._fecha_alta;
+  }
   /** Indica si la cuenta del usuario está habilitada. */
-  public get activa(): boolean { return this._activa; }
+  public get activa(): boolean {
+    return this._activa;
+  }
   /** Hash de la contraseña (sensible, solo uso interno). */
-  public get password_hash(): string | undefined { return this._password_hash; }
+  public get password_hash(): string | undefined {
+    return this._password_hash;
+  }
   /** Listado de membresías a comunidades (opcional). */
-  public get miembro_comunidad(): IMiembroComunidad[] | undefined { return this._miembro_comunidad; }
+  public get miembro_comunidad(): IMiembroComunidad[] | undefined {
+    return this._miembro_comunidad;
+  }
   /** Listado de suscripciones del usuario (opcional). */
-  public get suscripcion(): ISuscripcion[] | undefined { return this._suscripcion; }
+  public get suscripcion(): ISuscripcion[] | undefined {
+    return this._suscripcion;
+  }
 
   // Setters privados con validación
   private set nombre(value: string) {
-    if (!value || value.length > 50) throw new DomainException('Nombre inválido');
+    if (!value || value.length > 50)
+      throw new DomainException('Nombre inválido');
     this._nombre = value;
   }
 
   private set apellido(value: string) {
-    if (!value || value.length > 50) throw new DomainException('Apellido inválido');
+    if (!value || value.length > 50)
+      throw new DomainException('Apellido inválido');
     this._apellido = value;
   }
 
@@ -158,8 +178,8 @@ export class Usuario {
    * @param nuevoHash Hash ya encriptado.
    */
   public cambiarPassword(nuevoHash: string): void {
-    if (!nuevoHash) throw new DomainException('El password hash es obligatorio');
+    if (!nuevoHash)
+      throw new DomainException('El password hash es obligatorio');
     this._password_hash = nuevoHash;
   }
 }
-

@@ -19,6 +19,7 @@ import { IPlanesService } from '../services/planes.service.interface';
 import { CrearPlanDto } from '../dto/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
 import { PlanResponseDto } from '../dto/plan-response.dto';
+import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
@@ -54,10 +55,10 @@ export class PlanesController {
       moneda: dto.moneda,
       id_comunidad: dto.id_comunidad,
     });
-    
+
     return {
       ...resultado,
-      plan: PlanResponseDto.fromEntity(resultado.plan as any),
+      plan: PlanResponseDto.fromEntity(resultado.plan as PlanComunidad),
     };
   }
 
@@ -82,9 +83,7 @@ export class PlanesController {
    * @param id - ID del plan.
    */
   @Get(':id')
-  public async getPlan(
-    @Param('id') id: string,
-  ): Promise<PlanResponseDto> {
+  public async getPlan(@Param('id') id: string): Promise<PlanResponseDto> {
     const resultado = await this.planesService.getPlan(id);
     return PlanResponseDto.fromEntity(resultado);
   }
