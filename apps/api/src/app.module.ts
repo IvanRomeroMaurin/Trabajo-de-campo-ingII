@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { validationSchema } from './common/config/env.validation';
 import { ClsModule } from 'nestjs-cls';
 import { ClsPluginTransactional } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
@@ -18,6 +19,7 @@ import { CategoriaComunidadModule } from './categoria-comunidad/categoria-comuni
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      validationSchema,
     }),
     PrismaModule,
     ClsModule.forRoot({
