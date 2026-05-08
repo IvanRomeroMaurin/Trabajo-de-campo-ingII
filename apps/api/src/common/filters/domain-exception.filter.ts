@@ -8,8 +8,8 @@ import {
   ComunidadNotFoundException,
   ComunidadYaActivaException,
   ComunidadYaInactivaException,
-} from '../../domain/exceptions';
-import { CategoriaNotFoundException } from '../../../categoria-comunidad/domain/exceptions';
+} from '../../comunidad/domain/exceptions';
+import { CategoriaNotFoundException } from '../../categoria-comunidad/domain/exceptions';
 
 import { Response } from 'express';
 

@@ -8,7 +8,7 @@ import { CategoriaComunidadModule } from '../categoria-comunidad/categoria-comun
 import { IComunidadRepository } from './domain/ports/comunidad.repository.interface';
 import { PrismaComunidadRepository } from './infrastructure/persistence/repositories/comunidad.prisma.repository';
 import { ComunidadOwnerGuard } from '../common/guards/comunidad-owner.guard';
-import { DomainExceptionFilter } from './presentation/filters/domain-exception.filter';
+import { DomainExceptionFilter } from '../common/filters/domain-exception.filter';
 
 @Module({
   imports: [MiembroModule, CategoriaComunidadModule],

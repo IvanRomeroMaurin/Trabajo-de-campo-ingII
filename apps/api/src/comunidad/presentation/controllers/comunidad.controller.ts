@@ -23,7 +23,7 @@ import { ActualizarComunidadDto } from '../dtos/actualizar-comunidad.dto';
 import type { IUsuario } from '@repo/types';
 import { ComunidadResponseDto } from '../dtos/comunidad-response.dto';
 import { ComunidadOwnerGuard } from '../../../common/guards/comunidad-owner.guard';
-import { CurrentUser } from '../decorators/current-user.decorator';
+import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 
 /**
  * Controlador de Comunidades.

@@ -21,7 +21,7 @@ import { ICreatePlanResponse } from '@repo/types';
 import { PlanResponseDto } from '../dto/plan-response.dto';
 import { PlanComunidad } from '../models/plan.entity';
 import { CicloPago } from '../models/ciclo-pago.entity';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
 
 @ApiTags('Planes')
