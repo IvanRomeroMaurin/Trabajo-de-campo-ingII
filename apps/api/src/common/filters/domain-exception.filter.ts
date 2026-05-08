@@ -2,45 +2,19 @@ import {
   Catch,
   ExceptionFilter,
   ArgumentsHost,
-  HttpStatus,
 } from '@nestjs/common';
-import {
-  ComunidadNotFoundException,
-  ComunidadYaActivaException,
-  ComunidadYaInactivaException,
-} from '../../comunidad/domain/exceptions';
-import { CategoriaNotFoundException } from '../../categoria-comunidad/domain/exceptions';
-
+import { DomainException } from '../exceptions/domain.exception';
 import { Response } from 'express';
 
-@Catch(
-  ComunidadNotFoundException,
-  CategoriaNotFoundException,
-  ComunidadYaActivaException,
-  ComunidadYaInactivaException,
-)
+@Catch(DomainException)
 export class DomainExceptionFilter implements ExceptionFilter {
-  catch(exception: Error, host: ArgumentsHost) {
+  catch(exception: DomainException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-    const message = exception.message;
-
-    if (exception instanceof ComunidadNotFoundException) {
-      statusCode = HttpStatus.NOT_FOUND;
-    } else if (exception instanceof CategoriaNotFoundException) {
-      statusCode = HttpStatus.BAD_REQUEST;
-    } else if (
-      exception instanceof ComunidadYaActivaException ||
-      exception instanceof ComunidadYaInactivaException
-    ) {
-      statusCode = HttpStatus.CONFLICT;
-    }
-
-    response.status(statusCode).json({
-      statusCode,
-      message,
+    response.status(exception.statusCode).json({
+      statusCode: exception.statusCode,
+      message: exception.message,
       timestamp: new Date().toISOString(),
     });
   }
