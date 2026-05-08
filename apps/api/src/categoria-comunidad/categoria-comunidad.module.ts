@@ -21,6 +21,6 @@ import { CategoriaNotFoundException } from './domain/exceptions';
       useClass: PrismaCategoriaComunidadRepository,
     },
   ],
-  exports: [ICategoriaComunidadService, CategoriaNotFoundException],
+  exports: [ICategoriaComunidadService],
 })
 export class CategoriaComunidadModule {}
