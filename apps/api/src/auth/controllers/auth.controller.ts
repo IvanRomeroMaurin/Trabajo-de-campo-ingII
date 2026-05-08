@@ -85,7 +85,7 @@ export class AuthController {
   public iniciarSesion(
     @CurrentUser() usuario: UsuarioResponseDto,
   ): IRespuestaAuth {
-    // El AuthGuard('local') valida las credenciales y añade el usuario a req.user
+    // LocalAuthGuard valida las credenciales e inyecta el usuario vía @CurrentUser()
     return this.authService.iniciarSesion(usuario);
   }
 

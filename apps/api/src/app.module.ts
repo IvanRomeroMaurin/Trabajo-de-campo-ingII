@@ -4,8 +4,7 @@ import { validationSchema } from './common/config/env.validation';
 import { ClsModule } from 'nestjs-cls';
 import { ClsPluginTransactional } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
@@ -41,7 +40,6 @@ import { CategoriaComunidadModule } from './categoria-comunidad/categoria-comuni
     CategoriaComunidadModule,
   ],
 
-  controllers: [AppController],
-  providers: [AppService],
+
 })
 export class AppModule {}
