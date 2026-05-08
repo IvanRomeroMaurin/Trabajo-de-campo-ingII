@@ -6,7 +6,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Req,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -15,7 +14,8 @@ import {
   ApiBearerAuth,
   ApiBody,
 } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { IAuthService } from '../services/auth.service.interface';
 import { RegistrarUsuarioDto } from '../dto/registrar-usuario.dto';
@@ -80,13 +80,13 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('iniciar-sesion')
   public iniciarSesion(
-    @Req() req: { user: UsuarioResponseDto },
+    @CurrentUser() usuario: UsuarioResponseDto,
   ): IRespuestaAuth {
     // El AuthGuard('local') valida las credenciales y añade el usuario a req.user
-    return this.authService.iniciarSesion(req.user);
+    return this.authService.iniciarSesion(usuario);
   }
 
   /**
@@ -104,8 +104,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('perfil')
   public obtenerPerfil(
-    @Req() req: { user: UsuarioResponseDto },
+    @CurrentUser() usuario: UsuarioResponseDto,
   ): UsuarioResponseDto {
-    return req.user;
+    return usuario;
   }
 }
