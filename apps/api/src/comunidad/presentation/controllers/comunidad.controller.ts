@@ -16,7 +16,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
 import { IComunidadService } from '../../application/services/comunidad.service.interface';
 import { CrearComunidadDto } from '../dtos/crear-comunidad.dto';
 import { ActualizarComunidadDto } from '../dtos/actualizar-comunidad.dto';
@@ -54,7 +54,7 @@ export class ComunidadController {
   })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Post()
   public async crearComunidad(
     @Body() dto: CrearComunidadDto,
@@ -95,7 +95,7 @@ export class ComunidadController {
    * @param req - Objeto de petición que contiene el usuario autenticado.
    * @returns Un arreglo con las comunidades donde el usuario es el Creador.
    */
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Get('mis-comunidades')
   public async getMisComunidades(
     @CurrentUser() usuario: IUsuario,
@@ -147,7 +147,7 @@ export class ComunidadController {
    * @throws {NotFoundException} Si la comunidad no existe.
    */
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
+  @UseGuards(JwtAuthGuard, ComunidadOwnerGuard)
   @Patch(':id')
   public async actualizarComunidad(
     @Param('id') id: string,
@@ -171,7 +171,7 @@ export class ComunidadController {
    * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
    */
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
+  @UseGuards(JwtAuthGuard, ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   public async desactivarComunidad(
@@ -192,7 +192,7 @@ export class ComunidadController {
    * @throws {ForbiddenException} Si el usuario no es el dueño de la comunidad.
    */
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'), ComunidadOwnerGuard)
+  @UseGuards(JwtAuthGuard, ComunidadOwnerGuard)
   @HttpCode(HttpStatus.OK)
   @Post(':id/reactivar')
   public async reactivarComunidad(

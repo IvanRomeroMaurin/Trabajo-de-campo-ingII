@@ -16,6 +16,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { IAuthService } from '../services/auth.service.interface';
 import { RegistrarUsuarioDto } from '../dto/registrar-usuario.dto';
 
@@ -100,7 +101,7 @@ export class AuthController {
     type: UsuarioResponseDto,
   })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Get('perfil')
   public obtenerPerfil(
     @Req() req: { user: UsuarioResponseDto },
