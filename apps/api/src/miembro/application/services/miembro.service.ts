@@ -1,17 +1,19 @@
-import {
-  Injectable,
-  NotFoundException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
-import { IMiembroRepository } from '../infrastructure/miembro.repository.interface';
+import { IMiembroRepository } from '../../domain/ports/miembro.repository.interface';
 import { IMiembroService } from './miembro.service.interface';
-import { IUsuariosService } from '../../usuarios/services/usuarios.service.interface';
-import { Miembro } from '../models/miembro.entity';
+import { IUsuariosService } from '../../../usuarios/services/usuarios.service.interface';
+import { Miembro } from '../../domain/entities/miembro.entity';
 import type {
   AgregarMiembroCommand,
   CambiarRolMiembroCommand,
-} from './miembro.commands';
+} from '../commands/miembro.commands';
+import {
+  MiembroNoEncontradoException,
+  MiembroYaExistenteException,
+  RolNoEncontradoException,
+  ComunidadNoEncontradaException,
+} from '../../domain/exceptions';
 
 /**
  * Implementación del servicio de gestión de miembros.
@@ -26,8 +28,7 @@ export class MiembroService implements IMiembroService {
 
   /**
    * Une a un usuario a una comunidad.
-   * Valida la existencia del usuario y la comunidad antes de proceder.
-   * Si el usuario ya era miembro, el dominio gestionará su actualización.
+   * Valida la existencia del usuario, la comunidad y que no sea ya miembro.
    */
   @Transactional()
   public async agregarMiembro(command: AgregarMiembroCommand): Promise<void> {
@@ -35,11 +36,11 @@ export class MiembroService implements IMiembroService {
 
     const usuario = await this.usuariosService.buscarPorId(id_usuario);
     if (!usuario) {
-      throw new NotFoundException('Usuario no encontrado');
+      throw new MiembroNoEncontradoException(id_usuario, id_comunidad);
     }
 
     if (!(await this.repository.existeComunidad(id_comunidad))) {
-      throw new NotFoundException('Comunidad no encontrada');
+      throw new ComunidadNoEncontradaException(id_comunidad);
     }
 
     const existe = await this.repository.buscarMiembroPorId(
@@ -47,7 +48,7 @@ export class MiembroService implements IMiembroService {
       id_comunidad,
     );
     if (existe) {
-      throw new ConflictException('El usuario ya es miembro de esta comunidad');
+      throw new MiembroYaExistenteException(id_usuario, id_comunidad);
     }
 
     const miembro = Miembro.crearMiembro({
@@ -74,11 +75,11 @@ export class MiembroService implements IMiembroService {
       id_comunidad,
     );
     if (!miembro) {
-      throw new NotFoundException(`El usuario no es miembro de esta comunidad`);
+      throw new MiembroNoEncontradoException(id_usuario, id_comunidad);
     }
 
     if (!(await this.repository.existeRol(id_rol_nuevo))) {
-      throw new NotFoundException(`El rol solicitado no existe`);
+      throw new RolNoEncontradoException(id_rol_nuevo);
     }
 
     miembro.cambiarRol(id_rol_nuevo);

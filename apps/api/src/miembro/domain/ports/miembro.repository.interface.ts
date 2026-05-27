@@ -1,4 +1,4 @@
-import { Miembro } from '../models/miembro.entity';
+import { Miembro } from '../entities/miembro.entity';
 
 /**
  * Interfaz que define el contrato para el acceso a datos relacionados con miembros de comunidades.

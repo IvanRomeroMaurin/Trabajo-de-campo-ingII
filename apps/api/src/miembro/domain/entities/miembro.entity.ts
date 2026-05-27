@@ -1,5 +1,6 @@
 import { IComunidad, IRol, IUsuario } from '@repo/types';
-import { DomainException } from '../../common/exceptions/domain.exception';
+import { DomainException } from '../../../common/exceptions/domain.exception';
+import { RolYaAsignadoException } from '../exceptions';
 
 /**
  * Entidad de Dominio que representa la pertenencia de un Usuario a una Comunidad.
@@ -118,9 +119,14 @@ export class Miembro {
   }
 
   // Métodos de Comportamiento
+  /**
+   * Cambia el rol del miembro dentro de la comunidad.
+   * Lanza excepción de dominio si el nuevo rol es igual al actual.
+   * @param nuevoRolId ID del nuevo rol a asignar.
+   */
   public cambiarRol(nuevoRolId: string): void {
     if (this._id_rol_comunidad === nuevoRolId) {
-      throw new DomainException('El miembro ya tiene asignado ese rol');
+      throw new RolYaAsignadoException(nuevoRolId);
     }
     this._id_rol_comunidad = nuevoRolId;
     this._fecha_actualizacion = new Date();

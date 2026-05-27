@@ -1,7 +1,7 @@
 import {
   AgregarMiembroCommand,
   CambiarRolMiembroCommand,
-} from './miembro.commands';
+} from '../commands/miembro.commands';
 
 /**
  * Interfaz que define las operaciones de negocio para la gestión de miembros de comunidades.

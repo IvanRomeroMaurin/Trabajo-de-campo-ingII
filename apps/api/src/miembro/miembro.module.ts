@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { IMiembroService } from './services/miembro.service.interface';
-import { MiembroService } from './services/miembro.service';
-
-import { IMiembroRepository } from './infrastructure/miembro.repository.interface';
-import { PrismaMiembroRepository } from './repositories/miembro.prisma.repository';
+import { APP_FILTER } from '@nestjs/core';
+import { DomainExceptionFilter } from '../common/filters/domain-exception.filter';
+import { IMiembroService } from './application/services/miembro.service.interface';
+import { MiembroService } from './application/services/miembro.service';
+import { IMiembroRepository } from './domain/ports/miembro.repository.interface';
+import { PrismaMiembroRepository } from './infrastructure/persistence/repositories/miembro.prisma.repository';
 import { UsuariosModule } from '../usuarios/usuarios.module';
 import { PrismaModule } from '../prisma/prisma.module';
 
@@ -13,6 +14,10 @@ import { PrismaModule } from '../prisma/prisma.module';
 @Module({
   imports: [UsuariosModule, PrismaModule],
   providers: [
+    {
+      provide: APP_FILTER,
+      useClass: DomainExceptionFilter,
+    },
     {
       provide: IMiembroService,
       useClass: MiembroService,

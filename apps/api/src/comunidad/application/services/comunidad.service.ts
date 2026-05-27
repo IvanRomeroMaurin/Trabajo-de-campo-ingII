@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Transactional } from '@nestjs-cls/transactional';
 import { ComunidadNotFoundException } from '../../domain/exceptions';
-import { IMiembroService } from '../../../miembro/services/miembro.service.interface';
+import { IMiembroService } from '../../../miembro/application/services/miembro.service.interface';
 import { Comunidad } from '../../domain/entities/comunidad.entity';
 import { ROLES } from '../../../common/constants/roles';
 import { IComunidadRepository } from '../../domain/ports/comunidad.repository.interface';
