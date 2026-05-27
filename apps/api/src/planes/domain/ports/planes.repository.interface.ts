@@ -1,5 +1,5 @@
-import { PlanComunidad } from '../models/plan.entity';
-import { CicloPago } from '../models/ciclo-pago.entity';
+import { PlanComunidad } from '../entities/plan.entity';
+import { CicloPago } from '../entities/ciclo-pago.entity';
 
 /**
  * Interfaz que define el contrato para el acceso a datos de Planes.

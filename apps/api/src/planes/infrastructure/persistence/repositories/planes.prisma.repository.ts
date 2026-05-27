@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionHost } from '@nestjs-cls/transactional';
 import { TransactionalAdapterPrisma } from '@nestjs-cls/transactional-adapter-prisma';
-import { PlanComunidad } from '../models/plan.entity';
-import { CicloPago } from '../models/ciclo-pago.entity';
-import { IPlanesRepository } from '../infrastructure/planes.repository.interface';
-import { PlanesMapper } from '../infrastructure/planes.mapper';
+import { PlanComunidad } from '../../../domain/entities/plan.entity';
+import { CicloPago } from '../../../domain/entities/ciclo-pago.entity';
+import { IPlanesRepository } from '../../../domain/ports/planes.repository.interface';
+import { PlanesMapper } from '../mappers/planes.mapper';
 
 /**
  * Implementación de PlanesRepository usando Prisma.

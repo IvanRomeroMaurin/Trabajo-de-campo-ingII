@@ -3,19 +3,19 @@ import {
   Logger,
   BadRequestException,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transactional } from '@nestjs-cls/transactional';
-import { IMercadoPagoService } from '../../mercadopago/services/mercadopago.service.interface';
-import type { CrearPlanCommand } from './planes.commands';
+import { IMercadoPagoService } from '../../../mercadopago/services/mercadopago.service.interface';
+import type { CrearPlanCommand } from '../commands/planes.commands';
 import type { ICreatePlanResponse } from '@repo/types';
 
-import { PlanComunidad } from '../models/plan.entity';
-import { CicloPago } from '../models/ciclo-pago.entity';
-import { MONEDAS, MAP_CICLOS_PAGO } from '../../common/constants/planes';
-import { IPlanesRepository } from '../infrastructure/planes.repository.interface';
+import { PlanComunidad } from '../../domain/entities/plan.entity';
+import { CicloPago } from '../../domain/entities/ciclo-pago.entity';
+import { MONEDAS, MAP_CICLOS_PAGO } from '../../../common/constants/planes';
+import { IPlanesRepository } from '../../domain/ports/planes.repository.interface';
 import { IPlanesService } from './planes.service.interface';
+import { PlanNotFoundException } from '../../domain/exceptions';
 
 /**
  * Servicio encargado de la lógica de negocio para la gestión de Planes.
@@ -29,7 +29,7 @@ export class PlanesService implements IPlanesService {
     private readonly planesRepository: IPlanesRepository,
     private readonly mercadoPagoService: IMercadoPagoService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   /**
    * Registra un nuevo plan de suscripción asociado a una comunidad.
@@ -81,7 +81,6 @@ export class PlanesService implements IPlanesService {
       const nuevoPlan = await this.planesRepository.crearPlan(plan);
       return { plan: nuevoPlan };
     } catch (error) {
-      this.logger.error('Error al guardar el plan en BD', error);
       try {
         await this.mercadoPagoService.cancelPreapprovalPlan(
           mp_preapproval_plan_id,
@@ -124,11 +123,11 @@ export class PlanesService implements IPlanesService {
    *
    * @param id - Identificador único del plan.
    * @returns La entidad PlanComunidad encontrada.
-   * @throws {NotFoundException} Si el plan no existe.
+   * @throws {PlanNotFoundException} Si el plan no existe.
    */
   public async getPlan(id: string): Promise<PlanComunidad> {
     const plan = await this.planesRepository.buscarPlanPorId(id);
-    if (!plan) throw new NotFoundException('Plan no encontrado');
+    if (!plan) throw new PlanNotFoundException(id);
     return plan;
   }
 

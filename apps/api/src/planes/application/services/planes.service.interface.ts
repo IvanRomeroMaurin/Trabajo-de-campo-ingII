@@ -1,8 +1,8 @@
-import type { CrearPlanCommand } from './planes.commands';
+import type { CrearPlanCommand } from '../commands/planes.commands';
 import type { ICreatePlanResponse } from '@repo/types';
 
-import { PlanComunidad } from '../models/plan.entity';
-import { CicloPago } from '../models/ciclo-pago.entity';
+import { PlanComunidad } from '../../domain/entities/plan.entity';
+import { CicloPago } from '../../domain/entities/ciclo-pago.entity';
 
 /**
  * Interfaz que define el contrato para el servicio de Planes.

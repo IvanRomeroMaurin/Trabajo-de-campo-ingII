@@ -15,14 +15,14 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { IPlanesService } from '../services/planes.service.interface';
-import { CrearPlanDto } from '../dto/crear-plan.dto';
+import { IPlanesService } from '../../application/services/planes.service.interface';
+import { CrearPlanDto } from '../dtos/crear-plan.dto';
 import { ICreatePlanResponse } from '@repo/types';
-import { PlanResponseDto } from '../dto/plan-response.dto';
-import { PlanComunidad } from '../models/plan.entity';
-import { CicloPago } from '../models/ciclo-pago.entity';
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { ComunidadOwnerGuard } from '../../common/guards/comunidad-owner.guard';
+import { PlanResponseDto } from '../dtos/plan-response.dto';
+import { PlanComunidad } from '../../domain/entities/plan.entity';
+import { CicloPago } from '../../domain/entities/ciclo-pago.entity';
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
+import { ComunidadOwnerGuard } from '../../../common/guards/comunidad-owner.guard';
 
 @ApiTags('Planes')
 @ApiBearerAuth()

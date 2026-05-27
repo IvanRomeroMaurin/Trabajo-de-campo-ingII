@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { ICicloPago, IMoneda } from '@repo/types';
-import { DomainException } from '../../common/exceptions/domain.exception';
+import { DomainException } from '../../../common/exceptions/domain.exception';
+import { PlanYaActivoException, PlanYaInactivoException } from '../exceptions';
 
 export class PlanComunidad {
   private _id_plan_comunidad: string;
@@ -171,12 +172,12 @@ export class PlanComunidad {
 
   // Métodos de Comportamiento
   public desactivarPlanComunidad(): void {
-    if (!this._activa) throw new DomainException('El plan ya está inactivo');
+    if (!this._activa) throw new PlanYaInactivoException(this._id_plan_comunidad);
     this._activa = false;
   }
 
   public reactivarPlanComunidad(): void {
-    if (this._activa) throw new DomainException('El plan ya está activo');
+    if (this._activa) throw new PlanYaActivoException(this._id_plan_comunidad);
     this._activa = true;
   }
 

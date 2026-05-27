@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PlanComunidad } from '../models/plan.entity';
+import { PlanComunidad } from '../../domain/entities/plan.entity';
 
 export class PlanResponseDto {
   @ApiProperty() id_plan_comunidad: string;

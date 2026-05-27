@@ -1,6 +1,6 @@
 import { plan_comunidad, ciclo_pago, moneda } from '@prisma/client';
-import { PlanComunidad } from '../models/plan.entity';
-import { CicloPago } from '../models/ciclo-pago.entity';
+import { PlanComunidad } from '../../../domain/entities/plan.entity';
+import { CicloPago } from '../../../domain/entities/ciclo-pago.entity';
 
 /**
  * Mapper para transformar entidades de Prisma a interfaces de dominio (IPlanComunidad, ICicloPago).
