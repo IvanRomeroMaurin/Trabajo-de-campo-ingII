@@ -1,0 +1,23 @@
+name: Sincronizar Fork Automáticamente
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Se ejecuta todos los días a la medianoche (UTC)
+  workflow_dispatch: # Te permite ejecutarlo manualmente si quieres
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Asegúrate de cambiar 'propietario/repo-original' por los datos reales
+      - name: Sincronizar con el repositorio original (Upstream)
+        run: |
+          git remote add upstream https://github.com/PROPIETARIO/REPO-ORIGINAL.git
+          git fetch upstream
+          git checkout main # Cambia 'main' por 'master' si esa es la rama principal
+          git merge upstream/main
+          git push origin main
