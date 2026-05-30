@@ -16,8 +16,8 @@ jobs:
       # Asegúrate de cambiar 'propietario/repo-original' por los datos reales
       - name: Sincronizar con el repositorio original (Upstream)
         run: |
-          git remote add upstream https://github.com/PROPIETARIO/REPO-ORIGINAL.git
+          git remote add upstream https://github.com/MiguelGaravaglia/Trabajo-de-campo-ingII.git
           git fetch upstream
-          git checkout main # Cambia 'main' por 'master' si esa es la rama principal
+          git checkout main
           git merge upstream/main
           git push origin main
